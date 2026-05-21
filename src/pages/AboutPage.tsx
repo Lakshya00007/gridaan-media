@@ -6,10 +6,10 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen">
       {/* Hero */}
-      <div className="bg-gradient-to-br from-gray-900 via-indigo-950 to-purple-950 text-white">
+      <div className="bg-linear-to-br from-gray-900 via-indigo-950 to-purple-950 text-white">
         <div className="max-w-4xl mx-auto px-4 py-20 text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
-            About <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Gridaan</span>
+            About <span className="bg-linear-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Gridaan</span>
           </h1>
           <p className="text-lg text-gray-300 max-w-2xl mx-auto leading-relaxed">
             We're a team of passionate technologists, writers, and creators dedicated to bringing you the best content from the world of technology, AI, programming, and digital innovation.
@@ -64,7 +64,7 @@ export default function AboutPage() {
         <div className="grid md:grid-cols-3 gap-6 mb-16">
           {authors.map(author => (
             <div key={author.id} className="bg-white dark:bg-gray-800/50 rounded-2xl p-6 text-center border border-gray-200/50 dark:border-gray-700/50 hover:shadow-lg transition-all">
-              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-2xl mx-auto mb-4">
+              <div className="w-20 h-20 rounded-full bg-linear-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-2xl mx-auto mb-4">
                 {author.name.charAt(0)}
               </div>
               <h3 className="font-bold text-gray-900 dark:text-white">{author.name}</h3>
@@ -75,7 +75,7 @@ export default function AboutPage() {
         </div>
 
         {/* CTA */}
-        <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-8 md:p-12 text-center text-white">
+        <div className="bg-linear-to-r from-indigo-600 to-purple-600 rounded-2xl p-8 md:p-12 text-center text-white">
           <h2 className="text-2xl md:text-3xl font-bold mb-4">Want to write for us?</h2>
           <p className="text-indigo-100 mb-6 max-w-xl mx-auto">
             We're always looking for talented writers and experts to join our team. Share your knowledge with our growing community.

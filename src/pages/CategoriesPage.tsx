@@ -5,7 +5,7 @@ import { ArrowRight } from 'lucide-react';
 export default function CategoriesPage() {
   return (
     <div className="min-h-screen">
-      <div className="bg-gradient-to-br from-gray-900 via-indigo-950 to-purple-950 text-white">
+      <div className="bg-linear-to-br from-gray-900 via-indigo-950 to-purple-950 text-white">
         <div className="max-w-7xl mx-auto px-4 py-16 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Explore Categories</h1>
           <p className="text-gray-300 text-lg max-w-2xl mx-auto">

@@ -81,12 +81,16 @@ interface AppState {
 const AppContext = createContext<AppState | undefined>(undefined);
 
 // Initial data
+const hashPassword = (password: string) => `b64:${btoa(password)}`;
+const verifyPassword = (stored: string, password: string) => stored.startsWith('b64:') ? stored === hashPassword(password) : stored === password;
+const normalizePassword = (password: string) => hashPassword(password);
+
 const initialUsers: User[] = [
-  { id: '1', name: 'Admin User', email: 'admin@gridaan.com', password: 'admin123', role: 'admin', status: 'active', avatar: '', createdAt: '2024-01-01T00:00:00Z' },
-  { id: '2', name: 'Sarah Chen', email: 'sarah@gridaan.com', password: 'editor123', role: 'editor', status: 'active', avatar: '', createdAt: '2024-02-15T00:00:00Z' },
-  { id: '3', name: 'Marcus Johnson', email: 'marcus@gridaan.com', password: 'writer123', role: 'writer', status: 'active', avatar: '', createdAt: '2024-03-20T00:00:00Z' },
-  { id: '4', name: 'Elena Rodriguez', email: 'elena@gridaan.com', password: 'writer123', role: 'writer', status: 'active', avatar: '', createdAt: '2024-04-10T00:00:00Z' },
-  { id: '5', name: 'Alex Turner', email: 'alex@example.com', password: 'user123', role: 'subscriber', status: 'active', avatar: '', createdAt: '2024-05-05T00:00:00Z' },
+  { id: '1', name: 'Admin User', email: 'admin@gridaan.com', password: 'b64:YWRtaW4xMjM=', role: 'admin', status: 'active', avatar: '', createdAt: '2024-01-01T00:00:00Z' },
+  { id: '2', name: 'Sarah Chen', email: 'sarah@gridaan.com', password: 'b64:ZWRpdG9yMTIz', role: 'editor', status: 'active', avatar: '', createdAt: '2024-02-15T00:00:00Z' },
+  { id: '3', name: 'Marcus Johnson', email: 'marcus@gridaan.com', password: 'b64:d3JpdGVyMTIz', role: 'writer', status: 'active', avatar: '', createdAt: '2024-03-20T00:00:00Z' },
+  { id: '4', name: 'Elena Rodriguez', email: 'elena@gridaan.com', password: 'b64:d3JpdGVyMTIz', role: 'writer', status: 'active', avatar: '', createdAt: '2024-04-10T00:00:00Z' },
+  { id: '5', name: 'Alex Turner', email: 'alex@example.com', password: 'b64:dXNlcjEyMw==', role: 'subscriber', status: 'active', avatar: '', createdAt: '2024-05-05T00:00:00Z' },
 ];
 
 const initialAdPlacements: AdPlacement[] = [
@@ -127,34 +131,46 @@ const initialSettings: SiteSettings = {
 };
 
 export function AppProvider({ children }: { children: ReactNode }) {
+  const getSavedLocalStorage = (newKey: string, oldKey: string) => {
+    const value = localStorage.getItem(newKey);
+    if (value !== null) return value;
+    const legacy = localStorage.getItem(oldKey);
+    if (legacy !== null) {
+      localStorage.setItem(newKey, legacy);
+      localStorage.removeItem(oldKey);
+      return legacy;
+    }
+    return null;
+  };
+
   // Load from localStorage or use defaults
   const [darkMode, setDarkMode] = useState(() => {
-    const saved = localStorage.getItem('nexus_darkMode');
+    const saved = getSavedLocalStorage('gridaan_darkMode', 'nexus_darkMode');
     return saved ? JSON.parse(saved) : false;
   });
   
   const [articles, setArticles] = useState<Article[]>(() => {
-    const saved = localStorage.getItem('nexus_articles');
+    const saved = getSavedLocalStorage('gridaan_articles', 'nexus_articles');
     return saved ? JSON.parse(saved) : initialArticles;
   });
   
   const [categories, setCategories] = useState<Category[]>(() => {
-    const saved = localStorage.getItem('nexus_categories');
+    const saved = getSavedLocalStorage('gridaan_categories', 'nexus_categories');
     return saved ? JSON.parse(saved) : initialCategories;
   });
   
   const [users, setUsers] = useState<User[]>(() => {
-    const saved = localStorage.getItem('nexus_users');
+    const saved = getSavedLocalStorage('gridaan_users', 'nexus_users');
     return saved ? JSON.parse(saved) : initialUsers;
   });
   
   const [currentUser, setCurrentUser] = useState<User | null>(() => {
-    const saved = localStorage.getItem('nexus_currentUser');
+    const saved = getSavedLocalStorage('gridaan_currentUser', 'nexus_currentUser');
     return saved ? JSON.parse(saved) : null;
   });
   
   const [notifications, setNotifications] = useState<Notification[]>(() => {
-    const saved = localStorage.getItem('nexus_notifications');
+    const saved = getSavedLocalStorage('gridaan_notifications', 'nexus_notifications');
     return saved ? JSON.parse(saved) : [
       { id: '1', type: 'info', title: 'Welcome to Gridaan!', message: 'Your admin dashboard is ready.', createdAt: new Date().toISOString(), read: false },
       { id: '2', type: 'success', title: 'New subscriber', message: 'alex@example.com just subscribed to newsletter.', createdAt: new Date().toISOString(), read: false },
@@ -162,27 +178,27 @@ export function AppProvider({ children }: { children: ReactNode }) {
   });
   
   const [adPlacements, setAdPlacements] = useState<AdPlacement[]>(() => {
-    const saved = localStorage.getItem('nexus_adPlacements');
+    const saved = getSavedLocalStorage('gridaan_adPlacements', 'nexus_adPlacements');
     return saved ? JSON.parse(saved) : initialAdPlacements;
   });
   
   const [siteSettings, setSiteSettings] = useState<SiteSettings>(() => {
-    const saved = localStorage.getItem('nexus_settings');
+    const saved = getSavedLocalStorage('gridaan_settings', 'nexus_settings');
     return saved ? JSON.parse(saved) : initialSettings;
   });
   
   const [mediaFiles, setMediaFiles] = useState<MediaFile[]>(() => {
-    const saved = localStorage.getItem('nexus_media');
+    const saved = getSavedLocalStorage('gridaan_media', 'nexus_media');
     return saved ? JSON.parse(saved) : initialMediaFiles;
   });
   
   const [bookmarks, setBookmarks] = useState<string[]>(() => {
-    const saved = localStorage.getItem('nexus_bookmarks');
+    const saved = getSavedLocalStorage('gridaan_bookmarks', 'nexus_bookmarks');
     return saved ? JSON.parse(saved) : [];
   });
   
   const [subscribers, setSubscribers] = useState<string[]>(() => {
-    const saved = localStorage.getItem('nexus_subscribers');
+    const saved = getSavedLocalStorage('gridaan_subscribers', 'nexus_subscribers');
     return saved ? JSON.parse(saved) : ['alex@example.com', 'priya@example.com'];
   });
   
@@ -193,20 +209,20 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   // Persist to localStorage
   useEffect(() => {
-    localStorage.setItem('nexus_darkMode', JSON.stringify(darkMode));
+    localStorage.setItem('gridaan_darkMode', JSON.stringify(darkMode));
     document.documentElement.classList.toggle('dark', darkMode);
   }, [darkMode]);
   
-  useEffect(() => { localStorage.setItem('nexus_articles', JSON.stringify(articles)); }, [articles]);
-  useEffect(() => { localStorage.setItem('nexus_categories', JSON.stringify(categories)); }, [categories]);
-  useEffect(() => { localStorage.setItem('nexus_users', JSON.stringify(users)); }, [users]);
-  useEffect(() => { localStorage.setItem('nexus_currentUser', JSON.stringify(currentUser)); }, [currentUser]);
-  useEffect(() => { localStorage.setItem('nexus_notifications', JSON.stringify(notifications)); }, [notifications]);
-  useEffect(() => { localStorage.setItem('nexus_adPlacements', JSON.stringify(adPlacements)); }, [adPlacements]);
-  useEffect(() => { localStorage.setItem('nexus_settings', JSON.stringify(siteSettings)); }, [siteSettings]);
-  useEffect(() => { localStorage.setItem('nexus_media', JSON.stringify(mediaFiles)); }, [mediaFiles]);
-  useEffect(() => { localStorage.setItem('nexus_bookmarks', JSON.stringify(bookmarks)); }, [bookmarks]);
-  useEffect(() => { localStorage.setItem('nexus_subscribers', JSON.stringify(subscribers)); }, [subscribers]);
+  useEffect(() => { localStorage.setItem('gridaan_articles', JSON.stringify(articles)); }, [articles]);
+  useEffect(() => { localStorage.setItem('gridaan_categories', JSON.stringify(categories)); }, [categories]);
+  useEffect(() => { localStorage.setItem('gridaan_users', JSON.stringify(users)); }, [users]);
+  useEffect(() => { localStorage.setItem('gridaan_currentUser', JSON.stringify(currentUser)); }, [currentUser]);
+  useEffect(() => { localStorage.setItem('gridaan_notifications', JSON.stringify(notifications)); }, [notifications]);
+  useEffect(() => { localStorage.setItem('gridaan_adPlacements', JSON.stringify(adPlacements)); }, [adPlacements]);
+  useEffect(() => { localStorage.setItem('gridaan_settings', JSON.stringify(siteSettings)); }, [siteSettings]);
+  useEffect(() => { localStorage.setItem('gridaan_media', JSON.stringify(mediaFiles)); }, [mediaFiles]);
+  useEffect(() => { localStorage.setItem('gridaan_bookmarks', JSON.stringify(bookmarks)); }, [bookmarks]);
+  useEffect(() => { localStorage.setItem('gridaan_subscribers', JSON.stringify(subscribers)); }, [subscribers]);
 
   // Helper functions
   const generateId = () => Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -304,6 +320,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
     const newUser: User = {
       ...user,
+      password: normalizePassword(user.password),
       id: generateId(),
       createdAt: new Date().toISOString(),
     };
@@ -313,7 +330,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
   };
 
   const updateUser = (id: string, updates: Partial<User>) => {
-    setUsers(prev => prev.map(u => u.id === id ? { ...u, ...updates } : u));
+    const updated = { ...updates };
+    if (updates.password) {
+      updated.password = normalizePassword(updates.password);
+    }
+    setUsers(prev => prev.map(u => u.id === id ? { ...u, ...updated } : u));
     toast.success('User updated successfully!');
   };
 
@@ -332,7 +353,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   // Authentication
   const login = (email: string, password: string): boolean => {
-    const user = users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
+    const user = users.find(u => u.email.toLowerCase() === email.toLowerCase() && verifyPassword(u.password, password));
     if (user) {
       if (user.status === 'inactive') {
         toast.error('Account is inactive. Contact administrator.');

@@ -9,7 +9,7 @@ export default function BookmarksPage() {
 
   return (
     <div className="min-h-screen">
-      <div className="bg-gradient-to-br from-gray-900 via-indigo-950 to-purple-950 text-white">
+      <div className="bg-linear-to-br from-gray-900 via-indigo-950 to-purple-950 text-white">
         <div className="max-w-7xl mx-auto px-4 py-16 text-center">
           <Bookmark className="w-12 h-12 mx-auto mb-4 text-indigo-400" />
           <h1 className="text-4xl font-bold mb-4">Your Bookmarks</h1>

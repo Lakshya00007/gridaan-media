@@ -12,7 +12,7 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen">
-      <div className="bg-gradient-to-br from-gray-900 via-indigo-950 to-purple-950 text-white">
+      <div className="bg-linear-to-br from-gray-900 via-indigo-950 to-purple-950 text-white">
         <div className="max-w-4xl mx-auto px-4 py-16 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Get in Touch</h1>
           <p className="text-gray-300 text-lg">Have a question, feedback, or partnership inquiry? We'd love to hear from you.</p>
@@ -40,7 +40,7 @@ export default function ContactPage() {
               </div>
             ))}
 
-            <div className="p-5 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl text-white">
+            <div className="p-5 bg-linear-to-br from-indigo-600 to-purple-600 rounded-xl text-white">
               <h3 className="font-bold mb-2">📢 Advertising</h3>
               <p className="text-sm text-indigo-100 mb-3">Interested in advertising with Gridaan? We offer banner ads, sponsored posts, and native advertising.</p>
               <p className="text-xs text-indigo-200">ads@gridaan.com</p>

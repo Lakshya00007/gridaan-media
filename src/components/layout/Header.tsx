@@ -21,7 +21,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-700/50 transition-colors duration-300">
       {/* Top Bar */}
-      <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 text-white text-xs py-1.5">
+      <div className="bg-linear-to-r from-indigo-600 via-purple-600 to-pink-500 text-white text-xs py-1.5">
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
           <span className="hidden sm:inline">🔥 Trending: AI & Machine Learning breakthroughs are reshaping 2026</span>
           <span className="sm:hidden">🔥 Trending in AI & ML</span>
@@ -38,10 +38,10 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 shrink-0">
-            <div className="w-9 h-9 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30">
+            <div className="w-9 h-9 bg-linear-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30">
               <span className="text-white font-bold text-lg">N</span>
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent hidden sm:inline">
+            <span className="text-xl font-bold bg-linear-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent hidden sm:inline">
               Gridaan
             </span>
           </Link>
@@ -109,7 +109,7 @@ export default function Header() {
             </button>
 
             {/* Profile */}
-            <Link to="/admin" className="hidden sm:flex items-center gap-2 pl-2 pr-3 py-1.5 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-full text-sm font-medium hover:shadow-lg hover:shadow-indigo-200 dark:hover:shadow-indigo-900/30 transition-all">
+            <Link to="/admin" className="hidden sm:flex items-center gap-2 pl-2 pr-3 py-1.5 bg-linear-to-r from-indigo-500 to-purple-600 text-white rounded-full text-sm font-medium hover:shadow-lg hover:shadow-indigo-200 dark:hover:shadow-indigo-900/30 transition-all">
               <User className="w-4 h-4" />
               <span className="hidden md:inline">Dashboard</span>
             </Link>

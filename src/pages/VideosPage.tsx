@@ -11,7 +11,7 @@ export default function VideosPage() {
 
   return (
     <div className="min-h-screen">
-      <div className="bg-gradient-to-br from-purple-600 via-pink-600 to-red-600 text-white">
+      <div className="bg-linear-to-br from-purple-600 via-pink-600 to-red-600 text-white">
         <div className="max-w-7xl mx-auto px-4 py-16 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">🎬 Videos</h1>
           <p className="text-purple-100 text-lg max-w-2xl mx-auto">

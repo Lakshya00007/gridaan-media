@@ -60,11 +60,11 @@ export default function AdminDashboard() {
   // Login Screen
   if (!isAdmin) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-indigo-950 to-purple-950 px-4">
+      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-gray-900 via-indigo-950 to-purple-950 px-4">
         <div className="w-full max-w-md">
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200/50 dark:border-gray-700/50 p-8">
             <div className="text-center mb-8">
-              <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-indigo-500/30">
+              <div className="w-16 h-16 bg-linear-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-indigo-500/30">
                 <Lock className="w-7 h-7 text-white" />
               </div>
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Admin Login</h1>
@@ -101,7 +101,7 @@ export default function AdminDashboard() {
               </div>
               <button 
                 type="submit" 
-                className="w-full py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-indigo-500/30 transition-all hover:-translate-y-0.5"
+                className="w-full py-3 bg-linear-to-r from-indigo-500 to-purple-600 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-indigo-500/30 transition-all hover:-translate-y-0.5"
               >
                 Sign In
               </button>
@@ -145,7 +145,7 @@ export default function AdminDashboard() {
       <aside className={`fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-transform lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="flex items-center justify-between p-5 border-b border-gray-100 dark:border-gray-700">
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-linear-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">N</span>
             </div>
             <span className="font-bold text-gray-900 dark:text-white">NexusAdmin</span>
@@ -249,7 +249,7 @@ export default function AdminDashboard() {
             
             {/* User */}
             <div className="flex items-center gap-2 pl-2">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-sm font-bold">
+              <div className="w-8 h-8 rounded-full bg-linear-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-sm font-bold">
                 {currentUser?.name.charAt(0)}
               </div>
               <div className="hidden md:block">
@@ -334,7 +334,7 @@ function DashboardContent({ articles, subscribers, adPlacements }: { articles: A
               return (
                 <div key={i} className="flex-1 flex flex-col items-center gap-2">
                   <span className="text-[10px] text-gray-500">{(item.views / 1000).toFixed(1)}K</span>
-                  <div className="w-full rounded-t-lg bg-gradient-to-t from-indigo-500 to-purple-500 transition-all hover:from-indigo-600 hover:to-purple-600 cursor-pointer" style={{ height: `${height}%` }} />
+                  <div className="w-full rounded-t-lg bg-linear-to-t from-indigo-500 to-purple-500 transition-all hover:from-indigo-600 hover:to-purple-600 cursor-pointer" style={{ height: `${height}%` }} />
                   <span className="text-[10px] text-gray-500">{item.date}</span>
                 </div>
               );
@@ -352,7 +352,7 @@ function DashboardContent({ articles, subscribers, adPlacements }: { articles: A
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{article.title}</p>
                   <div className="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-1.5 mt-1">
-                    <div className="bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full h-1.5" style={{ width: `${(article.views / topArticles[0].views) * 100}%` }} />
+                    <div className="bg-linear-to-r from-indigo-500 to-purple-500 rounded-full h-1.5" style={{ width: `${(article.views / topArticles[0].views) * 100}%` }} />
                   </div>
                 </div>
                 <span className="text-xs text-gray-500 shrink-0">{(article.views / 1000).toFixed(1)}K</span>
@@ -376,7 +376,7 @@ function DashboardContent({ articles, subscribers, adPlacements }: { articles: A
             <div key={source.source} className="flex items-center gap-3 py-2">
               <span className="text-sm text-gray-700 dark:text-gray-300 w-28 shrink-0">{source.source}</span>
               <div className="flex-1 bg-gray-100 dark:bg-gray-700 rounded-full h-2">
-                <div className="bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full h-2 transition-all" style={{ width: `${source.percentage}%` }} />
+                <div className="bg-linear-to-r from-indigo-500 to-purple-500 rounded-full h-2 transition-all" style={{ width: `${source.percentage}%` }} />
               </div>
               <span className="text-sm font-medium text-gray-900 dark:text-white w-10 text-right">{source.percentage}%</span>
             </div>
@@ -955,7 +955,7 @@ function CommentsContent({ articles, approveComment, deleteComment }: { articles
             <div key={comment.id} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200/50 dark:border-gray-700/50 p-5">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-start gap-3">
-                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-white text-xs font-bold shrink-0">
+                  <div className="w-9 h-9 rounded-full bg-linear-to-br from-orange-500 to-red-500 flex items-center justify-center text-white text-xs font-bold shrink-0">
                     {comment.author.charAt(0)}
                   </div>
                   <div>
@@ -1062,7 +1062,7 @@ function UsersContent({ users, currentUser, addUser, updateUser, deleteUser }: {
               <tr key={user.id} className="border-b border-gray-50 dark:border-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-700/30">
                 <td className="px-5 py-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white text-sm font-bold">{user.name.charAt(0)}</div>
+                    <div className="w-9 h-9 rounded-full bg-linear-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white text-sm font-bold">{user.name.charAt(0)}</div>
                     <div>
                       <p className="text-sm font-medium text-gray-900 dark:text-white">{user.name}</p>
                       <p className="text-xs text-gray-500">{user.email}</p>
@@ -1116,7 +1116,7 @@ function AdsContent({ adPlacements, toggleAdPlacement }: { adPlacements: any[]; 
 
   return (
     <div className="space-y-6">
-      <div className="bg-gradient-to-r from-green-600 to-emerald-600 rounded-xl p-6 text-white">
+      <div className="bg-linear-to-r from-green-600 to-emerald-600 rounded-xl p-6 text-white">
         <h3 className="text-lg font-bold mb-1">Google AdSense Dashboard</h3>
         <p className="text-green-100 text-sm mb-4">Manage your ad placements and monitor performance</p>
         <div className="grid grid-cols-3 gap-4">
@@ -1206,7 +1206,7 @@ function AnalyticsContent({ articles, subscribers }: { articles: Article[]; subs
             return (
               <div key={i} className="flex-1 flex flex-col items-center gap-2">
                 <span className="text-xs text-gray-500">{(item.views / 1000).toFixed(1)}K</span>
-                <div className="w-full rounded-t-xl bg-gradient-to-t from-indigo-500 to-purple-500 transition-all hover:opacity-80 cursor-pointer" style={{ height: `${height}%` }} />
+                <div className="w-full rounded-t-xl bg-linear-to-t from-indigo-500 to-purple-500 transition-all hover:opacity-80 cursor-pointer" style={{ height: `${height}%` }} />
                 <span className="text-xs font-medium text-gray-600 dark:text-gray-400">{item.date}</span>
               </div>
             );
@@ -1237,7 +1237,7 @@ function AnalyticsContent({ articles, subscribers }: { articles: Article[]; subs
             <div key={source.source} className="flex items-center gap-3 py-2.5">
               <span className="text-sm text-gray-700 dark:text-gray-300 w-28 shrink-0">{source.source}</span>
               <div className="flex-1 bg-gray-100 dark:bg-gray-700 rounded-full h-2.5">
-                <div className="bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full h-2.5" style={{ width: `${source.percentage}%` }} />
+                <div className="bg-linear-to-r from-indigo-500 to-purple-500 rounded-full h-2.5" style={{ width: `${source.percentage}%` }} />
               </div>
               <span className="text-sm font-medium text-gray-900 dark:text-white w-10 text-right">{source.percentage}%</span>
             </div>

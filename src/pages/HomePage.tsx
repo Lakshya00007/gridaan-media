@@ -24,7 +24,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-indigo-950 to-purple-950">
+      <section className="relative overflow-hidden bg-linear-to-br from-gray-900 via-indigo-950 to-purple-950">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 25% 25%, rgba(99, 102, 241, 0.3) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(168, 85, 247, 0.3) 0%, transparent 50%)' }} />
           <div className="absolute inset-0" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` }} />
@@ -38,13 +38,13 @@ export default function HomePage() {
                 <span>Discover the latest in technology</span>
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-5 leading-[1.1]">
-                Where <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">innovation</span> meets insight
+                Where <span className="bg-linear-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">innovation</span> meets insight
               </h1>
               <p className="text-lg text-gray-300 mb-8 max-w-lg leading-relaxed">
                 Expert articles, in-depth tutorials, and breaking news from the world of technology. Join 24,000+ subscribers staying ahead.
               </p>
               <div className="flex flex-wrap gap-3 mb-8">
-                <Link to="/trending" className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-indigo-500/30 transition-all hover:-translate-y-0.5">
+                <Link to="/trending" className="inline-flex items-center gap-2 px-6 py-3 bg-linear-to-r from-indigo-500 to-purple-600 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-indigo-500/30 transition-all hover:-translate-y-0.5">
                   <Zap className="w-4 h-4" /> Explore Trending
                 </Link>
                 <Link to="/tutorials" className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur text-white rounded-xl font-semibold hover:bg-white/20 transition-all border border-white/10">
@@ -203,7 +203,7 @@ export default function HomePage() {
             </div>
 
             {/* Newsletter Mini */}
-            <div className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-2xl p-6 text-white">
+            <div className="bg-linear-to-br from-indigo-600 to-purple-700 rounded-2xl p-6 text-white">
               <h3 className="font-bold text-lg mb-2">📬 Weekly Newsletter</h3>
               <p className="text-sm text-indigo-100 mb-4">Get the best articles delivered to your inbox every week.</p>
               <Link to="/" className="block text-center py-2.5 bg-white text-indigo-600 rounded-xl text-sm font-semibold hover:bg-gray-100 transition-colors">

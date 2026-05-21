@@ -33,7 +33,7 @@ export default function ArticleCard({ article, variant = 'default' }: ArticleCar
       <Link to={`/article/${article.slug}`} className="group relative block rounded-2xl overflow-hidden h-full">
         <div className="absolute inset-0">
           <img src={article.featuredImage} alt={article.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent" />
         </div>
         <div className="relative h-full flex flex-col justify-end p-6 md:p-8 min-h-[400px]">
           {article.trending && (
@@ -51,7 +51,7 @@ export default function ArticleCard({ article, variant = 'default' }: ArticleCar
           <p className="text-gray-300 text-sm mb-4 line-clamp-2 hidden md:block">{article.excerpt}</p>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold">
+              <div className="w-8 h-8 rounded-full bg-linear-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold">
                 {article.author.name.charAt(0)}
               </div>
               <div>
@@ -124,7 +124,7 @@ export default function ArticleCard({ article, variant = 'default' }: ArticleCar
     <article className="group bg-white dark:bg-gray-800/50 rounded-2xl overflow-hidden border border-gray-200/50 dark:border-gray-700/50 hover:shadow-xl hover:shadow-gray-200/50 dark:hover:shadow-gray-900/50 transition-all duration-300 hover:-translate-y-1">
       <Link to={`/article/${article.slug}`} className="block relative overflow-hidden aspect-[16/10]">
         <img src={article.featuredImage} alt={article.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
         {article.trending && (
           <div className="absolute top-3 left-3 flex items-center gap-1 px-2 py-1 bg-orange-500 text-white text-xs font-medium rounded-full">
             <TrendingUp className="w-3 h-3" /> Trending
@@ -151,7 +151,7 @@ export default function ArticleCard({ article, variant = 'default' }: ArticleCar
         <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mb-4">{article.excerpt}</p>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold">
+            <div className="w-7 h-7 rounded-full bg-linear-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold">
               {article.author.name.charAt(0)}
             </div>
             <div>

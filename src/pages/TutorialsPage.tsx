@@ -8,7 +8,7 @@ export default function TutorialsPage() {
 
   return (
     <div className="min-h-screen">
-      <div className="bg-gradient-to-br from-teal-600 via-cyan-600 to-blue-600 text-white">
+      <div className="bg-linear-to-br from-teal-600 via-cyan-600 to-blue-600 text-white">
         <div className="max-w-7xl mx-auto px-4 py-16 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">📚 Tutorials</h1>
           <p className="text-teal-100 text-lg max-w-2xl mx-auto">

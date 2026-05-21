@@ -16,7 +16,7 @@ export default function Footer() {
   return (
     <footer className="bg-gray-900 dark:bg-black text-gray-300 border-t border-gray-800">
       {/* Newsletter */}
-      <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500">
+      <div className="bg-linear-to-r from-indigo-600 via-purple-600 to-pink-500">
         <div className="max-w-7xl mx-auto px-4 py-12">
           <div className="max-w-2xl mx-auto text-center">
             <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">Stay ahead of the curve</h3>
@@ -51,7 +51,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <Link to="/" className="flex items-center gap-2 mb-4">
-              <div className="w-9 h-9 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
+              <div className="w-9 h-9 bg-linear-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
                 <span className="text-white font-bold text-lg">N</span>
               </div>
               <span className="text-xl font-bold text-white">Gridaan</span>

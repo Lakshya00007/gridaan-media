@@ -171,7 +171,7 @@ export default function ArticlePage() {
           {/* Author & Actions */}
           <div className="flex items-center justify-between flex-wrap gap-4 pb-6 border-b border-gray-200 dark:border-gray-700">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-lg">
+              <div className="w-12 h-12 rounded-full bg-linear-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-lg">
                 {article.author.name.charAt(0)}
               </div>
               <div>
@@ -254,7 +254,7 @@ export default function ArticlePage() {
             {/* Author Bio */}
             <div className="bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-6 my-8 border border-gray-200/50 dark:border-gray-700/50">
               <div className="flex items-start gap-4">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-2xl shrink-0">
+                <div className="w-16 h-16 rounded-full bg-linear-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-2xl shrink-0">
                   {article.author.name.charAt(0)}
                 </div>
                 <div>
@@ -274,7 +274,7 @@ export default function ArticlePage() {
               {/* Comment Form */}
               <div className="mb-6">
                 <div className="flex gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-teal-500 flex items-center justify-center text-white font-bold text-sm shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-linear-to-br from-green-500 to-teal-500 flex items-center justify-center text-white font-bold text-sm shrink-0">
                     {commentAuthor ? commentAuthor.charAt(0).toUpperCase() : 'U'}
                   </div>
                   <div className="flex-1 space-y-2">
@@ -315,7 +315,7 @@ export default function ArticlePage() {
               <div className="space-y-4">
                 {article.comments.map(comment => (
                   <div key={comment.id} className="flex gap-3 p-4 bg-white dark:bg-gray-800/50 rounded-xl border border-gray-200/50 dark:border-gray-700/50">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center text-white font-bold text-sm shrink-0">
+                    <div className="w-10 h-10 rounded-full bg-linear-to-br from-orange-500 to-red-500 flex items-center justify-center text-white font-bold text-sm shrink-0">
                       {comment.author.charAt(0)}
                     </div>
                     <div className="flex-1">
