@@ -85,7 +85,7 @@ export default function AdminDashboard() {
                   type="email" 
                   value={loginForm.email} 
                   onChange={e => setLoginForm({ ...loginForm, email: e.target.value })} 
-                  placeholder="admin@nexusmedia.com" 
+                  placeholder="Enter your email" 
                   className="w-full px-4 py-3 bg-gray-100 dark:bg-gray-700/50 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:text-white transition-all" 
                 />
               </div>
@@ -95,7 +95,7 @@ export default function AdminDashboard() {
                   type="password" 
                   value={loginForm.password} 
                   onChange={e => setLoginForm({ ...loginForm, password: e.target.value })} 
-                  placeholder="••••••••" 
+                  placeholder="Enter your password" 
                   className="w-full px-4 py-3 bg-gray-100 dark:bg-gray-700/50 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:text-white transition-all" 
                 />
               </div>
@@ -106,14 +106,6 @@ export default function AdminDashboard() {
                 Sign In
               </button>
             </form>
-            
-            <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-700/30 rounded-xl">
-              <p className="text-xs text-gray-500 dark:text-gray-400 mb-2 font-medium">Demo Credentials:</p>
-              <div className="space-y-1 text-xs text-gray-600 dark:text-gray-300">
-                <p><span className="font-medium">Admin:</span> admin@nexusmedia.com / admin123</p>
-                <p><span className="font-medium">Editor:</span> sarah@nexusmedia.com / editor123</p>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -743,8 +735,8 @@ function CreateArticleContent({ categories, addArticle }: { categories: Category
           {/* Preview */}
           <div className="p-4 bg-gray-50 dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-600">
             <p className="text-xs text-gray-500 mb-2">Google Search Preview:</p>
-            <p className="text-blue-600 text-sm font-medium hover:underline cursor-pointer">{form.seoTitle || form.title || 'Article Title'} - NexusMedia</p>
-            <p className="text-green-700 text-xs">nexusmedia.com/article/{form.title ? generateSlug(form.title).slice(0, 30) : 'article-slug'}</p>
+            <p className="text-blue-600 text-sm font-medium hover:underline cursor-pointer">{form.seoTitle || form.title || 'Article Title'} - Gridaan</p>
+            <p className="text-green-700 text-xs">gridaan.com/article/{form.title ? generateSlug(form.title).slice(0, 30) : 'article-slug'}</p>
             <p className="text-xs text-gray-600 mt-0.5 line-clamp-2">{form.seoDescription || form.excerpt || 'Article description will appear here...'}</p>
           </div>
         </div>

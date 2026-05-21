@@ -82,10 +82,10 @@ const AppContext = createContext<AppState | undefined>(undefined);
 
 // Initial data
 const initialUsers: User[] = [
-  { id: '1', name: 'Admin User', email: 'admin@nexusmedia.com', password: 'admin123', role: 'admin', status: 'active', avatar: '', createdAt: '2024-01-01T00:00:00Z' },
-  { id: '2', name: 'Sarah Chen', email: 'sarah@nexusmedia.com', password: 'editor123', role: 'editor', status: 'active', avatar: '', createdAt: '2024-02-15T00:00:00Z' },
-  { id: '3', name: 'Marcus Johnson', email: 'marcus@nexusmedia.com', password: 'writer123', role: 'writer', status: 'active', avatar: '', createdAt: '2024-03-20T00:00:00Z' },
-  { id: '4', name: 'Elena Rodriguez', email: 'elena@nexusmedia.com', password: 'writer123', role: 'writer', status: 'active', avatar: '', createdAt: '2024-04-10T00:00:00Z' },
+  { id: '1', name: 'Admin User', email: 'admin@gridaan.com', password: 'admin123', role: 'admin', status: 'active', avatar: '', createdAt: '2024-01-01T00:00:00Z' },
+  { id: '2', name: 'Sarah Chen', email: 'sarah@gridaan.com', password: 'editor123', role: 'editor', status: 'active', avatar: '', createdAt: '2024-02-15T00:00:00Z' },
+  { id: '3', name: 'Marcus Johnson', email: 'marcus@gridaan.com', password: 'writer123', role: 'writer', status: 'active', avatar: '', createdAt: '2024-03-20T00:00:00Z' },
+  { id: '4', name: 'Elena Rodriguez', email: 'elena@gridaan.com', password: 'writer123', role: 'writer', status: 'active', avatar: '', createdAt: '2024-04-10T00:00:00Z' },
   { id: '5', name: 'Alex Turner', email: 'alex@example.com', password: 'user123', role: 'subscriber', status: 'active', avatar: '', createdAt: '2024-05-05T00:00:00Z' },
 ];
 
@@ -107,22 +107,22 @@ const initialMediaFiles: MediaFile[] = [
 ];
 
 const initialSettings: SiteSettings = {
-  siteName: 'NexusMedia',
+  siteName: 'Gridaan',
   tagline: 'Premium Digital Publishing Platform',
   logo: '/images/logo.png',
   primaryColor: '#6366f1',
   adsEnabled: true,
   adsensePublisherId: '',
   analyticsId: '',
-  metaDescription: 'NexusMedia - Your premium source for technology news, tutorials, and digital content.',
+  metaDescription: 'Gridaan - Your premium source for technology news, tutorials, and digital content.',
   socialLinks: {
-    twitter: 'https://twitter.com/nexusmedia',
-    github: 'https://github.com/nexusmedia',
-    linkedin: 'https://linkedin.com/company/nexusmedia',
+    twitter: 'https://twitter.com/gridaan',
+    github: 'https://github.com/gridaan',
+    linkedin: 'https://linkedin.com/company/gridaan',
   },
   emailSettings: {
-    contactEmail: 'hello@nexusmedia.com',
-    adsEmail: 'ads@nexusmedia.com',
+    contactEmail: 'hello@gridaan.com',
+    adsEmail: 'ads@gridaan.com',
   }
 };
 
@@ -156,7 +156,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [notifications, setNotifications] = useState<Notification[]>(() => {
     const saved = localStorage.getItem('nexus_notifications');
     return saved ? JSON.parse(saved) : [
-      { id: '1', type: 'info', title: 'Welcome to NexusMedia!', message: 'Your admin dashboard is ready.', createdAt: new Date().toISOString(), read: false },
+      { id: '1', type: 'info', title: 'Welcome to Gridaan!', message: 'Your admin dashboard is ready.', createdAt: new Date().toISOString(), read: false },
       { id: '2', type: 'success', title: 'New subscriber', message: 'alex@example.com just subscribed to newsletter.', createdAt: new Date().toISOString(), read: false },
     ];
   });

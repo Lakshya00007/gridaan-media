@@ -24,7 +24,7 @@ export default function ContactPage() {
           {/* Contact Info */}
           <div className="space-y-6">
             {[
-              { icon: Mail, title: 'Email Us', detail: 'hello@nexusmedia.com', sub: 'We respond within 24 hours' },
+              { icon: Mail, title: 'Email Us', detail: 'hello@gridaan.com', sub: 'We respond within 24 hours' },
               { icon: MapPin, title: 'Location', detail: 'San Francisco, CA', sub: 'United States' },
               { icon: Clock, title: 'Business Hours', detail: 'Mon - Fri: 9AM - 6PM PST', sub: 'Weekend: Limited support' },
             ].map(item => (
@@ -42,8 +42,8 @@ export default function ContactPage() {
 
             <div className="p-5 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl text-white">
               <h3 className="font-bold mb-2">📢 Advertising</h3>
-              <p className="text-sm text-indigo-100 mb-3">Interested in advertising with NexusMedia? We offer banner ads, sponsored posts, and native advertising.</p>
-              <p className="text-xs text-indigo-200">ads@nexusmedia.com</p>
+              <p className="text-sm text-indigo-100 mb-3">Interested in advertising with Gridaan? We offer banner ads, sponsored posts, and native advertising.</p>
+              <p className="text-xs text-indigo-200">ads@gridaan.com</p>
             </div>
           </div>
 

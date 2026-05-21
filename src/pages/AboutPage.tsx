@@ -9,7 +9,7 @@ export default function AboutPage() {
       <div className="bg-gradient-to-br from-gray-900 via-indigo-950 to-purple-950 text-white">
         <div className="max-w-4xl mx-auto px-4 py-20 text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
-            About <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">NexusMedia</span>
+            About <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Gridaan</span>
           </h1>
           <p className="text-lg text-gray-300 max-w-2xl mx-auto leading-relaxed">
             We're a team of passionate technologists, writers, and creators dedicated to bringing you the best content from the world of technology, AI, programming, and digital innovation.
@@ -40,7 +40,7 @@ export default function AboutPage() {
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Our Mission</h2>
           <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed max-w-3xl mx-auto">
-            At NexusMedia, we believe technology knowledge should be accessible to everyone. Our mission is to create high-quality, informative, and engaging content that helps developers, tech enthusiasts, and business leaders stay ahead of the rapidly evolving digital landscape.
+            At Gridaan, we believe technology knowledge should be accessible to everyone. Our mission is to create high-quality, informative, and engaging content that helps developers, tech enthusiasts, and business leaders stay ahead of the rapidly evolving digital landscape.
           </p>
         </div>
 

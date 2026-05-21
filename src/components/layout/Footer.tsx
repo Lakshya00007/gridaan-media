@@ -54,7 +54,7 @@ export default function Footer() {
               <div className="w-9 h-9 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
                 <span className="text-white font-bold text-lg">N</span>
               </div>
-              <span className="text-xl font-bold text-white">NexusMedia</span>
+              <span className="text-xl font-bold text-white">Gridaan</span>
             </Link>
             <p className="text-sm text-gray-400 mb-4 leading-relaxed">
               Your premium source for technology news, tutorials, and expert insights. Empowering developers and tech enthusiasts worldwide.
@@ -109,7 +109,7 @@ export default function Footer() {
             <ul className="space-y-2.5 text-sm text-gray-400">
               <li className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-indigo-400" />
-                hello@nexusmedia.com
+                hello@gridaan.com
               </li>
               <li>San Francisco, CA</li>
               <li>United States</li>
@@ -126,7 +126,7 @@ export default function Footer() {
       <div className="border-t border-gray-800">
         <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-gray-500">
-            © 2026 NexusMedia. All rights reserved.
+            © 2026 Gridaan. All rights reserved.
           </p>
           <p className="text-sm text-gray-500 flex items-center gap-1">
             Made with <Heart className="w-3.5 h-3.5 text-red-500 fill-red-500" /> for the developer community
