@@ -113,7 +113,7 @@ const initialMediaFiles: MediaFile[] = [
 const initialSettings: SiteSettings = {
   siteName: 'Gridaan',
   tagline: 'Premium Digital Publishing Platform',
-  logo: '/images/logo.png',
+  logo: '/images/gridaan-logo.svg',
   primaryColor: '#6366f1',
   adsEnabled: true,
   adsensePublisherId: '',

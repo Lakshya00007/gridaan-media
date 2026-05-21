@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, Menu, X, Moon, Sun, Bookmark, User, Bell, ChevronDown } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
+import GridaanLogo from './GridaanLogo';
 import { categories } from '../../data/mockData';
 
 export default function Header() {
@@ -38,8 +39,8 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 shrink-0">
-            <div className="w-9 h-9 bg-linear-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30">
-              <span className="text-white font-bold text-lg">N</span>
+            <div className="w-9 h-9 rounded-2xl flex items-center justify-center shadow-lg shadow-slate-900/10 bg-white/0">
+              <GridaanLogo className="w-8 h-8" />
             </div>
             <span className="text-xl font-bold bg-linear-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent hidden sm:inline">
               Gridaan

@@ -8,6 +8,7 @@ import {
   AlertCircle, Info, CheckCircle, XCircle, Save, Upload
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
+import GridaanLogo from '../../components/layout/GridaanLogo';
 import { Article, Category, User, MediaFile } from '../../types';
 
 type Tab = 'dashboard' | 'articles' | 'create' | 'media' | 'categories' | 'comments' | 'users' | 'ads' | 'analytics' | 'settings';
@@ -145,10 +146,10 @@ export default function AdminDashboard() {
       <aside className={`fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-transform lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="flex items-center justify-between p-5 border-b border-gray-100 dark:border-gray-700">
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-linear-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">N</span>
+            <div className="w-8 h-8 rounded-2xl flex items-center justify-center shadow-lg shadow-slate-900/10 bg-white/0">
+              <GridaanLogo className="w-7 h-7" />
             </div>
-            <span className="font-bold text-gray-900 dark:text-white">NexusAdmin</span>
+            <span className="font-bold text-gray-900 dark:text-white">Gridaan Admin</span>
           </Link>
           <button onClick={() => setSidebarOpen(false)} className="lg:hidden p-1 text-gray-500 hover:text-gray-700">
             <X className="w-5 h-5" />

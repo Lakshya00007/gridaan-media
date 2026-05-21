@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <defs>
+    <linearGradient id="gridaan-favicon-gradient" x1="0" y1="0" x2="120" y2="120">
+      <stop offset="0%" stop-color="#071428" />
+      <stop offset="50%" stop-color="#1344B7" />
+      <stop offset="100%" stop-color="#2E84FF" />
+    </linearGradient>
+  </defs>
+  <rect width="120" height="120" rx="30" fill="url(#gridaan-favicon-gradient)" />
+  <path d="M36 36C36 30.477 40.477 26 46 26H74C79.523 26 84 30.477 84 36V44C84 49.523 79.523 54 74 54H57C53.686 54 51 56.686 51 60V72C51 75.314 53.686 78 57 78H72C78.627 78 84 72.627 84 66V60" fill="white" opacity="0.96" />
+  <path d="M52 28C46.477 28 42 32.477 42 38V64C42 69.523 46.477 74 52 74H68C73.523 74 78 69.523 78 64V60C78 57.239 75.761 55 73 55H64C59.582 55 56 51.418 56 47V38C56 33.582 59.582 30 64 30H73C75.761 30 78 27.761 78 25V24H52Z" fill="white" opacity="0.18" />
+</svg>
