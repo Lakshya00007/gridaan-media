@@ -1,5 +1,6 @@
 import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import { AppProvider } from './context/AppContext';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
@@ -87,6 +88,7 @@ export default function App() {
       <AppProvider>
         <ScrollToTop />
         <AppLayout />
+        <SpeedInsights />
       </AppProvider>
     </Router>
   );
