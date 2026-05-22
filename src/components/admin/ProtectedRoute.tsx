@@ -6,41 +6,51 @@ interface ProtectedRouteProps {
   children: ReactNode
 }
 
-export default function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const [authorized, setAuthorized] = useState<boolean | null>(null)
+export default function ProtectedRoute({
+  children,
+}: ProtectedRouteProps) {
+  const [loading, setLoading] = useState(true)
+  const [authorized, setAuthorized] = useState(false)
 
   useEffect(() => {
-    const check = async () => {
-      const { data } = await supabase.auth.getSession()
-      const session = data?.session
-      const adminEmail = import.meta.env.VITE_ADMIN_EMAIL || ''
-      if (!session) {
+    const checkAuth = async () => {
+      try {
+        const {
+          data: { session },
+        } = await supabase.auth.getSession()
+
+        const adminEmail = import.meta.env.VITE_ADMIN_EMAIL?.toLowerCase()
+        const userEmail = session?.user?.email?.toLowerCase()
+
+        if (session && userEmail === adminEmail) {
+          setAuthorized(true)
+        } else {
+          setAuthorized(false)
+        }
+      } catch (error) {
+        console.error('Auth error:', error)
         setAuthorized(false)
-        return
+      } finally {
+        setLoading(false)
       }
-      const email = session.user.email ?? ''
-      if (adminEmail && email.toLowerCase() !== adminEmail.toLowerCase()) {
-        setAuthorized(false)
-        return
-      }
-      setAuthorized(true)
     }
-    check()
+
+    checkAuth()
   }, [])
-  
-  if (authorized === null) {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-[#060A16] text-slate-100">
-      <div className="rounded-2xl bg-[#0B1224]/80 p-6">
-        Checking permissions…
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#060A16] text-white">
+        <div className="rounded-2xl border border-slate-800 bg-slate-900/70 px-6 py-4">
+          Checking permissions...
+        </div>
       </div>
-    </div>
-  )
-}
+    )
+  }
 
-if (!authorized) {
-  return <Navigate to="/login" replace />
-}
+  if (!authorized) {
+    return <Navigate to="/login" replace />
+  }
 
-return <>{children}</>
+  return <>{children}</>
 }
