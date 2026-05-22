@@ -29,7 +29,7 @@ export default function Header() {
           <div className="flex items-center gap-3">
             <Link to="/about" className="hover:underline">About</Link>
             <Link to="/contact" className="hover:underline">Contact</Link>
-            <Link to="/admin" className="hover:underline font-medium">Admin</Link>
+            <Link to="/dashboard" className="hover:underline font-medium">Admin</Link>
           </div>
         </div>
       </div>
@@ -110,7 +110,7 @@ export default function Header() {
             </button>
 
             {/* Profile */}
-            <Link to="/admin" className="hidden sm:flex items-center gap-2 pl-2 pr-3 py-1.5 bg-linear-to-r from-indigo-500 to-purple-600 text-white rounded-full text-sm font-medium hover:shadow-lg hover:shadow-indigo-200 dark:hover:shadow-indigo-900/30 transition-all">
+<Link to="/dashboard" className="hidden sm:flex items-center gap-2 pl-2 pr-3 py-1.5 bg-linear-to-r from-indigo-500 to-purple-600 text-white rounded-full text-sm font-medium hover:shadow-lg hover:shadow-indigo-200 dark:hover:shadow-indigo-900/30 transition-all">
               <User className="w-4 h-4" />
               <span className="hidden md:inline">Dashboard</span>
             </Link>
@@ -153,7 +153,7 @@ export default function Header() {
               { to: '/bookmarks', label: 'Bookmarks' },
               { to: '/about', label: 'About' },
               { to: '/contact', label: 'Contact' },
-              { to: '/admin', label: 'Admin Dashboard' },
+              { to: '/dashboard', label: 'Admin Dashboard' },
             ].map(item => (
               <Link
                 key={item.to}

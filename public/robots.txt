@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin
+Disallow: /login
+Disallow: /auth
+Disallow: /auth/callback
+Disallow: /auth/*
+
+Sitemap: https://gridaan.com/sitemap.xml

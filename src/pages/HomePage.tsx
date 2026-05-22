@@ -1,14 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { TrendingUp, ArrowRight, Sparkles, Zap, ChevronRight, Play } from 'lucide-react';
+import { TrendingUp, ArrowRight, Sparkles, Zap, ChevronRight, Play, User } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { getArticles } from '../services/articles';
 import { categories } from '../data/mockData';
 import ArticleCard from '../components/articles/ArticleCard';
 import AdBanner from '../components/ads/AdBanner';
 
 export default function HomePage() {
-  const { articles } = useApp();
+ 
   const [activeCategory, setActiveCategory] = useState('All');
+  const [articles, setArticles] = useState<any[]>([]);
   
   const featured = articles.filter(a => a.featured);
   const trending = articles.filter(a => a.trending);
@@ -18,6 +20,15 @@ export default function HomePage() {
   const filteredArticles = activeCategory === 'All'
     ? latest
     : latest.filter(a => a.category === activeCategory);
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      const data = await getArticles();
+      setArticles(data ?? []);
+    };
+
+    fetchArticles();
+  }, []);
 
   const trendingKeywords = ['GPT-5', 'Kubernetes', 'React 20', 'WebAssembly', 'Flutter', 'Cybersecurity', 'MLOps', 'Edge Computing'];
 
@@ -49,6 +60,9 @@ export default function HomePage() {
                 </Link>
                 <Link to="/tutorials" className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur text-white rounded-xl font-semibold hover:bg-white/20 transition-all border border-white/10">
                   <Play className="w-4 h-4" /> Watch Tutorials
+                </Link>
+                <Link to="/dashboard" className="inline-flex items-center gap-2 px-6 py-3 bg-slate-800 text-white rounded-xl font-semibold hover:bg-slate-700 transition-all">
+                  <User className="w-4 h-4" /> Admin Dashboard
                 </Link>
               </div>
               {/* Stats */}

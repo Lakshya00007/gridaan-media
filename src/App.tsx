@@ -18,6 +18,8 @@ import ContactPage from './pages/ContactPage';
 import PrivacyPage from './pages/PrivacyPage';
 import TermsPage from './pages/TermsPage';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import ProtectedRoute from './components/admin/ProtectedRoute';
+import LoginPage from './pages/admin/LoginPage';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -28,17 +30,6 @@ function ScrollToTop() {
 }
 
 function AppLayout() {
-  const { pathname } = useLocation();
-  const isAdmin = pathname.startsWith('/admin');
-
-  if (isAdmin) {
-    return (
-      <Routes>
-        <Route path="/admin" element={<AdminDashboard />} />
-      </Routes>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950 transition-colors duration-300">
       <Header />
@@ -57,6 +48,13 @@ function AppLayout() {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
           <Route path="/terms" element={<TermsPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/admin" element={<LoginPage />} />
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          } />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
