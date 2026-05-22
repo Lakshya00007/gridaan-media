@@ -9,11 +9,11 @@ export default function BookmarksPage() {
 
   return (
     <div className="min-h-screen">
-      <div className="bg-linear-to-br from-gray-900 via-indigo-950 to-purple-950 text-white">
+      <div className="bg-linear-to-br from-[#060A16] via-[#0A1222] to-[#0B1224] text-white">
         <div className="max-w-7xl mx-auto px-4 py-16 text-center">
-          <Bookmark className="w-12 h-12 mx-auto mb-4 text-indigo-400" />
+          <Bookmark className="w-12 h-12 mx-auto mb-4 text-[#94A3B8]" />
           <h1 className="text-4xl font-bold mb-4">Your Bookmarks</h1>
-          <p className="text-gray-300 text-lg">{bookmarkedArticles.length} saved articles</p>
+          <p className="text-[#94A3B8] text-lg">{bookmarkedArticles.length} saved articles</p>
         </div>
       </div>
 
@@ -27,9 +27,9 @@ export default function BookmarksPage() {
         ) : (
           <div className="text-center py-20">
             <div className="text-6xl mb-4">📌</div>
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">No bookmarks yet</h2>
-            <p className="text-gray-500 dark:text-gray-400 mb-6">Save articles you want to read later</p>
-            <Link to="/" className="text-indigo-600 hover:underline">Discover articles</Link>
+            <h2 className="text-xl font-bold text-[#F8FAFC] dark:text-white mb-2">No bookmarks yet</h2>
+            <p className="text-[#94A3B8] dark:text-[#94A3B8] mb-6">Save articles you want to read later</p>
+            <Link to="/" className="text-[#327CFA] hover:underline">Discover articles</Link>
           </div>
         )}
       </div>

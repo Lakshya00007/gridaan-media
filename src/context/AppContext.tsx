@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Article, Category, User, Notification, AdPlacement, SiteSettings, MediaFile, Comment } from '../types';
-import { categories as initialCategories } from '../data/mockData';
+import { articles as initialArticles, categories as initialCategories } from '../data/mockData';
 import toast from 'react-hot-toast';
 
 interface AppState {
@@ -151,7 +151,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   
   const [articles, setArticles] = useState<Article[]>(() => {
     const saved = getSavedLocalStorage('gridaan_articles', 'nexus_articles');
-    return saved ? JSON.parse(saved) : [];
+    return saved ? JSON.parse(saved) : initialArticles;
   });
   
   const [categories, setCategories] = useState<Category[]>(() => {

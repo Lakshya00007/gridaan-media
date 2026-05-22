@@ -30,8 +30,8 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   
   if (authorized === null) {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-950 text-slate-100">
-      <div className="rounded-2xl bg-slate-900/80 p-6">
+    <div className="min-h-screen flex items-center justify-center bg-[#060A16] text-slate-100">
+      <div className="rounded-2xl bg-[#0B1224]/80 p-6">
         Checking permissions…
       </div>
     </div>

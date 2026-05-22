@@ -5,37 +5,54 @@ export interface SEOProps {
   description?: string
   image?: string
   url?: string
+  type?: 'website' | 'article'
+  noIndex?: boolean
+  schema?: object
 }
 
 const DEFAULT_TITLE = 'Gridaan'
 const DEFAULT_DESCRIPTION = 'Gridaan is a modern publishing platform for technology, AI, tutorials, and business stories.'
 const DEFAULT_SITE_URL = 'https://gridaan.io'
+const DEFAULT_IMAGE = `${DEFAULT_SITE_URL}/images/gridaan-logo.svg`
 
-export default function SEO({ title, description, image, url }: SEOProps) {
+function buildAbsoluteUrl(value?: string) {
+  if (!value) return undefined
+  if (value.startsWith('http://') || value.startsWith('https://')) return value
+  if (value.startsWith('/')) return `${DEFAULT_SITE_URL}${value}`
+  return `${DEFAULT_SITE_URL}/${value}`
+}
+
+export default function SEO({ title, description, image, url, type = 'website', noIndex, schema }: SEOProps) {
   const resolvedTitle = title ? `${title} | ${DEFAULT_TITLE}` : DEFAULT_TITLE
   const resolvedDescription = description || DEFAULT_DESCRIPTION
-  const resolvedUrl = url || (typeof window !== 'undefined' ? window.location.href : DEFAULT_SITE_URL)
-  const resolvedImage = image || undefined
+  const currentLocation = typeof window !== 'undefined'
+    ? `${window.location.origin}${window.location.pathname}${window.location.search}${window.location.hash.replace(/^#/, '')}`
+    : DEFAULT_SITE_URL
+  const resolvedUrl = buildAbsoluteUrl(url) || currentLocation
+  const resolvedImage = buildAbsoluteUrl(image) || DEFAULT_IMAGE
+  const robots = noIndex ? 'noindex, nofollow' : 'index, follow'
 
   return (
     <Helmet>
       <title>{resolvedTitle}</title>
       <meta name="description" content={resolvedDescription} />
       <link rel="canonical" href={resolvedUrl} />
-
-      <meta property="og:type" content="article" />
+      <meta name="robots" content={robots} />
+      <meta name="theme-color" content="#327CFA" />
+      <meta property="og:type" content={type} />
       <meta property="og:title" content={resolvedTitle} />
       <meta property="og:description" content={resolvedDescription} />
       <meta property="og:url" content={resolvedUrl} />
       <meta property="og:site_name" content={DEFAULT_TITLE} />
-      {resolvedImage && <meta property="og:image" content={resolvedImage} />}
-
-      <meta name="twitter:card" content={resolvedImage ? 'summary_large_image' : 'summary'} />
+      <meta property="og:locale" content="en_US" />
+      <meta property="og:image" content={resolvedImage} />
+      <meta property="twitter:card" content={resolvedImage ? 'summary_large_image' : 'summary'} />
       <meta name="twitter:title" content={resolvedTitle} />
       <meta name="twitter:description" content={resolvedDescription} />
-      {resolvedImage && <meta name="twitter:image" content={resolvedImage} />}
+      <meta name="twitter:image" content={resolvedImage} />
       <meta name="twitter:site" content="@GridaanCMS" />
-      <meta name="robots" content="index, follow" />
+      <meta name="twitter:creator" content="@GridaanCMS" />
+      {schema && <script type="application/ld+json">{JSON.stringify(schema)}</script>}
     </Helmet>
   )
 }

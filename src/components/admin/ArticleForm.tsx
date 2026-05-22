@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useState } from 'react'
-import ReactQuill from 'react-quill'
+import { useEffect, useMemo, useState, lazy, Suspense } from 'react'
 import 'react-quill/dist/quill.snow.css'
 import ImageUpload from './ImageUpload'
 import { ArticlePayload, ArticleRecord } from '../../services/articles'
 import { sanitizeHtml } from '../../utils/sanitize'
+
+const ReactQuill = lazy(() => import('react-quill'))
 
 interface ArticleFormProps {
   article?: ArticleRecord
@@ -100,7 +101,7 @@ export default function ArticleForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 rounded-3xl border border-slate-700 bg-slate-950/90 p-6 shadow-xl shadow-slate-950/40">
+    <form onSubmit={handleSubmit} className="space-y-6 rounded-3xl border border-slate-700 bg-[#060A16]/90 p-6 shadow-xl shadow-slate-950/40">
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div>
           <h2 className="text-2xl font-semibold text-white">{isEditing ? 'Edit Article' : 'Create Article'}</h2>
@@ -110,14 +111,14 @@ export default function ArticleForm({
           <button
             type="button"
             onClick={onCancel}
-            className="rounded-2xl border border-slate-700 bg-slate-900 px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-slate-500 hover:text-white"
+            className="rounded-2xl border border-slate-700 bg-[#0B1224] px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-slate-500 hover:text-white"
           >
             Clear
           </button>
           <button
             type="submit"
             disabled={!canSave || saving}
-            className="rounded-2xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-60"
+            className="rounded-2xl bg-[#327CFA] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#327CFA] disabled:cursor-not-allowed disabled:opacity-60"
           >
             {saving ? 'Saving…' : isEditing ? 'Update Article' : 'Publish Article'}
           </button>
@@ -133,7 +134,7 @@ export default function ArticleForm({
             value={title}
             onChange={(event) => handleTitleChange(event.target.value)}
             placeholder="Write a strong title"
-            className="mt-2 w-full rounded-3xl border border-slate-700 bg-slate-900 px-4 py-3 text-white outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+            className="mt-2 w-full rounded-3xl border border-slate-700 bg-[#0B1224] px-4 py-3 text-white outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
           />
         </label>
 
@@ -143,7 +144,7 @@ export default function ArticleForm({
             value={slug}
             onChange={(event) => setSlug(generateSlug(event.target.value))}
             placeholder="auto-generated slug"
-            className="mt-2 w-full rounded-3xl border border-slate-700 bg-slate-900 px-4 py-3 text-white outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+            className="mt-2 w-full rounded-3xl border border-slate-700 bg-[#0B1224] px-4 py-3 text-white outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
           />
         </label>
       </div>
@@ -154,10 +155,10 @@ export default function ArticleForm({
           <select
             value={category}
             onChange={(event) => setCategory(event.target.value)}
-            className="mt-2 w-full rounded-3xl border border-slate-700 bg-slate-900 px-4 py-3 text-white outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+            className="mt-2 w-full rounded-3xl border border-slate-700 bg-[#0B1224] px-4 py-3 text-white outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
           >
             {categories.map((option) => (
-              <option key={option} value={option} className="bg-slate-950 text-slate-900">{option}</option>
+              <option key={option} value={option} className="bg-[#060A16] text-slate-900">{option}</option>
             ))}
           </select>
         </label>
@@ -169,30 +170,32 @@ export default function ArticleForm({
             onChange={(event) => setExcerpt(event.target.value)}
             rows={4}
             placeholder="Write a summary for listing previews"
-            className="mt-2 w-full rounded-3xl border border-slate-700 bg-slate-900 px-4 py-3 text-white outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+            className="mt-2 w-full rounded-3xl border border-slate-700 bg-[#0B1224] px-4 py-3 text-white outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
           />
         </label>
       </div>
 
       <div className="space-y-4">
         <label className="block text-sm font-medium text-slate-200">Content</label>
-        <div className="rounded-3xl border border-slate-700 bg-slate-900 p-2">
-          <ReactQuill
-            theme="snow"
-            value={content}
-            onChange={setContent}
-            className="rounded-3xl bg-white text-slate-900"
-            modules={{
-              toolbar: [
-                ['bold', 'italic', 'underline', 'strike'],
-                [{ header: [1, 2, 3, 4, false] }],
-                [{ list: 'ordered' }, { list: 'bullet' }],
-                ['blockquote', 'code-block'],
-                ['link', 'image'],
-                ['clean'],
-              ],
-            }}
-          />
+        <div className="rounded-3xl border border-slate-700 bg-[#0B1224] p-2">
+          <Suspense fallback={<div className="h-[360px] rounded-3xl bg-[#0B1224]/80 animate-pulse" />}>
+            <ReactQuill
+              theme="snow"
+              value={content}
+              onChange={setContent}
+              className="rounded-3xl bg-[#0B1224] text-slate-900"
+              modules={{
+                toolbar: [
+                  ['bold', 'italic', 'underline', 'strike'],
+                  [{ header: [1, 2, 3, 4, false] }],
+                  [{ list: 'ordered' }, { list: 'bullet' }],
+                  ['blockquote', 'code-block'],
+                  ['link', 'image'],
+                  ['clean'],
+                ],
+              }}
+            />
+          </Suspense>
         </div>
       </div>
 

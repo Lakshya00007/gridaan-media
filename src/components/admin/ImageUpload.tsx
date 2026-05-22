@@ -32,14 +32,14 @@ export default function ImageUpload({ imageUrl, onUpload }: ImageUploadProps) {
   return (
     <div className="space-y-3">
       <label className="block text-sm font-medium text-slate-200">Thumbnail image</label>
-      <div className="rounded-3xl border border-slate-700 bg-slate-900/80 p-4">
+      <div className="rounded-3xl border border-slate-700 bg-[#0B1224]/80 p-4">
         <input
           type="file"
           accept="image/*"
           onChange={handleFileChange}
-          className="block w-full text-sm text-slate-200 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-indigo-600 file:text-white hover:file:bg-indigo-500"
+          className="block w-full text-sm text-slate-200 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-[#327CFA] file:text-white hover:file:bg-[#327CFA]"
         />
-        {uploading && <p className="mt-3 text-sm text-indigo-300">Uploading image…</p>}
+        {uploading && <p className="mt-3 text-sm text-[#94A3B8]">Uploading image…</p>}
         {error && <p className="mt-3 text-sm text-red-400">{error}</p>}
         {imageUrl ? (
           <img
@@ -48,7 +48,7 @@ export default function ImageUpload({ imageUrl, onUpload }: ImageUploadProps) {
             className="mt-4 h-40 w-full rounded-3xl object-cover border border-slate-700"
           />
         ) : (
-          <div className="mt-4 h-40 rounded-3xl border border-dashed border-slate-700 bg-slate-950/50 flex items-center justify-center text-sm text-slate-500">
+          <div className="mt-4 h-40 rounded-3xl border border-dashed border-slate-700 bg-[#060A16]/50 flex items-center justify-center text-sm text-slate-500">
             No thumbnail selected yet.
           </div>
         )}

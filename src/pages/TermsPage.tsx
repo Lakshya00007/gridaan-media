@@ -1,14 +1,14 @@
 export default function TermsPage() {
   return (
     <div className="min-h-screen">
-      <div className="bg-linear-to-br from-gray-900 via-indigo-950 to-purple-950 text-white">
+      <div className="bg-linear-to-br from-[#060A16] via-[#0A1222] to-[#0B1224] text-white">
         <div className="max-w-4xl mx-auto px-4 py-16 text-center">
           <h1 className="text-4xl font-bold mb-4">Terms of Service</h1>
-          <p className="text-gray-300">Last updated: January 1, 2026</p>
+          <p className="text-[#94A3B8]">Last updated: January 1, 2026</p>
         </div>
       </div>
       <div className="max-w-3xl mx-auto px-4 py-12">
-        <div className="space-y-8 text-gray-700 dark:text-gray-300">
+        <div className="space-y-8 text-gray-700 dark:text-[#94A3B8]">
           {[
             { title: '1. Acceptance of Terms', content: 'By accessing and using Gridaan, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our website.' },
             { title: '2. Use of Content', content: 'All content published on Gridaan is protected by copyright. You may read, share, and reference our content for personal and non-commercial purposes. Reproducing or republishing our content without explicit permission is prohibited.' },
@@ -21,7 +21,7 @@ export default function TermsPage() {
             { title: '9. Contact', content: 'For questions about these Terms of Service, contact us at legal@gridaan.com.' },
           ].map(section => (
             <div key={section.title}>
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-3">{section.title}</h2>
+              <h2 className="text-xl font-bold text-[#F8FAFC] dark:text-white mb-3">{section.title}</h2>
               <p className="leading-relaxed">{section.content}</p>
             </div>
           ))}

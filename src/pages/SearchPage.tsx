@@ -22,20 +22,20 @@ export default function SearchPage() {
 
   return (
     <div className="min-h-screen">
-      <div className="bg-linear-to-br from-gray-900 via-indigo-950 to-purple-950 text-white">
+      <div className="bg-linear-to-br from-[#060A16] via-[#0A1222] to-[#0B1224] text-white">
         <div className="max-w-3xl mx-auto px-4 py-16 text-center">
           <h1 className="text-3xl md:text-4xl font-bold mb-6">Search Results</h1>
           <form className="relative" onSubmit={e => { e.preventDefault(); if (searchQuery) window.location.href = `/search?q=${searchQuery}`; }}>
-            <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-[#94A3B8]" />
             <input
               type="text"
               defaultValue={query}
               onChange={e => setSearchQuery(e.target.value)}
               placeholder="Search articles..."
-              className="w-full pl-14 pr-6 py-4 bg-white/10 backdrop-blur border border-white/20 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              className="w-full pl-14 pr-6 py-4 bg-[#0B1224]/10 backdrop-blur border border-white/20 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-400"
             />
           </form>
-          {query && <p className="mt-4 text-gray-300">{results.length} results for "{query}"</p>}
+          {query && <p className="mt-4 text-[#94A3B8]">{results.length} results for "{query}"</p>}
         </div>
       </div>
 
@@ -49,15 +49,15 @@ export default function SearchPage() {
         ) : query ? (
           <div className="text-center py-20">
             <div className="text-6xl mb-4">🔍</div>
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">No results found</h2>
-            <p className="text-gray-500 dark:text-gray-400 mb-6">Try different keywords or browse our categories</p>
-            <Link to="/categories" className="text-indigo-600 hover:underline">Browse Categories</Link>
+            <h2 className="text-xl font-bold text-[#F8FAFC] dark:text-white mb-2">No results found</h2>
+            <p className="text-[#94A3B8] dark:text-[#94A3B8] mb-6">Try different keywords or browse our categories</p>
+            <Link to="/categories" className="text-[#327CFA] hover:underline">Browse Categories</Link>
           </div>
         ) : (
           <div className="text-center py-20">
             <div className="text-6xl mb-4">✨</div>
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Start searching</h2>
-            <p className="text-gray-500 dark:text-gray-400">Type something to search across all articles</p>
+            <h2 className="text-xl font-bold text-[#F8FAFC] dark:text-white mb-2">Start searching</h2>
+            <p className="text-[#94A3B8] dark:text-[#94A3B8]">Type something to search across all articles</p>
           </div>
         )}
       </div>

@@ -14,15 +14,15 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-gray-900 dark:bg-black text-gray-300 border-t border-gray-800">
+    <footer className="bg-[#060A16] dark:bg-[#060A16] text-[#94A3B8] border-t border-[#1E293B]">
       {/* Newsletter */}
-      <div className="bg-linear-to-r from-indigo-600 via-purple-600 to-pink-500">
+      <div className="bg-linear-to-r from-[#327CFA] via-[#1E3EC1] to-[#003CC6]">
         <div className="max-w-7xl mx-auto px-4 py-12">
           <div className="max-w-2xl mx-auto text-center">
             <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">Stay ahead of the curve</h3>
-            <p className="text-indigo-100 mb-6">Get the latest articles, tutorials, and tech news delivered to your inbox weekly.</p>
+            <p className="text-[#94A3B8] mb-6">Get the latest articles, tutorials, and tech news delivered to your inbox weekly.</p>
             {subscribed ? (
-              <div className="bg-white/20 backdrop-blur rounded-xl p-4 text-white font-medium">
+              <div className="bg-[#0B1224]/20 backdrop-blur rounded-xl p-4 text-white font-medium">
                 ✅ You're subscribed! Check your inbox for confirmation.
               </div>
             ) : (
@@ -32,15 +32,15 @@ export default function Footer() {
                   value={newsletterEmail}
                   onChange={e => setNewsletterEmail(e.target.value)}
                   placeholder="Enter your email"
-                  className="flex-1 px-5 py-3.5 rounded-xl bg-white/10 backdrop-blur border border-white/20 text-white placeholder-indigo-200 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"
+                  className="flex-1 px-5 py-3.5 rounded-xl bg-[#0B1224]/10 backdrop-blur border border-white/20 text-white placeholder-indigo-200 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"
                   required
                 />
-                <button type="submit" className="px-8 py-3.5 bg-white text-indigo-600 rounded-xl font-semibold hover:bg-gray-100 transition-all shadow-lg hover:shadow-xl">
+                <button type="submit" className="px-8 py-3.5 bg-[#0B1224] text-[#327CFA] rounded-xl font-semibold hover:bg-[#0B1224] transition-all shadow-lg hover:shadow-xl">
                   Subscribe
                 </button>
               </form>
             )}
-            <p className="text-xs text-indigo-200 mt-3">No spam. Unsubscribe anytime. {subscribers.length.toLocaleString()}+ subscribers</p>
+            <p className="text-xs text-[#94A3B8] mt-3">No spam. Unsubscribe anytime. {subscribers.length.toLocaleString()}+ subscribers</p>
           </div>
         </div>
       </div>
@@ -51,17 +51,17 @@ export default function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <Link to="/" className="flex items-center gap-2 mb-4">
-              <div className="w-9 h-9 bg-linear-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
+              <div className="w-9 h-9 bg-linear-to-br from-[#327CFA] to-[#003CC6] rounded-xl flex items-center justify-center">
                 <span className="text-white font-bold text-lg">N</span>
               </div>
               <span className="text-xl font-bold text-white">Gridaan</span>
             </Link>
-            <p className="text-sm text-gray-400 mb-4 leading-relaxed">
+            <p className="text-sm text-[#94A3B8] mb-4 leading-relaxed">
               Your premium source for technology news, tutorials, and expert insights. Empowering developers and tech enthusiasts worldwide.
             </p>
             <div className="flex gap-3">
               {[Globe, Code, BookOpen, Play, Rss].map((Icon, i) => (
-                <a key={i} href="#" className="w-9 h-9 rounded-lg bg-gray-800 hover:bg-indigo-600 flex items-center justify-center transition-all hover:-translate-y-0.5">
+                <a key={i} href="#" className="w-9 h-9 rounded-lg bg-[#0B1224] hover:bg-[#327CFA] flex items-center justify-center transition-all hover:-translate-y-0.5">
                   <Icon className="w-4 h-4" />
                 </a>
               ))}
@@ -74,7 +74,7 @@ export default function Footer() {
             <ul className="space-y-2.5">
               {categories.slice(0, 6).map(cat => (
                 <li key={cat.id}>
-                  <Link to={`/category/${cat.slug}`} className="text-sm text-gray-400 hover:text-indigo-400 transition-colors">
+                  <Link to={`/category/${cat.slug}`} className="text-sm text-[#94A3B8] hover:text-[#94A3B8] transition-colors">
                     {cat.name}
                   </Link>
                 </li>
@@ -95,7 +95,7 @@ export default function Footer() {
                 { to: '/terms', label: 'Terms of Service' },
               ].map(link => (
                 <li key={link.to}>
-                  <Link to={link.to} className="text-sm text-gray-400 hover:text-indigo-400 transition-colors">
+                  <Link to={link.to} className="text-sm text-[#94A3B8] hover:text-[#94A3B8] transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -106,29 +106,29 @@ export default function Footer() {
           {/* Contact */}
           <div>
             <h4 className="font-semibold text-white mb-4">Contact</h4>
-            <ul className="space-y-2.5 text-sm text-gray-400">
+            <ul className="space-y-2.5 text-sm text-[#94A3B8]">
               <li className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-indigo-400" />
+                <Mail className="w-4 h-4 text-[#94A3B8]" />
                 hello@gridaan.com
               </li>
               <li>San Francisco, CA</li>
               <li>United States</li>
             </ul>
-            <div className="mt-4 p-3 bg-gray-800 rounded-lg">
-              <p className="text-xs text-gray-400">📢 Want to advertise?</p>
-              <Link to="/contact" className="text-xs text-indigo-400 font-medium hover:underline">Contact our ad team →</Link>
+            <div className="mt-4 p-3 bg-[#0B1224] rounded-lg">
+              <p className="text-xs text-[#94A3B8]">📢 Want to advertise?</p>
+              <Link to="/contact" className="text-xs text-[#94A3B8] font-medium hover:underline">Contact our ad team →</Link>
             </div>
           </div>
         </div>
       </div>
 
       {/* Bottom */}
-      <div className="border-t border-gray-800">
+      <div className="border-t border-[#1E293B]">
         <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-[#94A3B8]">
             © 2026 Gridaan. All rights reserved.
           </p>
-          <p className="text-sm text-gray-500 flex items-center gap-1">
+          <p className="text-sm text-[#94A3B8] flex items-center gap-1">
             Made with <Heart className="w-3.5 h-3.5 text-red-500 fill-red-500" /> for the developer community
           </p>
         </div>
