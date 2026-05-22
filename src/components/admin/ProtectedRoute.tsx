@@ -27,18 +27,20 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
     }
     check()
   }, [])
-
+  
   if (authorized === null) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-950 text-slate-100">
-        <div className="rounded-2xl bg-slate-900/80 p-6">Checking permissions…</div>
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-slate-950 text-slate-100">
+      <div className="rounded-2xl bg-slate-900/80 p-6">
+        Checking permissions…
       </div>
-    )
-  }
+    </div>
+  )
+}
 
-  if (!authorized) {
-    return <Navigate to="/admin" replace />
-  }
+if (!authorized) {
+  return <Navigate to="/login" replace />
+}
 
-  return <>{children}</>
+return <>{children}</>
 }
