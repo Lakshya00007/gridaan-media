@@ -100,8 +100,8 @@ export default function ArticlePage() {
     <>
       <SEO
         title={article.title}
-        description={article.excerpt}
-        image={article.image_url}
+        description={article.excerpt ?? undefined}
+        image={article.image_url ?? undefined}
         url={canonicalUrl}
       />
       <script type="application/ld+json">
