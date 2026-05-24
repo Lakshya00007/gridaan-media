@@ -10,8 +10,6 @@ set
   file_size_limit = excluded.file_size_limit,
   allowed_mime_types = excluded.allowed_mime_types;
 
-alter table storage.objects enable row level security;
-
 drop policy if exists "Public can read CMS uploads" on storage.objects;
 create policy "Public can read CMS uploads"
 on storage.objects
