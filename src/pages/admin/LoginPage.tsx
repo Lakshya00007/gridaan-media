@@ -1,57 +1,131 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
 import { supabase } from '../../lib/supabase'
 import { getProfile } from '../../services/profiles'
 
 export default function LoginPage() {
-  const navigate = useNavigate()
   const [checking, setChecking] = useState(true)
-  const adminEmail = import.meta.env.VITE_ADMIN_EMAIL?.trim().toLowerCase()
+
   const redirectTo = `${window.location.origin}${window.location.pathname}#/dashboard`
 
   useEffect(() => {
-    let isMounted = true
+    let mounted = true
 
-    const routeSession = async (userId?: string, userEmail?: string | null) => {
-      const normalizedEmail = userEmail?.trim().toLowerCase()
-      const profile = userId ? await getProfile(userId) : null
-      if (!isMounted) return
-      const isAdmin = profile?.role === 'admin'
+    const handleSession = async () => {
+      try {
+        const {
+          data: { session },
+          error,
+        } = await supabase.auth.getSession()
 
-      console.log('[LoginPage] adminEmail=', adminEmail, 'userEmail=', normalizedEmail, 'profileRole=', profile?.role, 'isAdmin=', isAdmin)
+        if (error) {
+          console.error(
+            '[LoginPage] Session error:',
+            error
+          )
 
-      if (!userEmail) {
-        if (isMounted) setChecking(false)
-        return
+          if (mounted) {
+            setChecking(false)
+          }
+
+          return
+        }
+
+        // no session
+        if (!session?.user) {
+          if (mounted) {
+            setChecking(false)
+          }
+
+          return
+        }
+
+        console.log(
+          '[LoginPage] Session user:',
+          session.user.email
+        )
+
+        // fetch profile safely
+        const profile = await getProfile(
+          session.user.id
+        )
+
+        console.log(
+          '[LoginPage] Profile:',
+          profile
+        )
+
+        // profile not ready yet
+        if (!profile) {
+          console.warn(
+            '[LoginPage] Profile not created yet'
+          )
+
+          if (mounted) {
+            setChecking(false)
+          }
+
+          // safe fallback
+          window.location.hash = '#/'
+          return
+        }
+
+        // admin redirect
+        if (profile.role === 'admin') {
+          window.location.hash = '#/dashboard'
+          return
+        }
+
+        // normal user redirect
+        window.location.hash = '#/'
+      } catch (error) {
+        console.error(
+          '[LoginPage] Fatal auth error:',
+          error
+        )
+
+        if (mounted) {
+          setChecking(false)
+        }
       }
-
-      navigate(isAdmin ? '/dashboard' : '/', { replace: true })
     }
 
-    const checkSession = async () => {
-      const { data } = await supabase.auth.getSession()
-      await routeSession(data?.session?.user?.id, data?.session?.user?.email)
-    }
+    handleSession()
 
-    checkSession()
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        console.log(
+          '[LoginPage] Auth changed:',
+          event,
+          session?.user?.email
+        )
 
-    const { data: listener } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log('[LoginPage] onAuthStateChange', event, session?.user?.email)
-      await routeSession(session?.user?.id, session?.user?.email)
-    })
+        if (!mounted) return
+
+        // signed out
+        if (!session?.user) {
+          setChecking(false)
+          return
+        }
+
+        // signed in
+        await handleSession()
+      }
+    )
 
     return () => {
-      isMounted = false
-      listener.subscription?.unsubscribe?.()
+      mounted = false
+      subscription.unsubscribe()
     }
-  }, [adminEmail, navigate])
+  }, [])
 
   if (checking) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-black text-white">
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900 px-6 py-4">
+      <div className="min-h-screen flex items-center justify-center bg-[#060A16] text-white">
+        <div className="rounded-2xl border border-slate-800 bg-slate-900/70 px-6 py-4">
           Preparing sign in...
         </div>
       </div>
@@ -59,15 +133,23 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black">
-      <div className="w-full max-w-md p-6 bg-zinc-900 rounded-2xl">
-        <h1 className="text-3xl font-bold text-white mb-6 text-center">
-          Welcome to Gridaan
-        </h1>
+    <div className="min-h-screen flex items-center justify-center bg-[#060A16] px-4">
+      <div className="w-full max-w-md rounded-3xl border border-slate-800 bg-slate-900/80 p-8 shadow-2xl shadow-black/40">
+        <div className="mb-6 text-center">
+          <h1 className="text-3xl font-bold text-white">
+            Welcome to Gridaan
+          </h1>
+
+          <p className="mt-2 text-sm text-slate-400">
+            Continue with your admin account
+          </p>
+        </div>
 
         <Auth
           supabaseClient={supabase}
-          appearance={{ theme: ThemeSupa }}
+          appearance={{
+            theme: ThemeSupa,
+          }}
           providers={['google']}
           theme="dark"
           redirectTo={redirectTo}
