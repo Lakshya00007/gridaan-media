@@ -1,26 +1,48 @@
 import { useParams, Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
-import { useApp } from '../context/AppContext';
-import { categories } from '../data/mockData';
 import ArticleCard from '../components/articles/ArticleCard';
 import AdBanner from '../components/ads/AdBanner';
+import Skeleton from '../components/ui/Skeleton';
+import { useArticles, useCategories } from '../hooks/useArticles';
+import { slugifyCategory } from '../utils/articleUtils';
 
 export default function CategoryPage() {
   const { slug } = useParams();
-  const { articles } = useApp();
-
+  const { data: articles = [], isLoading: articlesLoading, error: articlesError } = useArticles();
+  const { data: categories = [], isLoading: categoriesLoading, error: categoriesError } = useCategories();
+  const loading = articlesLoading || categoriesLoading;
+  const error = articlesError || categoriesError;
   const category = categories.find(c => c.slug === slug);
   
   const categoryArticles = articles.filter(a => {
-    const catSlug = a.category.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-');
-    return catSlug === slug;
+    return slugifyCategory(a.category) === slug;
   });
+
+  if (loading) {
+    return (
+      <div className="min-h-screen">
+        <div className="bg-linear-to-br from-[#060A16] via-[#0A1222] to-[#0B1224] text-white">
+          <div className="max-w-7xl mx-auto px-4 py-12">
+            <Skeleton className="h-4 w-64 mb-6" />
+            <Skeleton className="h-12 w-80" />
+            <Skeleton className="h-5 w-56 mt-3" />
+          </div>
+        </div>
+        <div className="max-w-7xl mx-auto px-4 py-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, index) => <Skeleton key={index} className="h-[320px]" />)}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!category) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-20 text-center">
         <h1 className="text-3xl font-bold text-[#F8FAFC] dark:text-white mb-4">Category Not Found</h1>
-        <Link to="/categories" className="text-[#327CFA] hover:underline">Browse all categories</Link>
+        {error && <p className="text-[#94A3B8] dark:text-[#94A3B8] mb-4">Unable to load this category right now.</p>}
+        <Link to="/categories" className="text-[#2563EB] hover:underline">Browse all categories</Link>
       </div>
     );
   }
@@ -59,7 +81,7 @@ export default function CategoryPage() {
         {categoryArticles.length === 0 && (
           <div className="text-center py-20">
             <p className="text-[#94A3B8] dark:text-[#94A3B8] text-lg">No articles in this category yet.</p>
-            <Link to="/" className="text-[#327CFA] hover:underline mt-2 inline-block">Browse all articles</Link>
+            <Link to="/" className="text-[#2563EB] hover:underline mt-2 inline-block">Browse all articles</Link>
           </div>
         )}
       </div>

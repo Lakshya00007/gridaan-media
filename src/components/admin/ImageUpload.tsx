@@ -37,7 +37,7 @@ export default function ImageUpload({ imageUrl, onUpload }: ImageUploadProps) {
           type="file"
           accept="image/*"
           onChange={handleFileChange}
-          className="block w-full text-sm text-slate-200 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-[#327CFA] file:text-white hover:file:bg-[#327CFA]"
+          className="block w-full text-sm text-slate-200 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-[#2563EB] file:text-white hover:file:bg-[#2563EB]"
         />
         {uploading && <p className="mt-3 text-sm text-[#94A3B8]">Uploading image…</p>}
         {error && <p className="mt-3 text-sm text-red-400">{error}</p>}

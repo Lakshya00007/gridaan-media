@@ -1,17 +1,18 @@
-import { useEffect, useMemo, useState, lazy, Suspense } from 'react'
+import { useEffect, useMemo, useState, lazy, Suspense, type FormEvent } from 'react'
 import 'react-quill/dist/quill.snow.css'
 import ImageUpload from './ImageUpload'
-import { ArticlePayload, ArticleRecord } from '../../services/articles'
+import type { ArticlePayload } from '../../services/articles'
+import type { Article } from '../../types/article'
 import { sanitizeHtml } from '../../utils/sanitize'
 
 const ReactQuill = lazy(() => import('react-quill'))
 
 interface ArticleFormProps {
-  article?: ArticleRecord
+  article?: Article
   author: string
   categories: string[]
   saving: boolean
-  onSave: (article: ArticlePayload & { id?: string }) => Promise<void>
+  onSave: (article: ArticlePayload) => Promise<void>
   onCancel: () => void
 }
 
@@ -40,20 +41,19 @@ export default function ArticleForm({
   const [error, setError] = useState('')
 
   useEffect(() => {
-    if (article) {
-      setTitle(article.title)
-      setSlug(article.slug)
-      setCategory(article.category)
-      setExcerpt(article.excerpt)
-      setContent(article.content)
-      setImageUrl(article.image_url)
-    }
-  }, [article])
+    setTitle(article?.title ?? '')
+    setSlug(article?.slug ?? '')
+    setCategory(article?.category ?? categories[0] ?? 'General')
+    setExcerpt(article?.excerpt ?? '')
+    setContent(article?.content ?? '')
+    setImageUrl(article?.image_url ?? '')
+    setError('')
+  }, [article, categories])
 
   const isEditing = Boolean(article?.id)
 
   const canSave = useMemo(
-    () => title.trim().length > 3 && slug.trim().length > 3 && content.trim().length > 20 && imageUrl,
+    () => title.trim().length > 3 && slug.trim().length > 3 && content.trim().length > 20 && Boolean(imageUrl.trim()),
     [title, slug, content, imageUrl]
   )
 
@@ -68,7 +68,7 @@ export default function ArticleForm({
     setImageUrl(url)
   }
 
-  const handleSubmit = async (event: React.FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
     setError('')
 
@@ -118,7 +118,7 @@ export default function ArticleForm({
           <button
             type="submit"
             disabled={!canSave || saving}
-            className="rounded-2xl bg-[#327CFA] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#327CFA] disabled:cursor-not-allowed disabled:opacity-60"
+            className="rounded-2xl bg-[#2563EB] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#2563EB] disabled:cursor-not-allowed disabled:opacity-60"
           >
             {saving ? 'Saving…' : isEditing ? 'Update Article' : 'Publish Article'}
           </button>
@@ -134,7 +134,7 @@ export default function ArticleForm({
             value={title}
             onChange={(event) => handleTitleChange(event.target.value)}
             placeholder="Write a strong title"
-            className="mt-2 w-full rounded-3xl border border-slate-700 bg-[#0B1224] px-4 py-3 text-white outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+            className="mt-2 w-full rounded-3xl border border-slate-700 bg-[#0B1224] px-4 py-3 text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
           />
         </label>
 
@@ -144,7 +144,7 @@ export default function ArticleForm({
             value={slug}
             onChange={(event) => setSlug(generateSlug(event.target.value))}
             placeholder="auto-generated slug"
-            className="mt-2 w-full rounded-3xl border border-slate-700 bg-[#0B1224] px-4 py-3 text-white outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+            className="mt-2 w-full rounded-3xl border border-slate-700 bg-[#0B1224] px-4 py-3 text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
           />
         </label>
       </div>
@@ -155,7 +155,7 @@ export default function ArticleForm({
           <select
             value={category}
             onChange={(event) => setCategory(event.target.value)}
-            className="mt-2 w-full rounded-3xl border border-slate-700 bg-[#0B1224] px-4 py-3 text-white outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+            className="mt-2 w-full rounded-3xl border border-slate-700 bg-[#0B1224] px-4 py-3 text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
           >
             {categories.map((option) => (
               <option key={option} value={option} className="bg-[#060A16] text-slate-900">{option}</option>
@@ -170,7 +170,7 @@ export default function ArticleForm({
             onChange={(event) => setExcerpt(event.target.value)}
             rows={4}
             placeholder="Write a summary for listing previews"
-            className="mt-2 w-full rounded-3xl border border-slate-700 bg-[#0B1224] px-4 py-3 text-white outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+            className="mt-2 w-full rounded-3xl border border-slate-700 bg-[#0B1224] px-4 py-3 text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
           />
         </label>
       </div>

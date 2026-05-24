@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useQueryClient } from '@tanstack/react-query'
 import { Plus, RefreshCcw, LogOut } from 'lucide-react'
 import { Session } from '@supabase/supabase-js'
 import toast, { Toaster } from 'react-hot-toast'
 import ArticleForm from '../../components/admin/ArticleForm'
 import ArticleList from '../../components/admin/ArticleList'
-import { createArticle, deleteArticle, getArticles, ArticlePayload, ArticleRecord, updateArticle } from '../../services/articles'
+import { createArticle, deleteArticle, updateArticle, type ArticlePayload } from '../../services/articles'
+import type { Article } from '../../types/article'
+import { articleKeys, useArticles } from '../../hooks/useArticles'
 import { sanitizeHtml } from '../../utils/sanitize'
 import { signOut } from '../../lib/auth'
 import { supabase } from '../../lib/supabase'
@@ -13,33 +16,25 @@ import { supabase } from '../../lib/supabase'
 const categories = ['Technology', 'AI', 'Web Development', 'Business', 'Culture', 'Tutorial']
 
 export default function AdminDashboard() {
+  const queryClient = useQueryClient()
   const [session, setSession] = useState<Session | null>(null)
-  const [articles, setArticles] = useState<ArticleRecord[]>([])
-  const [selectedArticle, setSelectedArticle] = useState<ArticleRecord | null>(null)
-  const [loading, setLoading] = useState(false)
+  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null)
+  const [deleting, setDeleting] = useState(false)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
+  const {
+    data: articles = [],
+    isLoading: articlesLoading,
+    isFetching: articlesFetching,
+    error: articlesError,
+    refetch: refetchArticles,
+  } = useArticles()
   const navigate = useNavigate()
-
-  const loadArticles = async () => {
-    setLoading(true)
-    setError('')
-
-    try {
-      const data = await getArticles()
-      setArticles(data ?? [])
-    } catch (loadError) {
-      const message = 'Unable to fetch articles. Please refresh the page.'
-      setError(message)
-      toast.error(message)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const loading = articlesLoading || articlesFetching || deleting
 
   const handleLogout = async () => {
     await signOut()
-    navigate('/admin')
+    navigate('/login', { replace: true })
   }
 
   const handleSave = async (article: ArticlePayload & { id?: string }) => {
@@ -54,16 +49,17 @@ export default function AdminDashboard() {
         ...article,
         content: sanitizeHtml(article.content || ''),
       }
+      const { id, ...payload } = sanitizedArticle
 
-      if (article.id) {
-        await updateArticle(article.id, sanitizedArticle)
+      if (id) {
+        await updateArticle(id, payload)
         toast.success('Article updated successfully.')
       } else {
-        await createArticle(sanitizedArticle)
+        await createArticle(payload)
         toast.success('Article published successfully.')
       }
       setSelectedArticle(null)
-      await loadArticles()
+      await queryClient.invalidateQueries({ queryKey: articleKeys.all })
     } catch (saveError) {
       const message = 'Unable to save the article. Please try again.'
       setError(message)
@@ -80,18 +76,18 @@ export default function AdminDashboard() {
     }
 
     setError('')
-    setLoading(true)
+    setDeleting(true)
 
     try {
       await deleteArticle(id)
       toast.success('Article deleted successfully.')
-      await loadArticles()
+      await queryClient.invalidateQueries({ queryKey: articleKeys.all })
     } catch {
       const message = 'Unable to delete the article. Please try again.'
       setError(message)
       toast.error(message)
     } finally {
-      setLoading(false)
+      setDeleting(false)
     }
   }
 
@@ -99,18 +95,17 @@ export default function AdminDashboard() {
     const securePage = async () => {
       const { data } = await supabase.auth.getSession()
       if (!data?.session) {
-        navigate('/admin')
+        navigate('/login', { replace: true })
         return
       }
       setSession(data.session)
-      await loadArticles()
     }
 
     securePage()
 
     const { data: listener } = supabase.auth.onAuthStateChange((_, authSession) => {
       if (!authSession) {
-        navigate('/admin')
+        navigate('/login', { replace: true })
       } else {
         setSession(authSession)
       }
@@ -157,9 +152,9 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {error && (
+        {(error || articlesError) && (
           <div className="mb-6 rounded-3xl border border-rose-500/20 bg-rose-500/10 p-4 text-sm text-rose-100">
-            {error}
+            {error || 'Unable to fetch articles. Please refresh the page.'}
           </div>
         )}
 
@@ -198,8 +193,8 @@ export default function AdminDashboard() {
                 <h2 className="mt-2 text-xl font-semibold text-white">Saved articles</h2>
               </div>
               <button
-                onClick={loadArticles}
-                className="inline-flex items-center gap-2 rounded-2xl bg-[#327CFA] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#327CFA]"
+                onClick={() => refetchArticles()}
+                className="inline-flex items-center gap-2 rounded-2xl bg-[#2563EB] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#2563EB]"
               >
                 <RefreshCcw className="h-4 w-4" /> Refresh
               </button>

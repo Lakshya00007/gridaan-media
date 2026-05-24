@@ -1,35 +1,62 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
 import { supabase } from '../../lib/supabase'
+import { getProfile } from '../../services/profiles'
 
 export default function LoginPage() {
   const navigate = useNavigate()
-  const redirectTo = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'
-    ? `http://localhost:5173/#/dashboard`
-    : `${window.location.origin}/#/dashboard`
+  const [checking, setChecking] = useState(true)
+  const adminEmail = import.meta.env.VITE_ADMIN_EMAIL?.trim().toLowerCase()
+  const redirectTo = `${window.location.origin}${window.location.pathname}#/dashboard`
 
   useEffect(() => {
+    let isMounted = true
+
+    const routeSession = async (userId?: string, userEmail?: string | null) => {
+      const normalizedEmail = userEmail?.trim().toLowerCase()
+      const profile = userId ? await getProfile(userId) : null
+      if (!isMounted) return
+      const isAdmin = profile?.role === 'admin'
+
+      console.log('[LoginPage] adminEmail=', adminEmail, 'userEmail=', normalizedEmail, 'profileRole=', profile?.role, 'isAdmin=', isAdmin)
+
+      if (!userEmail) {
+        if (isMounted) setChecking(false)
+        return
+      }
+
+      navigate(isAdmin ? '/dashboard' : '/', { replace: true })
+    }
+
     const checkSession = async () => {
       const { data } = await supabase.auth.getSession()
-      if (data?.session) {
-        navigate('/dashboard')
-      }
+      await routeSession(data?.session?.user?.id, data?.session?.user?.email)
     }
 
     checkSession()
 
-    const { data: listener } = supabase.auth.onAuthStateChange((_, session) => {
-      if (session) {
-        navigate('/dashboard')
-      }
+    const { data: listener } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log('[LoginPage] onAuthStateChange', event, session?.user?.email)
+      await routeSession(session?.user?.id, session?.user?.email)
     })
 
     return () => {
+      isMounted = false
       listener.subscription?.unsubscribe?.()
     }
-  }, [navigate])
+  }, [adminEmail, navigate])
+
+  if (checking) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-black text-white">
+        <div className="rounded-2xl border border-zinc-800 bg-zinc-900 px-6 py-4">
+          Preparing sign in...
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black">

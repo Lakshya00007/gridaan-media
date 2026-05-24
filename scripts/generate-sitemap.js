@@ -2,14 +2,38 @@ import fs from 'fs/promises'
 import path from 'path'
 import { createClient } from '@supabase/supabase-js'
 
-const SITE_URL = 'https://gridaan.com'
+const DEFAULT_SITE_URL = 'https://gridaan.com'
 const OUTPUT_PATH = path.join(process.cwd(), 'public', 'sitemap.xml')
+const SUPABASE_TIMEOUT_MS = 8000
 
 const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL
 const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY
-const hasSupabaseConfig = Boolean(supabaseUrl && supabaseAnonKey)
+const missingSupabaseEnv = [
+  ['VITE_SUPABASE_URL or SUPABASE_URL', supabaseUrl],
+  ['VITE_SUPABASE_ANON_KEY or SUPABASE_ANON_KEY', supabaseAnonKey],
+].filter(([, value]) => !value).map(([name]) => name)
+const hasSupabaseConfig = missingSupabaseEnv.length === 0
 
 const supabase = hasSupabaseConfig ? createClient(supabaseUrl, supabaseAnonKey) : null
+
+const resolveSiteUrl = () => {
+  const candidate =
+    process.env.SITE_URL ||
+    process.env.VITE_SITE_URL ||
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : '') ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '') ||
+    DEFAULT_SITE_URL
+
+  try {
+    const url = new URL(candidate)
+    return url.origin
+  } catch {
+    console.warn(`WARNING: Invalid SITE_URL "${candidate}". Falling back to ${DEFAULT_SITE_URL}.`)
+    return DEFAULT_SITE_URL
+  }
+}
+
+const SITE_URL = resolveSiteUrl()
 
 const slugifyCategory = (value) =>
   value
@@ -61,25 +85,50 @@ const buildSitemap = ({ homepageLastMod, categoryUrls, articleUrls }) => {
   return lines.join('\n')
 }
 
-const run = async () => {
-  let articles = []
+const withTimeout = async (promise, timeoutMs) => {
+  let timeoutId
+  const timeout = new Promise((_, reject) => {
+    timeoutId = setTimeout(() => reject(new Error(`Supabase sitemap query timed out after ${timeoutMs}ms`)), timeoutMs)
+  })
 
-  if (hasSupabaseConfig && supabase) {
-    const { data, error } = await supabase
-      .from('articles')
-      .select('slug, category, created_at')
-      .order('created_at', { ascending: false })
+  try {
+    return await Promise.race([promise, timeout])
+  } finally {
+    clearTimeout(timeoutId)
+  }
+}
+
+const fetchArticles = async () => {
+  if (!hasSupabaseConfig || !supabase) {
+    console.warn(
+      `WARNING: Supabase environment variables are not configured (${missingSupabaseEnv.join(', ')}). Generating sitemap with homepage only.`
+    )
+    return []
+  }
+
+  try {
+    const { data, error } = await withTimeout(
+      supabase
+        .from('articles')
+        .select('slug, category, created_at')
+        .order('created_at', { ascending: false }),
+      SUPABASE_TIMEOUT_MS
+    )
 
     if (error) {
       console.warn(`WARNING: Failed to fetch articles from Supabase: ${error.message}`)
-    } else {
-      articles = data ?? []
+      return []
     }
-  } else {
-    console.warn(
-      'WARNING: Supabase environment variables are not configured. Generating sitemap with homepage only.'
-    )
+
+    return data ?? []
+  } catch (error) {
+    console.warn(`WARNING: ${error instanceof Error ? error.message : 'Unexpected Supabase sitemap error'}`)
+    return []
   }
+}
+
+const run = async () => {
+  const articles = await fetchArticles()
   const articleUrls = articles
     .filter((article) => article.slug)
     .map((article) => ({
@@ -118,6 +167,5 @@ const run = async () => {
 }
 
 run().catch((error) => {
-  console.error(error)
-  process.exit(1)
+  console.warn(`WARNING: Sitemap generation fell back after an unexpected error: ${error instanceof Error ? error.message : error}`)
 })

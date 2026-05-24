@@ -16,7 +16,7 @@ export default function PrivacyPage() {
             { title: '4. Third-Party Services', content: 'We use third-party services including Google AdSense for advertising, Google Analytics for website analytics, and various social media platforms for content sharing. Each of these services has their own privacy policies governing their use of your information.' },
             { title: '5. Data Security', content: 'We implement appropriate security measures to protect your personal information. However, no method of transmission over the Internet or electronic storage is 100% secure, and we cannot guarantee absolute security.' },
             { title: '6. Your Rights', content: 'You have the right to access, correct, or delete your personal information. You can unsubscribe from our newsletter at any time. For EU residents, you have additional rights under GDPR including the right to data portability and the right to restrict processing.' },
-            { title: '7. Contact Us', content: 'If you have any questions about this Privacy Policy, please contact us at privacy@gridaan.com.' },
+            { title: '7. Contact Us', content: 'If you have any questions about this Privacy Policy, please contact us at supportgridaan@gmail.com.' },
           ].map(section => (
             <div key={section.title}>
               <h2 className="text-xl font-bold text-[#F8FAFC] dark:text-white mb-3">{section.title}</h2>

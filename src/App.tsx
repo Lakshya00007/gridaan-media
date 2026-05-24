@@ -1,6 +1,6 @@
-import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { useEffect, lazy, Suspense } from 'react';
-import { AppProvider } from './context/AppContext';
+import { HashRouter as Router, Routes, Route, useLocation, Link } from 'react-router-dom';
+import { useEffect, lazy, Suspense, type ReactNode } from 'react';
+import { UIProvider } from './context/UIContext';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import BackToTop from './components/ui/BackToTop';
@@ -18,6 +18,7 @@ import ContactPage from './pages/ContactPage';
 import PrivacyPage from './pages/PrivacyPage';
 import TermsPage from './pages/TermsPage';
 import ProtectedRoute from './components/admin/ProtectedRoute';
+import ErrorBoundary from './components/ErrorBoundary';
 
 const LoginPage = lazy(() => import('./pages/admin/LoginPage'))
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'))
@@ -31,12 +32,21 @@ function ScrollToTop() {
 }
 
 function AppLayout() {
+  const location = useLocation();
   const routeFallback = (
     <div className="min-h-screen flex items-center justify-center bg-[#0B1224] dark:bg-[#060A16]">
       <div className="rounded-3xl bg-slate-100 dark:bg-[#0B1224] p-6 text-base font-medium text-slate-900 dark:text-slate-100 animate-pulse">
         Loading page…
       </div>
     </div>
+  )
+  const withBoundary = (children: ReactNode, title: string) => (
+    <ErrorBoundary
+      title={title}
+      resetKey={`${location.pathname}${location.search}`}
+    >
+      {children}
+    </ErrorBoundary>
   )
 
   return (
@@ -46,24 +56,26 @@ function AppLayout() {
         <Suspense fallback={routeFallback}>
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/article/:slug" element={<ArticlePage />} />
-            <Route path="/category/:slug" element={<CategoryPage />} />
-            <Route path="/categories" element={<CategoriesPage />} />
-            <Route path="/search" element={<SearchPage />} />
-            <Route path="/trending" element={<TrendingPage />} />
-            <Route path="/tutorials" element={<TutorialsPage />} />
-            <Route path="/videos" element={<VideosPage />} />
-            <Route path="/bookmarks" element={<BookmarksPage />} />
+            <Route path="/article/:slug" element={withBoundary(<ArticlePage />, 'Article failed to load.')} />
+            <Route path="/category/:slug" element={withBoundary(<CategoryPage />, 'Category failed to load.')} />
+            <Route path="/categories" element={withBoundary(<CategoriesPage />, 'Categories failed to load.')} />
+            <Route path="/search" element={withBoundary(<SearchPage />, 'Search failed to load.')} />
+            <Route path="/trending" element={withBoundary(<TrendingPage />, 'Trending articles failed to load.')} />
+            <Route path="/tutorials" element={withBoundary(<TutorialsPage />, 'Tutorials failed to load.')} />
+            <Route path="/videos" element={withBoundary(<VideosPage />, 'Videos failed to load.')} />
+            <Route path="/bookmarks" element={withBoundary(<BookmarksPage />, 'Bookmarks failed to load.')} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="/terms" element={<TermsPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/admin" element={<LoginPage />} />
+            <Route path="/login" element={withBoundary(<LoginPage />, 'Login failed to load.')} />
             <Route path="/dashboard" element={
-              <ProtectedRoute>
-                <AdminDashboard />
-              </ProtectedRoute>
+              withBoundary(
+                <ProtectedRoute>
+                  <AdminDashboard />
+                </ProtectedRoute>,
+                'Dashboard failed to load.'
+              )
             } />
             <Route path="*" element={<NotFound />} />
           </Routes>
@@ -83,9 +95,9 @@ function NotFound() {
       <p className="text-[#94A3B8] dark:text-[#94A3B8] mb-8 text-lg">
         The page you're looking for doesn't exist or has been moved.
       </p>
-      <a href="/" className="inline-flex items-center gap-2 px-6 py-3 bg-[#327CFA] text-white rounded-xl font-medium hover:bg-[#003CC6] transition-colors">
+      <Link to="/" className="inline-flex items-center gap-2 px-6 py-3 bg-[#2563EB] text-white rounded-xl font-medium hover:bg-[#1D4ED8] transition-colors">
         Back to Home
-      </a>
+      </Link>
     </div>
   );
 }
@@ -93,10 +105,10 @@ function NotFound() {
 export default function App() {
   return (
     <Router>
-      <AppProvider>
+      <UIProvider>
         <ScrollToTop />
         <AppLayout />
-      </AppProvider>
+      </UIProvider>
     </Router>
   );
 }

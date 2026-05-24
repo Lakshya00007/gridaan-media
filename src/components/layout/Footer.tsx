@@ -1,12 +1,14 @@
+import { type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, Globe, Code, BookOpen, Play, Rss, Heart } from 'lucide-react';
-import { useApp } from '../../context/AppContext';
-import { categories } from '../../data/mockData';
+import { useUI } from '../../context/UIContext';
+import { useCategories } from '../../hooks/useArticles';
 
 export default function Footer() {
-  const { newsletterEmail, setNewsletterEmail, subscribed, subscribe, subscribers } = useApp();
+  const { newsletterEmail, setNewsletterEmail, subscribed, subscribe, subscriberCount } = useUI();
+  const { data: categories = [] } = useCategories();
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = (e: FormEvent) => {
     e.preventDefault();
     if (newsletterEmail.trim()) {
       subscribe(newsletterEmail);
@@ -16,7 +18,7 @@ export default function Footer() {
   return (
     <footer className="bg-[#060A16] dark:bg-[#060A16] text-[#94A3B8] border-t border-[#1E293B]">
       {/* Newsletter */}
-      <div className="bg-linear-to-r from-[#327CFA] via-[#1E3EC1] to-[#003CC6]">
+      <div className="bg-linear-to-r from-[#2563EB] via-[#334155] to-[#1D4ED8]">
         <div className="max-w-7xl mx-auto px-4 py-12">
           <div className="max-w-2xl mx-auto text-center">
             <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">Stay ahead of the curve</h3>
@@ -32,15 +34,15 @@ export default function Footer() {
                   value={newsletterEmail}
                   onChange={e => setNewsletterEmail(e.target.value)}
                   placeholder="Enter your email"
-                  className="flex-1 px-5 py-3.5 rounded-xl bg-[#0B1224]/10 backdrop-blur border border-white/20 text-white placeholder-indigo-200 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"
+                  className="flex-1 px-5 py-3.5 rounded-xl bg-[#0B1224]/10 backdrop-blur border border-white/20 text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"
                   required
                 />
-                <button type="submit" className="px-8 py-3.5 bg-[#0B1224] text-[#327CFA] rounded-xl font-semibold hover:bg-[#0B1224] transition-all shadow-lg hover:shadow-xl">
+                <button type="submit" className="px-8 py-3.5 bg-[#0B1224] text-[#2563EB] rounded-xl font-semibold hover:bg-[#0B1224] transition-all shadow-lg hover:shadow-xl">
                   Subscribe
                 </button>
               </form>
             )}
-            <p className="text-xs text-[#94A3B8] mt-3">No spam. Unsubscribe anytime. {subscribers.length.toLocaleString()}+ subscribers</p>
+            <p className="text-xs text-[#94A3B8] mt-3">No spam. Unsubscribe anytime. {subscriberCount.toLocaleString()}+ subscribers</p>
           </div>
         </div>
       </div>
@@ -51,8 +53,8 @@ export default function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <Link to="/" className="flex items-center gap-2 mb-4">
-              <div className="w-9 h-9 bg-linear-to-br from-[#327CFA] to-[#003CC6] rounded-xl flex items-center justify-center">
-                <span className="text-white font-bold text-lg">N</span>
+              <div className="w-9 h-9 bg-linear-to-br from-[#2563EB] to-[#1D4ED8] rounded-xl flex items-center justify-center">
+                <span className="text-white font-bold text-lg">G</span>
               </div>
               <span className="text-xl font-bold text-white">Gridaan</span>
             </Link>
@@ -61,7 +63,7 @@ export default function Footer() {
             </p>
             <div className="flex gap-3">
               {[Globe, Code, BookOpen, Play, Rss].map((Icon, i) => (
-                <a key={i} href="#" className="w-9 h-9 rounded-lg bg-[#0B1224] hover:bg-[#327CFA] flex items-center justify-center transition-all hover:-translate-y-0.5">
+                <a key={i} href="#" className="w-9 h-9 rounded-lg bg-[#0B1224] hover:bg-[#2563EB] flex items-center justify-center transition-all hover:-translate-y-0.5">
                   <Icon className="w-4 h-4" />
                 </a>
               ))}
@@ -79,6 +81,9 @@ export default function Footer() {
                   </Link>
                 </li>
               ))}
+              {categories.length === 0 && (
+                <li className="text-sm text-[#94A3B8]">No categories yet</li>
+              )}
             </ul>
           </div>
 
@@ -109,7 +114,7 @@ export default function Footer() {
             <ul className="space-y-2.5 text-sm text-[#94A3B8]">
               <li className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-[#94A3B8]" />
-                hello@gridaan.com
+                gridaanmedia@gmail.com
               </li>
               <li>San Francisco, CA</li>
               <li>United States</li>

@@ -1,30 +1,10 @@
 import { supabase } from '../lib/supabase'
+import type { Article } from '../types/article'
 import { publicUrlToPath, removeImageFile } from './uploadService'
 
-export interface ArticleRecord {
-  id: string
-  title: string
-  slug: string
-  content: string
-  excerpt?: string
-  image_url?: string | null
-  category?: string
-  author?: string
-  created_at?: string
-}
+export type ArticlePayload = Omit<Article, 'id' | 'created_at'> & { id?: string }
 
-export interface ArticlePayload {
-  id?: string
-  title: string
-  slug: string
-  content: string
-  excerpt?: string
-  image_url?: string | null
-  category?: string
-  author?: string
-}
-
-export async function getArticles(): Promise<ArticleRecord[] | null> {
+export async function getArticles(): Promise<Article[] | null> {
   try {
     const { data, error } = await supabase
       .from('articles')
@@ -36,14 +16,14 @@ export async function getArticles(): Promise<ArticleRecord[] | null> {
       return null
     }
 
-    return data as ArticleRecord[]
+    return data as Article[]
   } catch (err) {
     console.error('getArticles unexpected error', err)
     return null
   }
 }
 
-export async function getArticleBySlug(slug: string): Promise<ArticleRecord | null> {
+export async function getArticleBySlug(slug: string): Promise<Article | null> {
   try {
     const { data, error } = await supabase
       .from('articles')
@@ -56,35 +36,35 @@ export async function getArticleBySlug(slug: string): Promise<ArticleRecord | nu
       return null
     }
 
-    return data as ArticleRecord
+    return data as Article
   } catch (err) {
     console.error('getArticleBySlug unexpected error', err)
     return null
   }
 }
 
-export async function createArticle(payload: ArticlePayload): Promise<ArticleRecord | null> {
+export async function createArticle(payload: ArticlePayload): Promise<Article | null> {
   try {
     const { data, error } = await supabase.from('articles').insert([payload]).select('*').single()
     if (error) {
       console.error('createArticle error', error)
       return null
     }
-    return data as ArticleRecord
+    return data as Article
   } catch (err) {
     console.error('createArticle unexpected error', err)
     return null
   }
 }
 
-export async function updateArticle(id: string, updates: Partial<ArticlePayload>): Promise<ArticleRecord | null> {
+export async function updateArticle(id: string, updates: Partial<ArticlePayload>): Promise<Article | null> {
   try {
     const { data, error } = await supabase.from('articles').update(updates).eq('id', id).select('*').single()
     if (error) {
       console.error('updateArticle error', error)
       return null
     }
-    return data as ArticleRecord
+    return data as Article
   } catch (err) {
     console.error('updateArticle unexpected error', err)
     return null
@@ -94,13 +74,14 @@ export async function updateArticle(id: string, updates: Partial<ArticlePayload>
 export async function deleteArticle(id: string): Promise<boolean> {
   try {
     // fetch image_url first
-    const { data: article, error: fetchError } = await supabase.from('articles').select('image_url').eq('id', id).single()
+    const { data, error: fetchError } = await supabase.from('articles').select('image_url').eq('id', id).single()
     if (fetchError) {
       console.error('deleteArticle fetch error', fetchError)
       return false
     }
 
-    const imageUrl: string | null = (article as any)?.image_url ?? null
+    const article = data as Pick<Article, 'image_url'> | null
+    const imageUrl = article?.image_url ?? null
 
     const { error } = await supabase.from('articles').delete().eq('id', id)
     if (error) {

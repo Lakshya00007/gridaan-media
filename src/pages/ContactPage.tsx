@@ -30,7 +30,7 @@ export default function ContactPage() {
             ].map(item => (
               <div key={item.title} className="flex gap-4 p-5 bg-[#0B1224] dark:bg-[#0B1224]/50 rounded-xl border border-[#1E293B]/50 dark:border-[#1E293B]/50">
                 <div className="w-12 h-12 rounded-xl bg-[#0B1224] dark:bg-[#0B1224]/30 flex items-center justify-center shrink-0">
-                  <item.icon className="w-5 h-5 text-[#327CFA] dark:text-[#94A3B8]" />
+                  <item.icon className="w-5 h-5 text-[#2563EB] dark:text-[#94A3B8]" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-[#F8FAFC] dark:text-white">{item.title}</h3>
@@ -40,7 +40,7 @@ export default function ContactPage() {
               </div>
             ))}
 
-            <div className="p-5 bg-linear-to-br from-[#327CFA] to-[#003CC6] rounded-xl text-white">
+            <div className="p-5 bg-linear-to-br from-[#2563EB] to-[#1D4ED8] rounded-xl text-white">
               <h3 className="font-bold mb-2">📢 Advertising</h3>
               <p className="text-sm text-[#94A3B8] mb-3">Interested in advertising with Gridaan? We offer banner ads, sponsored posts, and native advertising.</p>
               <p className="text-xs text-[#94A3B8]">ads@gridaan.com</p>
@@ -61,16 +61,16 @@ export default function ContactPage() {
                 <div className="grid md:grid-cols-2 gap-5">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-[#94A3B8] mb-1.5">Name</label>
-                    <input type="text" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} required className="w-full px-4 py-3 bg-[#0B1224] dark:bg-[#0B1224]/50 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:text-white" placeholder="Your name" />
+                    <input type="text" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} required className="w-full px-4 py-3 bg-[#0B1224] dark:bg-[#0B1224]/50 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white" placeholder="Your name" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-[#94A3B8] mb-1.5">Email</label>
-                    <input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} required className="w-full px-4 py-3 bg-[#0B1224] dark:bg-[#0B1224]/50 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:text-white" placeholder="your@email.com" />
+                    <input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} required className="w-full px-4 py-3 bg-[#0B1224] dark:bg-[#0B1224]/50 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white" placeholder="your@email.com" />
                   </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-[#94A3B8] mb-1.5">Subject</label>
-                  <select value={form.subject} onChange={e => setForm({ ...form, subject: e.target.value })} className="w-full px-4 py-3 bg-[#0B1224] dark:bg-[#0B1224]/50 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:text-white">
+                  <select value={form.subject} onChange={e => setForm({ ...form, subject: e.target.value })} className="w-full px-4 py-3 bg-[#0B1224] dark:bg-[#0B1224]/50 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white">
                     <option value="">Select a topic</option>
                     <option>General Inquiry</option>
                     <option>Advertising & Partnerships</option>
@@ -81,9 +81,9 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-[#94A3B8] mb-1.5">Message</label>
-                  <textarea value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} required rows={5} className="w-full px-4 py-3 bg-[#0B1224] dark:bg-[#0B1224]/50 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:text-white resize-none" placeholder="Your message..." />
+                  <textarea value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} required rows={5} className="w-full px-4 py-3 bg-[#0B1224] dark:bg-[#0B1224]/50 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white resize-none" placeholder="Your message..." />
                 </div>
-                <button type="submit" className="flex items-center justify-center gap-2 w-full py-3 bg-[#327CFA] text-white rounded-xl font-semibold hover:bg-[#003CC6] transition-colors">
+                <button type="submit" className="flex items-center justify-center gap-2 w-full py-3 bg-[#2563EB] text-white rounded-xl font-semibold hover:bg-[#1D4ED8] transition-colors">
                   <Send className="w-4 h-4" /> Send Message
                 </button>
               </form>

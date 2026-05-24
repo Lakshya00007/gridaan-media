@@ -38,7 +38,7 @@ export default function SEO({ title, description, image, url, type = 'website', 
       <meta name="description" content={resolvedDescription} />
       <link rel="canonical" href={resolvedUrl} />
       <meta name="robots" content={robots} />
-      <meta name="theme-color" content="#327CFA" />
+      <meta name="theme-color" content="#2563EB" />
       <meta property="og:type" content={type} />
       <meta property="og:title" content={resolvedTitle} />
       <meta property="og:description" content={resolvedDescription} />

@@ -15,13 +15,9 @@ export const uploadImageFile = async (file: File, folder = 'article-images') => 
     throw uploadError
   }
 
-  const { data, error } = supabase.storage
+  const { data } = supabase.storage
     .from('article-images')
     .getPublicUrl(filePath)
-
-  if (error) {
-    throw error
-  }
 
   return { publicUrl: data.publicUrl, path: filePath }
 }
@@ -36,8 +32,8 @@ export const removeImageFile = async (filePath: string) => {
 export const publicUrlToPath = (publicUrl: string) => {
   // Attempts to extract the storage path from a public URL
   // e.g. https://xyz.supabase.co/storage/v1/object/public/article-images/123-name.jpg
-  const marker = '/article-images/'
+  const marker = '/object/public/article-images/'
   const idx = publicUrl.indexOf(marker)
   if (idx === -1) return ''
-  return `article-images/${publicUrl.substring(idx + marker.length)}`
+  return decodeURIComponent(publicUrl.substring(idx + marker.length))
 }

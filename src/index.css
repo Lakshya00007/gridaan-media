@@ -3,13 +3,13 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --color-primary: #6366f1;
-  --color-secondary: #8b5cf6;
+  --color-primary: #2563EB;
+  --color-secondary: #64748B;
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #c4b5fd transparent;
+  scrollbar-color: #64748B transparent;
 }
 
 *::-webkit-scrollbar {
@@ -22,7 +22,7 @@
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: #c4b5fd;
+  background-color: #64748B;
   border-radius: 20px;
 }
 
@@ -121,12 +121,12 @@ img {
 
 /* Selection */
 ::selection {
-  background-color: rgba(99, 102, 241, 0.3);
+  background-color: rgba(37, 99, 235, 0.24);
 }
 
 /* Focus visible */
 :focus-visible {
-  outline: 2px solid #6366f1;
+  outline: 2px solid #2563EB;
   outline-offset: 2px;
   border-radius: 4px;
 }
