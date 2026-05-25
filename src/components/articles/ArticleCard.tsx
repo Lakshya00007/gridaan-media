@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { Clock, Eye, Bookmark, Share2, TrendingUp } from 'lucide-react';
 import type { Article } from '../../types/article';
@@ -9,7 +10,7 @@ interface ArticleCardProps {
   variant?: 'default' | 'featured' | 'horizontal' | 'compact';
 }
 
-export default function ArticleCard({ article, variant = 'default' }: ArticleCardProps) {
+function ArticleCard({ article, variant = 'default' }: ArticleCardProps) {
   const { bookmarkIds, toggleBookmark, isSaving } = useBookmarks();
   const isBookmarked = bookmarkIds.has(article.id);
   const authorName = article.author || 'Admin';
@@ -158,7 +159,7 @@ export default function ArticleCard({ article, variant = 'default' }: ArticleCar
         )}
         <div className="absolute top-3 right-3 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
           <button
-            onClick={(e) => { e.preventDefault(); toggleBookmark(article.id); }}
+            onClick={(e) => { e.preventDefault(); toggleBookmark(article.id, { title: article.title, slug: article.slug }); }}
             disabled={isSaving}
             className={`p-1.5 rounded-lg backdrop-blur-sm transition-colors disabled:cursor-not-allowed disabled:opacity-70 ${isBookmarked ? 'bg-[#2563EB] text-white' : 'bg-[#0B1224]/80 text-[#94A3B8] hover:bg-[#0B1224]'}`}
             aria-label={isBookmarked ? 'Remove bookmark' : 'Save bookmark'}
@@ -199,3 +200,5 @@ export default function ArticleCard({ article, variant = 'default' }: ArticleCar
     </article>
   );
 }
+
+export default memo(ArticleCard);

@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 import { createBookmark, deleteBookmark, getBookmarks, type BookmarkRecord } from '../services/bookmarks'
 import { useAuthUser } from './useAuthUser'
+import { useNotifications } from '../context/NotificationContext'
 
 export const bookmarkKeys = {
   all: ['bookmarks'] as const,
@@ -12,6 +13,7 @@ export const bookmarkKeys = {
 export function useBookmarks() {
   const queryClient = useQueryClient()
   const { user, loading: userLoading } = useAuthUser()
+  const { addNotification } = useNotifications()
 
   const query = useQuery<BookmarkRecord[]>({
     queryKey: bookmarkKeys.list(user?.id),
@@ -81,7 +83,10 @@ export function useBookmarks() {
     },
   })
 
-  const toggleBookmark = (articleId: string) => {
+  const toggleBookmark = (
+    articleId: string,
+    meta?: { title: string; slug: string }
+  ) => {
     if (!user) {
       toast.error('Please sign in to bookmark articles.')
       return
@@ -90,7 +95,18 @@ export function useBookmarks() {
     if (bookmarkIds.has(articleId)) {
       removeMutation.mutate(articleId)
     } else {
-      addMutation.mutate(articleId)
+      addMutation.mutate(articleId, {
+        onSuccess: () => {
+          if (meta) {
+            addNotification({
+              type: 'article_bookmarked',
+              title: 'Saved to bookmarks',
+              message: meta.title,
+              href: `/article/${meta.slug}`,
+            })
+          }
+        },
+      })
     }
   }
 
