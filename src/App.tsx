@@ -17,6 +17,10 @@ import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import PrivacyPage from './pages/PrivacyPage';
 import TermsPage from './pages/TermsPage';
+import PrivacyPolicyPage from './pages/legal/PrivacyPolicyPage';
+import TermsAndConditionsPage from './pages/legal/TermsAndConditionsPage';
+import DisclaimerPage from './pages/legal/DisclaimerPage';
+import CookiePolicyPage from './pages/legal/CookiePolicyPage';
 import ProtectedRoute from './components/admin/ProtectedRoute';
 import ErrorBoundary from './components/ErrorBoundary';
 import NotificationsFeed from './components/layout/NotificationsFeed';
@@ -69,7 +73,11 @@ function AppLayout() {
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
             <Route path="/terms" element={<TermsPage />} />
+            <Route path="/terms-and-conditions" element={<TermsAndConditionsPage />} />
+            <Route path="/disclaimer" element={<DisclaimerPage />} />
+            <Route path="/cookie-policy" element={<CookiePolicyPage />} />
             <Route path="/login" element={withBoundary(<LoginPage />, 'Login failed to load.')} />
             <Route path="/dashboard" element={
               withBoundary(

@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom';
 import { Mail, Globe, Code, BookOpen, Play, Rss, Heart } from 'lucide-react';
 import { useUI } from '../../context/UIContext';
 import { useCategories } from '../../hooks/useArticles';
+import { getLegalYear, LEGAL_PAGES } from '../../data/legalNav';
 
 export default function Footer() {
   const { newsletterEmail, setNewsletterEmail, subscribed, subscribe, subscriberCount } = useUI();
   const { data: categories = [] } = useCategories();
+  const year = getLegalYear();
 
   const handleSubscribe = (e: FormEvent) => {
     e.preventDefault();
@@ -49,7 +51,7 @@ export default function Footer() {
 
       {/* Main footer */}
       <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <Link to="/" className="flex items-center gap-2 mb-4">
@@ -96,11 +98,23 @@ export default function Footer() {
                 { to: '/contact', label: 'Contact' },
                 { to: '/trending', label: 'Trending' },
                 { to: '/tutorials', label: 'Tutorials' },
-                { to: '/privacy', label: 'Privacy Policy' },
-                { to: '/terms', label: 'Terms of Service' },
               ].map(link => (
                 <li key={link.to}>
                   <Link to={link.to} className="text-sm text-[#94A3B8] hover:text-[#94A3B8] transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Legal */}
+          <div>
+            <h4 className="font-semibold text-white mb-4">Legal</h4>
+            <ul className="space-y-2.5">
+              {LEGAL_PAGES.map((link) => (
+                <li key={link.to}>
+                  <Link to={link.to} className="text-sm text-[#94A3B8] hover:text-[#14B8A6] transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -131,7 +145,7 @@ export default function Footer() {
       <div className="border-t border-[#1E293B]">
         <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm text-[#94A3B8]">
-            © 2026 Gridaan. All rights reserved.
+            © {year} Gridaan. All rights reserved.
           </p>
           <p className="text-sm text-[#94A3B8] flex items-center gap-1">
             Made with <Heart className="w-3.5 h-3.5 text-red-500 fill-red-500" /> for the developer community
