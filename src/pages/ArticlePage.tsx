@@ -51,7 +51,7 @@ export default function ArticlePage() {
   const formatDate = (dateStr?: string) => dateStr ? new Date(dateStr).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : ''
 
   const cleanContent = sanitizeHtml(article.content || '')
-  const canonicalUrl = typeof window !== 'undefined' ? window.location.href : `https://gridaan.io/article/${slug ?? ''}`
+  const canonicalUrl = `https://gridaan.com/article/${slug ?? ''}`
 
   const structuredData = {
     '@context': 'https://schema.org',

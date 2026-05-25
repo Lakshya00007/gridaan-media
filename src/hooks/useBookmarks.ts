@@ -11,7 +11,7 @@ export const bookmarkKeys = {
 
 export function useBookmarks() {
   const queryClient = useQueryClient()
-  const { data: user, isLoading: userLoading } = useAuthUser()
+  const { user, loading: userLoading } = useAuthUser()
 
   const query = useQuery<BookmarkRecord[]>({
     queryKey: bookmarkKeys.list(user?.id),

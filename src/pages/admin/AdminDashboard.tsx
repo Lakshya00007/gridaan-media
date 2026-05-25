@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
 import { Plus, RefreshCcw, LogOut } from 'lucide-react'
-import { Session } from '@supabase/supabase-js'
 import toast, { Toaster } from 'react-hot-toast'
 import ArticleForm from '../../components/admin/ArticleForm'
 import ArticleList from '../../components/admin/ArticleList'
@@ -11,13 +10,13 @@ import type { Article } from '../../types/article'
 import { articleKeys, useArticles } from '../../hooks/useArticles'
 import { sanitizeHtml } from '../../utils/sanitize'
 import { signOut } from '../../lib/auth'
-import { supabase } from '../../lib/supabase'
+import { useAuthUser } from '../../hooks/useAuthUser'
 
 const categories = ['Technology', 'AI', 'Web Development', 'Business', 'Culture', 'Tutorial']
 
 export default function AdminDashboard() {
   const queryClient = useQueryClient()
-  const [session, setSession] = useState<Session | null>(null)
+  const { user, profile, loading, isAdmin } = useAuthUser()
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null)
   const [deleting, setDeleting] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -30,7 +29,20 @@ export default function AdminDashboard() {
     refetch: refetchArticles,
   } = useArticles()
   const navigate = useNavigate()
-  const loading = articlesLoading || articlesFetching || deleting
+  const loadingArticles = articlesLoading || articlesFetching || deleting
+
+  useEffect(() => {
+    if (loading) return
+
+    if (!user) {
+      navigate('/login', { replace: true })
+      return
+    }
+
+    if (profile && !isAdmin) {
+      navigate('/', { replace: true })
+    }
+  }, [loading, user, profile, isAdmin, navigate])
 
   const handleLogout = async () => {
     await signOut()
@@ -42,9 +54,6 @@ export default function AdminDashboard() {
     setError('')
 
     try {
-      // Sanitize content again here for defense-in-depth. Server-side
-      // sanitization is still recommended; this ensures any caller that
-      // bypasses the form is less likely to store raw dangerous HTML.
       const sanitizedArticle = {
         ...article,
         content: sanitizeHtml(article.content || ''),
@@ -60,7 +69,7 @@ export default function AdminDashboard() {
       }
       setSelectedArticle(null)
       await queryClient.invalidateQueries({ queryKey: articleKeys.all })
-    } catch (saveError) {
+    } catch {
       const message = 'Unable to save the article. Please try again.'
       setError(message)
       toast.error(message)
@@ -91,32 +100,7 @@ export default function AdminDashboard() {
     }
   }
 
-  useEffect(() => {
-    const securePage = async () => {
-      const { data } = await supabase.auth.getSession()
-      if (!data?.session) {
-        navigate('/login', { replace: true })
-        return
-      }
-      setSession(data.session)
-    }
-
-    securePage()
-
-    const { data: listener } = supabase.auth.onAuthStateChange((_, authSession) => {
-      if (!authSession) {
-        navigate('/login', { replace: true })
-      } else {
-        setSession(authSession)
-      }
-    })
-
-    return () => {
-      listener.subscription?.unsubscribe?.()
-    }
-  }, [navigate])
-
-  if (!session) {
+  if (loading || !user || !profile || !isAdmin) {
     return (
       <div className="min-h-screen bg-[#060A16] text-slate-100 flex items-center justify-center">
         <div className="rounded-3xl border border-slate-700 bg-[#0B1224]/90 px-8 py-6 text-center shadow-2xl shadow-slate-950/30">
@@ -126,7 +110,7 @@ export default function AdminDashboard() {
     )
   }
 
-  const currentUser = session.user.email ?? 'Admin'
+  const currentUser = user.email ?? 'Admin'
 
   return (
     <div className="min-h-screen bg-[#060A16] text-slate-100">
@@ -202,7 +186,7 @@ export default function AdminDashboard() {
 
             <ArticleList
               articles={articles}
-              loading={loading}
+              loading={loadingArticles}
               onEdit={setSelectedArticle}
               onDelete={handleDelete}
             />

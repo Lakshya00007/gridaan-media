@@ -1,128 +1,14 @@
-import { useEffect, useState } from 'react'
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
+import { Navigate } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
-import { getProfile } from '../../services/profiles'
+import { useAuthUser } from '../../hooks/useAuthUser'
 
 export default function LoginPage() {
-  const [checking, setChecking] = useState(true)
+  const { user, loading } = useAuthUser()
+  const redirectTo = `${window.location.origin}/#/dashboard`
 
-  const redirectTo = `${window.location.origin}${window.location.pathname}#/dashboard`
-
-  useEffect(() => {
-    let mounted = true
-
-    const handleSession = async () => {
-      try {
-        const {
-          data: { session },
-          error,
-        } = await supabase.auth.getSession()
-
-        if (error) {
-          console.error(
-            '[LoginPage] Session error:',
-            error
-          )
-
-          if (mounted) {
-            setChecking(false)
-          }
-
-          return
-        }
-
-        // no session
-        if (!session?.user) {
-          if (mounted) {
-            setChecking(false)
-          }
-
-          return
-        }
-
-        console.log(
-          '[LoginPage] Session user:',
-          session.user.email
-        )
-
-        // fetch profile safely
-        const profile = await getProfile(
-          session.user.id
-        )
-
-        console.log(
-          '[LoginPage] Profile:',
-          profile
-        )
-
-        // profile not ready yet
-        if (!profile) {
-          console.warn(
-            '[LoginPage] Profile not created yet'
-          )
-
-          if (mounted) {
-            setChecking(false)
-          }
-
-          // safe fallback
-          window.location.hash = '#/'
-          return
-        }
-
-        // admin redirect
-        if (profile.role === 'admin') {
-          window.location.hash = '#/dashboard'
-          return
-        }
-
-        // normal user redirect
-        window.location.hash = '#/'
-      } catch (error) {
-        console.error(
-          '[LoginPage] Fatal auth error:',
-          error
-        )
-
-        if (mounted) {
-          setChecking(false)
-        }
-      }
-    }
-
-    handleSession()
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        console.log(
-          '[LoginPage] Auth changed:',
-          event,
-          session?.user?.email
-        )
-
-        if (!mounted) return
-
-        // signed out
-        if (!session?.user) {
-          setChecking(false)
-          return
-        }
-
-        // signed in
-        await handleSession()
-      }
-    )
-
-    return () => {
-      mounted = false
-      subscription.unsubscribe()
-    }
-  }, [])
-
-  if (checking) {
+  if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#060A16] text-white">
         <div className="rounded-2xl border border-slate-800 bg-slate-900/70 px-6 py-4">
@@ -130,6 +16,10 @@ export default function LoginPage() {
         </div>
       </div>
     )
+  }
+
+  if (user) {
+    return <Navigate to="/dashboard" replace />
   }
 
   return (
