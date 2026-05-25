@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
+import PageHero from '../components/layout/PageHero';
 import Skeleton from '../components/ui/Skeleton';
 import { useCategories } from '../hooks/useArticles';
 
@@ -8,16 +9,12 @@ export default function CategoriesPage() {
 
   return (
     <div className="min-h-screen">
-      <div className="bg-linear-to-br from-[#060A16] via-[#0A1222] to-[#0B1224] text-white">
-        <div className="max-w-7xl mx-auto px-4 py-16 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Explore Categories</h1>
-          <p className="text-[#94A3B8] text-lg max-w-2xl mx-auto">
-            Browse our curated collection of content across all technology domains
-          </p>
-        </div>
-      </div>
+      <PageHero
+        title="Explore Categories"
+        description="Browse curated content across AI, engineering, business, and culture"
+      />
 
-      <div className="max-w-7xl mx-auto px-4 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-12">
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {loading
             ? [...Array(6)].map((_, index) => <Skeleton key={index} className="h-56 rounded-2xl" />)

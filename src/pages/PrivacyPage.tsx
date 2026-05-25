@@ -1,7 +1,7 @@
 export default function PrivacyPage() {
   return (
     <div className="min-h-screen">
-      <div className="bg-linear-to-br from-[#060A16] via-[#0A1222] to-[#0B1224] text-white">
+      <div className="bg-mesh-hero border-b border-[#1E293B]/40 text-white">
         <div className="max-w-4xl mx-auto px-4 py-16 text-center">
           <h1 className="text-4xl font-bold mb-4">Privacy Policy</h1>
           <p className="text-[#94A3B8]">Last updated: January 1, 2026</p>

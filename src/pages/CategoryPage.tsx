@@ -21,7 +21,7 @@ export default function CategoryPage() {
   if (loading) {
     return (
       <div className="min-h-screen">
-        <div className="bg-linear-to-br from-[#060A16] via-[#0A1222] to-[#0B1224] text-white">
+        <div className="bg-mesh-hero border-b border-[#1E293B]/40 text-white">
           <div className="max-w-7xl mx-auto px-4 py-12">
             <Skeleton className="h-4 w-64 mb-6" />
             <Skeleton className="h-12 w-80" />
@@ -50,7 +50,7 @@ export default function CategoryPage() {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <div className="bg-linear-to-br from-[#060A16] via-[#0A1222] to-[#0B1224] text-white">
+      <div className="bg-mesh-hero border-b border-[#1E293B]/40 text-white">
         <div className="max-w-7xl mx-auto px-4 py-12">
           <nav className="flex items-center gap-2 text-sm text-[#94A3B8] mb-4">
             <Link to="/" className="hover:text-white">Home</Link>

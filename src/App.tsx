@@ -19,6 +19,7 @@ import PrivacyPage from './pages/PrivacyPage';
 import TermsPage from './pages/TermsPage';
 import ProtectedRoute from './components/admin/ProtectedRoute';
 import ErrorBoundary from './components/ErrorBoundary';
+import NotificationsFeed from './components/layout/NotificationsFeed';
 
 const LoginPage = lazy(() => import('./pages/admin/LoginPage'))
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'))
@@ -34,7 +35,7 @@ function ScrollToTop() {
 function AppLayout() {
   const location = useLocation();
   const routeFallback = (
-    <div className="min-h-screen flex items-center justify-center bg-[#0B1224] dark:bg-[#060A16]">
+    <div className="min-h-screen flex items-center justify-center bg-[#080d1a]">
       <div className="rounded-3xl bg-slate-100 dark:bg-[#0B1224] p-6 text-base font-medium text-slate-900 dark:text-slate-100 animate-pulse">
         Loading page…
       </div>
@@ -50,7 +51,8 @@ function AppLayout() {
   )
 
   return (
-    <div className="min-h-screen bg-[#0B1224] dark:bg-gray-950 transition-colors duration-300">
+    <div className="min-h-screen bg-[#080d1a] transition-colors duration-300">
+      <NotificationsFeed />
       <Header />
       <main>
         <Suspense fallback={routeFallback}>

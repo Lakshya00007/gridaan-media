@@ -16,7 +16,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-[#060A16] dark:bg-[#060A16] text-[#94A3B8] border-t border-[#1E293B]">
+    <footer className="bg-[#080d1a] text-[#94A3B8] border-t border-[#1E293B]">
       {/* Newsletter */}
       <div className="bg-linear-to-r from-[#2563EB] via-[#334155] to-[#1D4ED8]">
         <div className="max-w-7xl mx-auto px-4 py-12">

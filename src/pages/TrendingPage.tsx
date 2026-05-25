@@ -11,11 +11,12 @@ export default function TrendingPage() {
 
   return (
     <div className="min-h-screen">
-      <div className="bg-linear-to-br from-[#2563EB] via-[#14B8A6] to-[#1D4ED8] text-white">
-        <div className="max-w-7xl mx-auto px-4 py-16 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">🔥 Trending Now</h1>
-          <p className="text-[#DCE7FF] text-lg max-w-2xl mx-auto">
-            The most popular and talked about articles right now
+      <div className="relative overflow-hidden bg-mesh-hero border-b border-[#1E293B]/40 text-white">
+        <div className="absolute inset-0 bg-linear-to-r from-[#2563EB]/20 via-transparent to-[#14B8A6]/15 pointer-events-none" aria-hidden />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16 text-center">
+          <h1 className="text-section font-bold mb-4">Trending Now</h1>
+          <p className="text-[#64748B] text-base sm:text-lg max-w-2xl mx-auto">
+            The most popular and talked-about stories in AI and technology
           </p>
         </div>
       </div>

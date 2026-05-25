@@ -12,7 +12,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#060A16] text-white">
+      <div className="min-h-screen flex items-center justify-center bg-[#080d1a] text-white">
         <div className="rounded-2xl border border-slate-800 bg-slate-900/70 px-6 py-4">
           Checking permissions...
         </div>

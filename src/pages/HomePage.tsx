@@ -27,34 +27,41 @@ export default function HomePage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-linear-to-br from-[#060A16] via-[#0A1222] to-[#0B1224]">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(circle at 25% 25%, rgba(37, 99, 235, 0.24) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(20, 184, 166, 0.18) 0%, transparent 50%)' }} />
-          <div className="absolute inset-0" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` }} />
+      <section className="relative overflow-hidden bg-mesh-hero">
+        <div className="absolute inset-0 bg-noise opacity-60 pointer-events-none" aria-hidden />
+        <div className="absolute inset-0 pointer-events-none" aria-hidden>
+          <div className="absolute -left-20 top-1/4 h-72 w-72 rounded-full bg-indigo-500/20 blur-[100px]" />
+          <div className="absolute right-0 top-0 h-96 w-96 rounded-full bg-[#14B8A6]/15 blur-[120px]" />
         </div>
-        <div className="max-w-7xl mx-auto px-4 py-16 md:py-20 relative">
-          <div className="grid lg:grid-cols-2 gap-8 items-center">
-            {/* Left: Text */}
-            <div>
-              <div className="flex items-center gap-2 text-[#94A3B8] text-sm font-medium mb-4">
-                <Sparkles className="w-4 h-4" />
-                <span>Discover the latest in technology</span>
+        <div className="max-w-7xl mx-auto px-4 py-12 sm:py-16 md:py-24 relative">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            <div className="relative">
+              <div className="absolute -inset-4 bg-indigo-500/10 blur-3xl rounded-full pointer-events-none" aria-hidden />
+              <div className="relative flex items-center gap-2 text-[#14B8A6] text-sm font-medium mb-4">
+                <Sparkles className="w-4 h-4" aria-hidden />
+                <span>AI · Technology · Future</span>
               </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-5 leading-[1.1]">
-                Where <span className="bg-linear-to-r from-[#2563EB] via-[#14B8A6] to-[#1D4ED8] bg-clip-text text-transparent">innovation</span> meets insight
+              <h1 className="text-hero font-bold text-white mb-5 leading-[1.08] tracking-tight">
+                Where{' '}
+                <span className="relative inline-block">
+                  <span className="bg-linear-to-r from-[#2563EB] via-[#6366f1] to-[#14B8A6] bg-clip-text text-transparent">
+                    innovation
+                  </span>
+                </span>{' '}
+                meets insight
               </h1>
-              <p className="text-lg text-[#94A3B8] mb-8 max-w-lg leading-relaxed">
-                Expert articles, in-depth tutorials, and breaking news from the world of technology. Join 24,000+ subscribers staying ahead.
+              <p className="text-base sm:text-lg text-[#64748B] mb-8 max-w-lg leading-relaxed">
+                Premium coverage of AI, engineering, and the ideas shaping tomorrow — tutorials, analysis, and breaking tech news.
               </p>
-              <div className="flex flex-wrap gap-3 mb-8">
-                <Link to="/trending" className="inline-flex items-center gap-2 px-6 py-3 bg-linear-to-r from-[#2563EB] to-[#1D4ED8] text-white rounded-xl font-semibold shadow-sm shadow-[#2563EB]/10 hover:shadow-lg hover:shadow-[#2563EB]/30 transition-all hover:-translate-y-0.5">
-                  <Zap className="w-4 h-4" /> Explore Trending
+              <div className="flex flex-col xs:flex-row flex-wrap gap-3 mb-8">
+                <Link to="/trending" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-linear-to-r from-[#2563EB] to-[#1D4ED8] text-white rounded-xl font-semibold shadow-lg shadow-[#2563EB]/25 hover:shadow-[#2563EB]/40 transition-all hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]">
+                  <Zap className="w-4 h-4" aria-hidden /> Explore Trending
                 </Link>
-                <Link to="/tutorials" className="inline-flex items-center gap-2 px-6 py-3 bg-[#0B1224]/10 backdrop-blur text-white rounded-xl font-semibold hover:bg-[#0B1224]/20 transition-all border border-white/10">
-                  <Play className="w-4 h-4" /> Watch Tutorials
+                <Link to="/tutorials" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#0B1224]/40 backdrop-blur-md text-white rounded-xl font-semibold border border-white/10 hover:border-[#14B8A6]/40 hover:bg-[#0B1224]/60 transition-all">
+                  <Play className="w-4 h-4" aria-hidden /> Tutorials
                 </Link>
-                <Link to="/dashboard" className="inline-flex items-center gap-2 px-6 py-3 bg-[#0B1224] text-white rounded-xl font-semibold hover:bg-[#060A16] transition-all">
-                  <User className="w-4 h-4" /> Admin Dashboard
+                <Link to="/dashboard" className="inline-flex items-center justify-center gap-2 px-6 py-3 text-[#94A3B8] rounded-xl font-medium border border-white/5 hover:text-white hover:border-white/15 transition-all">
+                  <User className="w-4 h-4" aria-hidden /> Dashboard
                 </Link>
               </div>
               {/* Stats */}
@@ -186,7 +193,7 @@ export default function HomePage() {
               )}
             </div>
 
-            <Link to="/trending" className="mt-8 block text-center py-3 bg-[#0B1224] dark:bg-[#0B1224] rounded-xl text-sm font-medium text-[#94A3B8] hover:bg-[#060A16] dark:hover:bg-[#0B1224] transition-colors">
+            <Link to="/trending" className="mt-8 block text-center py-3 bg-[#0B1224] rounded-xl text-sm font-medium text-[#94A3B8] hover:bg-[#080d1a]/80 ring-1 ring-white/5 hover:ring-[#2563EB]/30 transition-all">
               Load More Articles →
             </Link>
           </div>

@@ -47,7 +47,7 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
     }
 
     return (
-      <div className="min-h-[60vh] flex items-center justify-center bg-[#0B1224] dark:bg-[#060A16] px-4 py-10">
+      <div className="min-h-[60vh] flex items-center justify-center bg-[#080d1a] px-4 py-10">
         <div className="w-full max-w-2xl rounded-3xl border border-slate-700 bg-[#0B1224]/90 p-8 shadow-2xl shadow-slate-950/30">
           <h1 className="text-3xl font-semibold text-white mb-4">
             {this.props.title ?? 'Something went wrong.'}
@@ -65,13 +65,13 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
             </button>
             <Link
               to="/"
-              className="w-full sm:w-auto rounded-3xl border border-slate-700 bg-[#060A16] px-6 py-3 text-center text-sm font-semibold text-slate-100 transition hover:bg-slate-800"
+              className="w-full sm:w-auto rounded-3xl border border-slate-700 bg-[#080d1a] px-6 py-3 text-center text-sm font-semibold text-slate-100 transition hover:bg-slate-800"
             >
               Return home
             </Link>
           </div>
           {this.state.error && (
-            <div className="mt-6 rounded-3xl bg-[#060A16] p-4 text-sm text-slate-300">
+            <div className="mt-6 rounded-3xl bg-[#080d1a] p-4 text-sm text-slate-300">
               <strong className="block mb-2">Error details:</strong>
               <pre className="whitespace-pre-wrap break-words">{this.state.error.message}</pre>
             </div>

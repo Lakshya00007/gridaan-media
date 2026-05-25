@@ -12,10 +12,10 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen">
-      <div className="bg-linear-to-br from-[#060A16] via-[#0A1222] to-[#0B1224] text-white">
-        <div className="max-w-4xl mx-auto px-4 py-16 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Get in Touch</h1>
-          <p className="text-[#94A3B8] text-lg">Have a question, feedback, or partnership inquiry? We'd love to hear from you.</p>
+      <div className="bg-mesh-hero border-b border-[#1E293B]/40 text-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-16 text-center">
+          <h1 className="text-section font-bold text-[#F8FAFC] mb-4">Get in Touch</h1>
+          <p className="text-[#64748B] text-base sm:text-lg max-w-xl mx-auto">Have a question, feedback, or partnership inquiry? We&apos;d love to hear from you.</p>
         </div>
       </div>
 

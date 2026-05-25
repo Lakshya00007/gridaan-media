@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Users, Eye, FileText, Award, ArrowRight } from 'lucide-react';
+import PageHero from '../components/layout/PageHero';
 
 const teamMembers = [
   {
@@ -25,17 +26,10 @@ const teamMembers = [
 export default function AboutPage() {
   return (
     <div className="min-h-screen">
-      {/* Hero */}
-      <div className="bg-linear-to-br from-[#060A16] via-[#0A1222] to-[#0B1224] text-white">
-        <div className="max-w-4xl mx-auto px-4 py-20 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
-            About <span className="bg-linear-to-r from-[#2563EB] to-[#1D4ED8] bg-clip-text text-transparent">Gridaan</span>
-          </h1>
-          <p className="text-lg text-[#94A3B8] max-w-2xl mx-auto leading-relaxed">
-            We're a team of passionate technologists, writers, and creators dedicated to bringing you the best content from the world of technology, AI, programming, and digital innovation.
-          </p>
-        </div>
-      </div>
+      <PageHero
+        title="About Gridaan"
+        description="A team of technologists and writers covering AI, engineering, and the ideas shaping tomorrow."
+      />
 
       {/* Stats */}
       <div className="max-w-5xl mx-auto px-4 -mt-8">

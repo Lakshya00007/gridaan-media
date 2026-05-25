@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Bookmark } from 'lucide-react';
+import PageHero from '../components/layout/PageHero';
 import ArticleCard from '../components/articles/ArticleCard';
 import Skeleton from '../components/ui/Skeleton';
 import { useArticles } from '../hooks/useArticles';
@@ -14,15 +15,15 @@ export default function BookmarksPage() {
 
   return (
     <div className="min-h-screen">
-      <div className="bg-linear-to-br from-[#060A16] via-[#0A1222] to-[#0B1224] text-white">
-        <div className="max-w-7xl mx-auto px-4 py-16 text-center">
-          <Bookmark className="w-12 h-12 mx-auto mb-4 text-[#94A3B8]" />
-          <h1 className="text-4xl font-bold mb-4">Your Bookmarks</h1>
-          <p className="text-[#94A3B8] text-lg">{bookmarkedArticles.length} saved articles</p>
-        </div>
-      </div>
+      <PageHero
+        title="Your Bookmarks"
+        description={`${bookmarkedArticles.length} saved articles`}
+        compact
+      >
+        <Bookmark className="w-10 h-10 text-[#14B8A6]" aria-hidden />
+      </PageHero>
 
-      <div className="max-w-7xl mx-auto px-4 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-12">
         {loading ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(6)].map((_, index) => <Skeleton key={index} className="h-[320px]" />)}

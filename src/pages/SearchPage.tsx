@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { Search } from 'lucide-react';
+import PageHero from '../components/layout/PageHero';
 import ArticleCard from '../components/articles/ArticleCard';
 import Skeleton from '../components/ui/Skeleton';
 import { useArticles } from '../hooks/useArticles';
@@ -38,24 +39,26 @@ export default function SearchPage() {
 
   return (
     <div className="min-h-screen">
-      <div className="bg-linear-to-br from-[#060A16] via-[#0A1222] to-[#0B1224] text-white">
-          <div className="max-w-3xl mx-auto px-4 py-16 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold mb-6">Search Results</h1>
-          <form className="relative" onSubmit={handleSearch}>
-            <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-[#94A3B8]" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              placeholder="Search articles..."
-              className="w-full pl-14 pr-6 py-4 bg-[#0B1224]/10 backdrop-blur border border-white/20 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-          </form>
-          {query && <p className="mt-4 text-[#94A3B8]">{results.length} results for "{query}"</p>}
-        </div>
-      </div>
+      <PageHero
+        title="Search"
+        description={query ? `${results.length} results for "${query}"` : 'Find articles, tutorials, and insights'}
+        compact
+      >
+        <form className="relative max-w-xl" onSubmit={handleSearch}>
+          <label htmlFor="search-input" className="sr-only">Search articles</label>
+          <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#64748B]" aria-hidden />
+          <input
+            id="search-input"
+            type="search"
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+            placeholder="Search articles…"
+            className="w-full rounded-2xl border border-white/10 bg-[#0B1224]/60 py-3.5 pl-12 pr-4 text-white placeholder-[#64748B] backdrop-blur-md focus:border-[#2563EB]/50 focus:outline-none focus:ring-2 focus:ring-[#2563EB]/25"
+          />
+        </form>
+      </PageHero>
 
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
         {loading ? (
           <div className="space-y-0">
             {[...Array(5)].map((_, index) => (
