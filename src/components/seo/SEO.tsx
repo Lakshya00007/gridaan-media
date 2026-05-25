@@ -12,7 +12,7 @@ export interface SEOProps {
 
 const DEFAULT_TITLE = 'Gridaan'
 const DEFAULT_DESCRIPTION = 'Gridaan is a modern publishing platform for technology, AI, tutorials, and business stories.'
-const DEFAULT_SITE_URL = 'https://gridaan.io'
+const DEFAULT_SITE_URL = 'https://gridaan.com'
 const DEFAULT_IMAGE = `${DEFAULT_SITE_URL}/images/gridaan-logo.svg`
 
 function buildAbsoluteUrl(value?: string) {
