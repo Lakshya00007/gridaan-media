@@ -1,22 +1,27 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
-import { Plus, RefreshCcw, LogOut } from 'lucide-react'
+import { LogOut } from 'lucide-react'
 import toast, { Toaster } from 'react-hot-toast'
 import ArticleForm from '../../components/admin/ArticleForm'
 import ArticleList from '../../components/admin/ArticleList'
+import DashboardStats from '../../components/admin/DashboardStats'
+import QuickActions from '../../components/admin/QuickActions'
+import RecentActivity from '../../components/admin/RecentActivity'
 import { createArticle, deleteArticle, updateArticle, type ArticlePayload } from '../../services/articles'
 import type { Article } from '../../types/article'
 import { articleKeys, useArticles } from '../../hooks/useArticles'
 import { sanitizeHtml } from '../../utils/sanitize'
 import { signOut } from '../../lib/auth'
 import { useAuthUser } from '../../hooks/useAuthUser'
+import { useNotifications } from '../../context/NotificationContext'
 
 const categories = ['Technology', 'AI', 'Web Development', 'Business', 'Culture', 'Tutorial']
 
 export default function AdminDashboard() {
   const queryClient = useQueryClient()
   const { user, profile, loading, isAdmin } = useAuthUser()
+  const { addNotification } = useNotifications()
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null)
   const [deleting, setDeleting] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -33,12 +38,10 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     if (loading) return
-
     if (!user) {
       navigate('/login', { replace: true })
       return
     }
-
     if (profile && !isAdmin) {
       navigate('/', { replace: true })
     }
@@ -63,9 +66,21 @@ export default function AdminDashboard() {
       if (id) {
         await updateArticle(id, payload)
         toast.success('Article updated successfully.')
+        addNotification({
+          type: 'admin_update',
+          title: 'Article updated',
+          message: payload.title,
+          href: `/article/${payload.slug}`,
+        })
       } else {
         await createArticle(payload)
         toast.success('Article published successfully.')
+        addNotification({
+          type: 'article_published',
+          title: 'New article live',
+          message: payload.title,
+          href: `/article/${payload.slug}`,
+        })
       }
       setSelectedArticle(null)
       await queryClient.invalidateQueries({ queryKey: articleKeys.all })
@@ -79,14 +94,9 @@ export default function AdminDashboard() {
   }
 
   const handleDelete = async (id: string) => {
-    const confirmed = window.confirm('Delete this article permanently?')
-    if (!confirmed) {
-      return
-    }
-
+    if (!window.confirm('Delete this article permanently?')) return
     setError('')
     setDeleting(true)
-
     try {
       await deleteArticle(id)
       toast.success('Article deleted successfully.')
@@ -102,8 +112,8 @@ export default function AdminDashboard() {
 
   if (loading || !user || !profile || !isAdmin) {
     return (
-      <div className="min-h-screen bg-[#060A16] text-slate-100 flex items-center justify-center">
-        <div className="rounded-3xl border border-slate-700 bg-[#0B1224]/90 px-8 py-6 text-center shadow-2xl shadow-slate-950/30">
+      <div className="min-h-screen bg-[#080d1a] text-slate-100 flex items-center justify-center">
+        <div className="rounded-3xl border border-white/10 bg-[#0B1224]/90 px-8 py-6 text-center shadow-2xl">
           <p className="text-lg font-medium">Verifying admin session…</p>
         </div>
       </div>
@@ -113,52 +123,41 @@ export default function AdminDashboard() {
   const currentUser = user.email ?? 'Admin'
 
   return (
-    <div className="min-h-screen bg-[#060A16] text-slate-100">
+    <div className="min-h-screen bg-[#080d1a] text-slate-100">
+      <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(37,99,235,0.12),transparent)]" aria-hidden />
       <Toaster position="bottom-right" />
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <div className="mb-8 flex flex-col gap-4 rounded-3xl border border-slate-700 bg-[#0B1224]/90 p-6 shadow-xl shadow-slate-950/40 sm:flex-row sm:items-center sm:justify-between">
+      <div className="relative mx-auto max-w-[1600px] px-4 py-6 sm:px-6 lg:py-8 lg:px-8">
+        <header className="mb-8 flex flex-col gap-4 rounded-2xl border border-white/10 bg-[#0B1224]/80 p-6 shadow-xl backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-sm uppercase tracking-[0.2em] text-[#94A3B8]/80">Gridaan Admin</p>
-            <h1 className="mt-2 text-3xl font-semibold text-white">CMS Dashboard</h1>
-            <p className="mt-2 text-sm text-slate-400">Manage articles, upload thumbnails, and publish directly to Supabase.</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#14B8A6]">Editorial CMS</p>
+            <h1 className="mt-2 text-2xl font-bold text-white sm:text-3xl">Gridaan Dashboard</h1>
+            <p className="mt-1 text-sm text-[#64748B]">Publish, analyze, and manage your AI-tech publication.</p>
           </div>
-
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-            <div className="rounded-3xl bg-[#060A16]/80 px-4 py-3 text-sm text-slate-300">
-              Signed in as <span className="font-semibold text-white">{currentUser}</span>
-            </div>
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="rounded-xl border border-white/10 bg-[#080d1a]/80 px-4 py-2 text-sm text-[#94A3B8]">
+              {currentUser}
+            </span>
             <button
+              type="button"
               onClick={handleLogout}
-              className="inline-flex items-center justify-center gap-2 rounded-3xl bg-rose-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-rose-500"
+              className="inline-flex items-center gap-2 rounded-xl bg-rose-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-rose-500"
             >
               <LogOut className="h-4 w-4" /> Sign out
             </button>
           </div>
-        </div>
+        </header>
 
         {(error || articlesError) && (
-          <div className="mb-6 rounded-3xl border border-rose-500/20 bg-rose-500/10 p-4 text-sm text-rose-100">
-            {error || 'Unable to fetch articles. Please refresh the page.'}
+          <div className="mb-6 rounded-2xl border border-rose-500/20 bg-rose-500/10 p-4 text-sm text-rose-100">
+            {error || 'Unable to fetch articles. Please refresh.'}
           </div>
         )}
 
-        <div className="grid gap-8 xl:grid-cols-[1.2fr_0.8fr]">
-          <div className="space-y-6">
-            <div className="flex flex-col gap-4 rounded-3xl border border-slate-700 bg-[#0B1224]/90 p-6 shadow-xl shadow-slate-950/30">
-              <div className="flex items-center justify-between gap-4">
-                <div>
-                  <h2 className="text-xl font-semibold text-white">Create or edit article</h2>
-                  <p className="mt-1 text-sm text-slate-400">Draft rich posts with a modern editor and save them directly to Supabase.</p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setSelectedArticle(null)}
-                  className="inline-flex items-center gap-2 rounded-2xl bg-[#0B1224] px-4 py-2 text-sm font-semibold text-slate-200 transition hover:bg-slate-700"
-                >
-                  <Plus className="h-4 w-4" /> New article
-                </button>
-              </div>
+        <DashboardStats articles={articles} />
 
+        <div className="mt-8 grid gap-6 xl:grid-cols-[1fr_280px] 2xl:grid-cols-[1fr_300px]">
+          <div className="min-w-0 space-y-6">
+            <div className="rounded-2xl border border-white/10 bg-[#0B1224]/80 p-4 sm:p-6 backdrop-blur-sm">
               <ArticleForm
                 article={selectedArticle ?? undefined}
                 author={currentUser}
@@ -170,27 +169,23 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          <div className="space-y-6">
-            <div className="flex items-center justify-between gap-4 rounded-3xl border border-slate-700 bg-[#0B1224]/90 p-6 shadow-xl shadow-slate-950/30">
-              <div>
-                <p className="text-sm uppercase tracking-[0.18em] text-slate-400">Articles panel</p>
-                <h2 className="mt-2 text-xl font-semibold text-white">Saved articles</h2>
-              </div>
-              <button
-                onClick={() => refetchArticles()}
-                className="inline-flex items-center gap-2 rounded-2xl bg-[#2563EB] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#2563EB]"
-              >
-                <RefreshCcw className="h-4 w-4" /> Refresh
-              </button>
-            </div>
-
-            <ArticleList
-              articles={articles}
-              loading={loadingArticles}
-              onEdit={setSelectedArticle}
-              onDelete={handleDelete}
+          <aside className="space-y-4 xl:sticky xl:top-24 xl:self-start">
+            <QuickActions
+              onNew={() => setSelectedArticle(null)}
+              onRefresh={() => refetchArticles()}
             />
-          </div>
+            <RecentActivity articles={articles} />
+          </aside>
+        </div>
+
+        <div className="mt-8 rounded-2xl border border-white/10 bg-[#0B1224]/80 p-4 sm:p-6 backdrop-blur-sm">
+          <h2 className="mb-4 text-lg font-semibold text-white">Article library</h2>
+          <ArticleList
+            articles={articles}
+            loading={loadingArticles}
+            onEdit={setSelectedArticle}
+            onDelete={handleDelete}
+          />
         </div>
       </div>
     </div>

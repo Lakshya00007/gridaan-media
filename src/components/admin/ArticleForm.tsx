@@ -38,6 +38,7 @@ export default function ArticleForm({
   const [excerpt, setExcerpt] = useState(article?.excerpt ?? '')
   const [content, setContent] = useState(article?.content ?? '')
   const [imageUrl, setImageUrl] = useState(article?.image_url ?? '')
+  const [status, setStatus] = useState<Article['status']>(article?.status ?? 'published')
   const [error, setError] = useState('')
 
   useEffect(() => {
@@ -47,6 +48,7 @@ export default function ArticleForm({
     setExcerpt(article?.excerpt ?? '')
     setContent(article?.content ?? '')
     setImageUrl(article?.image_url ?? '')
+    setStatus(article?.status ?? 'published')
     setError('')
   }, [article, categories])
 
@@ -94,6 +96,7 @@ export default function ArticleForm({
         content: sanitizedContent,
         image_url: imageUrl,
         author,
+        status,
       })
     } catch (saveError) {
       setError('Unable to save the article. Please try again.')
@@ -158,12 +161,25 @@ export default function ArticleForm({
             className="mt-2 w-full rounded-3xl border border-slate-700 bg-[#0B1224] px-4 py-3 text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
           >
             {categories.map((option) => (
-              <option key={option} value={option} className="bg-[#060A16] text-slate-900">{option}</option>
+              <option key={option} value={option} className="bg-[#080d1a] text-slate-900">{option}</option>
             ))}
           </select>
         </label>
 
         <label className="block text-sm font-medium text-slate-200">
+          Status
+          <select
+            value={status}
+            onChange={(event) => setStatus(event.target.value as Article['status'])}
+            className="mt-2 w-full rounded-3xl border border-slate-700 bg-[#0B1224] px-4 py-3 text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+          >
+            <option value="published" className="bg-[#080d1a]">Published</option>
+            <option value="draft" className="bg-[#080d1a]">Draft</option>
+            <option value="scheduled" className="bg-[#080d1a]">Scheduled</option>
+          </select>
+        </label>
+
+        <label className="block text-sm font-medium text-slate-200 lg:col-span-2">
           Excerpt
           <textarea
             value={excerpt}

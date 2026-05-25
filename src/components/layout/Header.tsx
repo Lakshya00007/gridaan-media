@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Menu, X, Moon, Sun, Bookmark, User, Bell, ChevronDown } from 'lucide-react';
+import { Search, Menu, X, Moon, Sun, Bookmark, User, ChevronDown } from 'lucide-react';
+import NotificationBell from '../notifications/NotificationBell';
 import { useUI } from '../../context/UIContext';
 import GridaanLogo from './GridaanLogo';
 import { useCategories } from '../../hooks/useArticles';
@@ -21,7 +22,7 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-[#0B1224]/80 dark:bg-[#060A16]/80 backdrop-blur-xl border-b border-[#1E293B]/50 dark:border-[#1E293B]/50 transition-colors duration-300">
+    <header className="sticky top-0 z-50 bg-[#080d1a]/85 backdrop-blur-xl border-b border-[#1E293B]/50 transition-colors duration-300">
       {/* Top Bar */}
       <div className="bg-linear-to-r from-[#2563EB] via-[#334155] to-[#1D4ED8] text-white text-xs py-1.5">
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between">
@@ -97,11 +98,9 @@ export default function Header() {
               <Search className="w-5 h-5" />
             </button>
 
-            {/* Notifications */}
-            <button className="relative p-2 text-[#94A3B8] hover:text-[#2563EB] dark:text-[#94A3B8] dark:hover:text-[#94A3B8] rounded-lg hover:bg-[#0B1224] dark:hover:bg-[#0B1224] transition-all hidden sm:flex">
-              <Bell className="w-5 h-5" />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
-            </button>
+            <div className="hidden sm:block">
+              <NotificationBell />
+            </div>
 
             {/* Bookmarks */}
             <Link to="/bookmarks" className="p-2 text-[#94A3B8] hover:text-[#2563EB] dark:text-[#94A3B8] dark:hover:text-[#94A3B8] rounded-lg hover:bg-[#0B1224] dark:hover:bg-[#0B1224] transition-all hidden sm:flex">
@@ -146,7 +145,11 @@ export default function Header() {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-[#1E293B] dark:border-[#1E293B] bg-[#0B1224] dark:bg-[#0B1224] animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="lg:hidden border-t border-[#1E293B] bg-[#0B1224] animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between border-b border-[#1E293B]/50 sm:hidden">
+            <span className="text-xs font-medium text-[#64748B]">Notifications</span>
+            <NotificationBell />
+          </div>
           <nav className="max-w-7xl mx-auto px-4 py-4 space-y-1">
             {[
               { to: '/', label: 'Home' },

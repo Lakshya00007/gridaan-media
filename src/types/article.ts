@@ -13,4 +13,5 @@ export interface Article {
   type?: string
   readingTime?: number
   views?: number
+  status?: 'draft' | 'published' | 'scheduled'
 }
