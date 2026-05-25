@@ -48,7 +48,7 @@ export default function ImageUpload({ imageUrl, onUpload }: ImageUploadProps) {
             className="mt-4 h-40 w-full rounded-3xl object-cover border border-slate-700"
           />
         ) : (
-          <div className="mt-4 h-40 rounded-3xl border border-dashed border-slate-700 bg-[#060A16]/50 flex items-center justify-center text-sm text-slate-500">
+          <div className="mt-4 h-40 rounded-3xl border border-dashed border-slate-700 bg-[#080d1a]/50 flex items-center justify-center text-sm text-slate-500">
             No thumbnail selected yet.
           </div>
         )}

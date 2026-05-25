@@ -104,7 +104,7 @@ export default function ArticleForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 rounded-3xl border border-slate-700 bg-[#060A16]/90 p-6 shadow-xl shadow-slate-950/40">
+    <form onSubmit={handleSubmit} className="space-y-6 rounded-3xl border border-slate-700 bg-[#080d1a]/90 p-6 shadow-xl shadow-slate-950/40">
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div>
           <h2 className="text-2xl font-semibold text-white">{isEditing ? 'Edit Article' : 'Create Article'}</h2>
