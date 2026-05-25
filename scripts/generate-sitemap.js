@@ -1,10 +1,16 @@
 import fs from 'fs/promises'
+import { existsSync, readFileSync } from 'fs'
 import path from 'path'
 import { createClient } from '@supabase/supabase-js'
+import ws from 'ws'
+
+if (!globalThis.WebSocket) {
+  globalThis.WebSocket = ws
+}
 
 const DEFAULT_SITE_URL = 'https://gridaan.com'
 const OUTPUT_PATH = path.join(process.cwd(), 'public', 'sitemap.xml')
-const SUPABASE_TIMEOUT_MS = 8000
+const SUPABASE_TIMEOUT_MS = 15000
 
 const STATIC_ROUTES = [
   { path: '/', changefreq: 'daily', priority: '1.0' },
@@ -18,42 +24,87 @@ const STATIC_ROUTES = [
   { path: '/contact', changefreq: 'monthly', priority: '0.50' },
 ]
 
-const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL
-const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY
-const missingSupabaseEnv = [
-  ['VITE_SUPABASE_URL or SUPABASE_URL', supabaseUrl],
-  ['VITE_SUPABASE_ANON_KEY or SUPABASE_ANON_KEY', supabaseAnonKey],
-].filter(([, value]) => !value).map(([name]) => name)
+/** Load .env files for local/CI runs (Vercel injects env directly). */
+function loadEnvFiles() {
+  for (const filename of ['.env.local', '.env.production', '.env']) {
+    const filePath = path.join(process.cwd(), filename)
+    if (!existsSync(filePath)) continue
+
+    const content = readFileSync(filePath, 'utf8')
+    for (const line of content.split('\n')) {
+      const trimmed = line.trim()
+      if (!trimmed || trimmed.startsWith('#')) continue
+      const eq = trimmed.indexOf('=')
+      if (eq === -1) continue
+      const key = trimmed.slice(0, eq).trim()
+      let value = trimmed.slice(eq + 1).trim()
+      if (
+        (value.startsWith('"') && value.endsWith('"')) ||
+        (value.startsWith("'") && value.endsWith("'"))
+      ) {
+        value = value.slice(1, -1)
+      }
+      if (process.env[key] === undefined) {
+        process.env[key] = value
+      }
+    }
+  }
+}
+
+loadEnvFiles()
+
+const supabaseUrl =
+  process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || ''
+const supabaseAnonKey =
+  process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || ''
+
+const missingSupabaseEnv = []
+if (!supabaseUrl) {
+  missingSupabaseEnv.push('SUPABASE_URL or VITE_SUPABASE_URL')
+}
+if (!supabaseAnonKey) {
+  missingSupabaseEnv.push('SUPABASE_ANON_KEY or VITE_SUPABASE_ANON_KEY')
+}
+
 const hasSupabaseConfig = missingSupabaseEnv.length === 0
 
-const supabase = hasSupabaseConfig ? createClient(supabaseUrl, supabaseAnonKey) : null
+function maskSecret(value) {
+  if (!value || value.length < 8) return '(missing)'
+  return `${value.slice(0, 4)}…${value.slice(-4)}`
+}
 
 const resolveSiteUrl = () => {
   const candidate =
     process.env.SITE_URL ||
     process.env.VITE_SITE_URL ||
-    (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : '') ||
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : '') ||
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : '') ||
     DEFAULT_SITE_URL
 
   try {
-    const url = new URL(candidate)
-    return url.origin
+    return new URL(candidate).origin
   } catch {
-    console.warn(`WARNING: Invalid SITE_URL "${candidate}". Falling back to ${DEFAULT_SITE_URL}.`)
+    console.warn(
+      `[sitemap] Invalid SITE_URL "${candidate}". Using ${DEFAULT_SITE_URL}.`
+    )
     return DEFAULT_SITE_URL
   }
 }
 
 const SITE_URL = resolveSiteUrl()
 
+/** Match src/utils/articleUtils.ts slugifyCategory for route parity */
 const slugifyCategory = (value) =>
-  value
+  (value || 'General')
     .toLowerCase()
     .trim()
+    .replace(/\s*&\s*/g, '-')
     .replace(/[^a-z0-9\s-]/g, '')
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
 
 const formatDate = (dateString) => {
   const date = new Date(dateString)
@@ -61,9 +112,8 @@ const formatDate = (dateString) => {
   return date.toISOString().split('T')[0]
 }
 
-const buildUrlElement = ({ loc, lastmod, changefreq, priority }) => {
-  return `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`
-}
+const buildUrlElement = ({ loc, lastmod, changefreq, priority }) =>
+  `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`
 
 const buildSitemap = ({ staticUrls, categoryUrls, articleUrls }) => {
   const lines = [
@@ -99,10 +149,13 @@ const buildSitemap = ({ staticUrls, categoryUrls, articleUrls }) => {
   return lines.join('\n')
 }
 
-const withTimeout = async (promise, timeoutMs) => {
+const withTimeout = async (label, promise, timeoutMs) => {
   let timeoutId
   const timeout = new Promise((_, reject) => {
-    timeoutId = setTimeout(() => reject(new Error(`Supabase sitemap query timed out after ${timeoutMs}ms`)), timeoutMs)
+    timeoutId = setTimeout(
+      () => reject(new Error(`${label} timed out after ${timeoutMs}ms`)),
+      timeoutMs
+    )
   })
 
   try {
@@ -112,38 +165,132 @@ const withTimeout = async (promise, timeoutMs) => {
   }
 }
 
-const fetchArticles = async () => {
-  if (!hasSupabaseConfig || !supabase) {
-    console.warn(
-      `WARNING: Supabase environment variables are not configured (${missingSupabaseEnv.join(', ')}). Generating sitemap with static routes only.`
+function logSupabaseError(context, error) {
+  console.error(`[sitemap] Supabase error (${context}):`, {
+    message: error.message,
+    code: error.code,
+    details: error.details,
+    hint: error.hint,
+  })
+}
+
+function createSupabaseClient() {
+  if (!hasSupabaseConfig) {
+    console.error(
+      `[sitemap] Missing Supabase environment variables: ${missingSupabaseEnv.join(', ')}`
     )
-    return []
+    return null
   }
 
-  try {
-    const { data, error } = await withTimeout(
-      supabase
-        .from('articles')
-        .select('slug, category, created_at, trending, type')
-        .eq('status', 'published')
-        .order('created_at', { ascending: false }),
+  console.log('[sitemap] Supabase config detected:', {
+    url: supabaseUrl,
+    anonKey: maskSecret(supabaseAnonKey),
+    siteUrl: SITE_URL,
+  })
+
+  return createClient(supabaseUrl, supabaseAnonKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  })
+}
+
+async function fetchPublishedArticles(supabase) {
+  const select = 'slug, category, created_at'
+  const order = { ascending: false }
+
+  let response = await withTimeout(
+    'articles (published)',
+    supabase
+      .from('articles')
+      .select(`${select}, status`)
+      .eq('status', 'published')
+      .order('created_at', order),
+    SUPABASE_TIMEOUT_MS
+  )
+
+  if (
+    response.error &&
+    response.error.code === '42703' &&
+    /status/i.test(response.error.message || '')
+  ) {
+    console.warn(
+      '[sitemap] articles.status column unavailable; including all article rows'
+    )
+    response = await withTimeout(
+      'articles (no status column)',
+      supabase.from('articles').select(select).order('created_at', order),
       SUPABASE_TIMEOUT_MS
     )
-
-    if (error) {
-      console.warn(`WARNING: Failed to fetch articles from Supabase: ${error.message}`)
-      return []
-    }
-
-    return data ?? []
-  } catch (error) {
-    console.warn(`WARNING: ${error instanceof Error ? error.message : 'Unexpected Supabase sitemap error'}`)
-    return []
+  } else if (
+    response.error &&
+    response.error.code === '42703'
+  ) {
+    console.warn(
+      '[sitemap] Retrying article fetch with minimal columns:',
+      response.error.message
+    )
+    response = await withTimeout(
+      'articles (minimal)',
+      supabase.from('articles').select(select).order('created_at', order),
+      SUPABASE_TIMEOUT_MS
+    )
   }
+
+  if (response.error) {
+    logSupabaseError('fetch articles', response.error)
+    throw response.error
+  }
+
+  const rows = response.data ?? []
+  const published = rows.filter((row) => {
+    if (row.status === undefined) return Boolean(row.slug)
+    return row.status === 'published'
+  })
+
+  console.log(
+    `[sitemap] Fetched ${rows.length} article row(s); ${published.length} published for sitemap`
+  )
+
+  return published
+}
+
+function buildCategoryUrls(articles) {
+  const categoriesBySlug = new Map()
+
+  for (const article of articles) {
+    if (!article.category) continue
+    const slug = slugifyCategory(article.category)
+    if (!slug) continue
+    const lastmod = formatDate(article.created_at || new Date().toISOString())
+    const existing = categoriesBySlug.get(slug)
+    if (!existing || lastmod > existing.lastmod) {
+      categoriesBySlug.set(slug, { slug, lastmod })
+    }
+  }
+
+  const categoryUrls = Array.from(categoriesBySlug.values()).map((item) => ({
+    loc: `${SITE_URL}/category/${item.slug}`,
+    lastmod: item.lastmod,
+  }))
+
+  console.log(`[sitemap] Built ${categoryUrls.length} category URL(s) from articles`)
+
+  return categoryUrls
 }
 
 const run = async () => {
-  const articles = await fetchArticles()
+  console.log('[sitemap] Starting sitemap generation…')
+
+  let articles = []
+
+  if (!hasSupabaseConfig) {
+    console.error(
+      `[sitemap] Cannot fetch dynamic URLs. Missing: ${missingSupabaseEnv.join(', ')}`
+    )
+  } else {
+    const supabase = createSupabaseClient()
+    articles = await fetchPublishedArticles(supabase)
+  }
+
   const fallbackLastMod = formatDate(new Date().toISOString())
   const latestArticleMod = articles.length
     ? formatDate(articles[0].created_at || new Date().toISOString())
@@ -161,31 +308,30 @@ const run = async () => {
     .map((article) => ({
       loc: `${SITE_URL}/article/${article.slug}`,
       lastmod: formatDate(article.created_at || new Date().toISOString()),
-      priority: article.trending ? '0.85' : '0.70',
+      priority: '0.70',
     }))
 
-  const categoriesBySlug = new Map()
-
-  for (const article of articles) {
-    if (!article.category) continue
-    const normalized = slugifyCategory(article.category)
-    const lastmod = formatDate(article.created_at || new Date().toISOString())
-    const existing = categoriesBySlug.get(normalized)
-    if (!existing || lastmod > existing.lastmod) {
-      categoriesBySlug.set(normalized, { slug: normalized, lastmod })
-    }
-  }
-
-  const categoryUrls = Array.from(categoriesBySlug.values()).map((item) => ({
-    loc: `${SITE_URL}/category/${item.slug}`,
-    lastmod: item.lastmod,
-  }))
+  const categoryUrls = buildCategoryUrls(articles)
 
   const sitemap = buildSitemap({ staticUrls, categoryUrls, articleUrls })
   await fs.writeFile(OUTPUT_PATH, sitemap, 'utf8')
-  console.log(`Sitemap generated at ${OUTPUT_PATH} (${staticUrls.length} static + ${categoryUrls.length} categories + ${articleUrls.length} articles)`)
+
+  console.log('[sitemap] Wrote', OUTPUT_PATH)
+  console.log('[sitemap] Final counts:', {
+    staticRoutes: staticUrls.length,
+    dynamicCategories: categoryUrls.length,
+    dynamicArticles: articleUrls.length,
+    totalUrls: staticUrls.length + categoryUrls.length + articleUrls.length,
+  })
+
+  if (hasSupabaseConfig && articleUrls.length === 0) {
+    console.warn(
+      '[sitemap] Supabase is configured but no published article URLs were added. Check RLS policies and article status values.'
+    )
+  }
 }
 
 run().catch((error) => {
-  console.warn(`WARNING: Sitemap generation fell back after an unexpected error: ${error instanceof Error ? error.message : error}`)
+  console.error('[sitemap] Generation failed:', error)
+  process.exit(1)
 })

@@ -54,4 +54,16 @@
     <changefreq>monthly</changefreq>
     <priority>0.50</priority>
   </url>
+  <url>
+    <loc>https://gridaan.com/category/technology</loc>
+    <lastmod>2026-05-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://gridaan.com/article/how-artificial-intelligence-is-changing-education-2026</loc>
+    <lastmod>2026-05-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.70</priority>
+  </url>
 </urlset>
