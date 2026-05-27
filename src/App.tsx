@@ -4,27 +4,28 @@ import { UIProvider } from './context/UIContext';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import BackToTop from './components/ui/BackToTop';
-import HomePage from './pages/HomePage';
-import ArticlePage from './pages/ArticlePage';
-import CategoryPage from './pages/CategoryPage';
-import CategoriesPage from './pages/CategoriesPage';
-import SearchPage from './pages/SearchPage';
-import TrendingPage from './pages/TrendingPage';
-import TutorialsPage from './pages/TutorialsPage';
-import VideosPage from './pages/VideosPage';
-import BookmarksPage from './pages/BookmarksPage';
-import AboutPage from './pages/AboutPage';
-import ContactPage from './pages/ContactPage';
-import PrivacyPage from './pages/PrivacyPage';
-import TermsPage from './pages/TermsPage';
-import PrivacyPolicyPage from './pages/legal/PrivacyPolicyPage';
-import TermsAndConditionsPage from './pages/legal/TermsAndConditionsPage';
-import DisclaimerPage from './pages/legal/DisclaimerPage';
-import CookiePolicyPage from './pages/legal/CookiePolicyPage';
 import ProtectedRoute from './components/admin/ProtectedRoute';
 import ErrorBoundary from './components/ErrorBoundary';
 import NotificationsFeed from './components/layout/NotificationsFeed';
 
+// Route-based code splitting — all pages are lazily imported
+const HomePage = lazy(() => import('./pages/HomePage'))
+const ArticlePage = lazy(() => import('./pages/ArticlePage'))
+const CategoryPage = lazy(() => import('./pages/CategoryPage'))
+const CategoriesPage = lazy(() => import('./pages/CategoriesPage'))
+const SearchPage = lazy(() => import('./pages/SearchPage'))
+const TrendingPage = lazy(() => import('./pages/TrendingPage'))
+const TutorialsPage = lazy(() => import('./pages/TutorialsPage'))
+const VideosPage = lazy(() => import('./pages/VideosPage'))
+const BookmarksPage = lazy(() => import('./pages/BookmarksPage'))
+const AboutPage = lazy(() => import('./pages/AboutPage'))
+const ContactPage = lazy(() => import('./pages/ContactPage'))
+const PrivacyPage = lazy(() => import('./pages/PrivacyPage'))
+const TermsPage = lazy(() => import('./pages/TermsPage'))
+const PrivacyPolicyPage = lazy(() => import('./pages/legal/PrivacyPolicyPage'))
+const TermsAndConditionsPage = lazy(() => import('./pages/legal/TermsAndConditionsPage'))
+const DisclaimerPage = lazy(() => import('./pages/legal/DisclaimerPage'))
+const CookiePolicyPage = lazy(() => import('./pages/legal/CookiePolicyPage'))
 const LoginPage = lazy(() => import('./pages/admin/LoginPage'))
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'))
 
@@ -55,12 +56,13 @@ function AppLayout() {
   )
 
   return (
-    <div className="min-h-screen bg-[#080d1a] transition-colors duration-300">
+    <div className="min-h-screen bg-bg text-text transition-colors duration-300">
       <NotificationsFeed />
       <Header />
       <main>
         <Suspense fallback={routeFallback}>
-          <Routes>
+          <div key={location.pathname} className="transition-opacity duration-200 ease-out">
+            <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/article/:slug" element={withBoundary(<ArticlePage />, 'Article failed to load.')} />
             <Route path="/category/:slug" element={withBoundary(<CategoryPage />, 'Category failed to load.')} />
@@ -88,7 +90,8 @@ function AppLayout() {
               )
             } />
             <Route path="*" element={<NotFound />} />
-          </Routes>
+            </Routes>
+          </div>
         </Suspense>
       </main>
       <Footer />

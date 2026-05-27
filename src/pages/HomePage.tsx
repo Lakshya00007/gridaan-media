@@ -1,99 +1,119 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { TrendingUp, ArrowRight, Sparkles, Zap, ChevronRight, Play, User } from 'lucide-react';
+import { TrendingUp, ArrowRight, Sparkles, Zap, ChevronRight, Play, BookOpen, Clock, Eye, Mail, Star } from 'lucide-react';
+import { MotionContainer, MotionItem } from '../components/ui/MotionPresets';
 import ArticleCard from '../components/articles/ArticleCard';
 import AdBanner from '../components/ads/AdBanner';
 import Skeleton from '../components/ui/Skeleton';
+import SEO from '../components/seo/SEO';
+import { Button } from '../components/ui';
+import LazyImage from '../components/ui/LazyImage';
 import { useArticles, useCategories } from '../hooks/useArticles';
-import { getArticleReadingTime } from '../utils/articleUtils';
+import { getArticleReadingTime, getArticleViews, getArticleDate } from '../utils/articleUtils';
+import { useUI } from '../context/UIContext';
 
 export default function HomePage() {
- 
   const [activeCategory, setActiveCategory] = useState('All');
   const { data: articles = [], isLoading: loading, error } = useArticles();
   const { data: categories = [] } = useCategories();
+  const { newsletterEmail, setNewsletterEmail, subscribed, subscribe, subscriberCount } = useUI();
   
   const featured = articles.filter(a => a.featured);
   const trending = articles.filter(a => a.trending);
   const latest = articles.slice(0, 9);
   const tutorials = articles.filter(a => a.type === 'tutorial');
+  const videos = articles.filter(a => a.type === 'video');
 
   const filteredArticles = activeCategory === 'All'
     ? latest
     : latest.filter(a => a.category === activeCategory);
 
-  const trendingKeywords = ['GPT-5', 'Kubernetes', 'React 20', 'WebAssembly', 'Flutter', 'Cybersecurity', 'MLOps', 'Edge Computing'];
+  const trendingKeywords = ['GPT-5', 'Next.js 15', 'Kubernetes', 'WebAssembly', 'Cybersecurity', 'Rust', 'MLOps', 'Vector DBs'];
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newsletterEmail.trim()) {
+      subscribe(newsletterEmail);
+    }
+  };
+
+  const formatDate = (dateStr?: string) => {
+    if (!dateStr) return 'Recently';
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  };
 
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-mesh-hero">
-        <div className="absolute inset-0 bg-noise opacity-60 pointer-events-none" aria-hidden />
-        <div className="absolute inset-0 pointer-events-none" aria-hidden>
-          <div className="absolute -left-20 top-1/4 h-72 w-72 rounded-full bg-indigo-500/20 blur-[100px]" />
-          <div className="absolute right-0 top-0 h-96 w-96 rounded-full bg-[#14B8A6]/15 blur-[120px]" />
-        </div>
-        <div className="max-w-7xl mx-auto px-4 py-12 sm:py-16 md:py-24 relative">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            <div className="relative">
-              <div className="absolute -inset-4 bg-indigo-500/10 blur-3xl rounded-full pointer-events-none" aria-hidden />
-              <div className="relative flex items-center gap-2 text-[#14B8A6] text-sm font-medium mb-4">
-                <Sparkles className="w-4 h-4" aria-hidden />
-                <span>AI · Technology · Future</span>
+    <div className="min-h-screen bg-bg transition-colors duration-300">
+      <SEO 
+        title="Gridaan - Premium Digital Publishing Platform"
+        description="Gridaan is a modern editorial publishing platform featuring technology news, expert tutorials, AI breakthroughs, and digital media insights."
+      />
+
+      {/* HERO */}
+      <section className="pt-12 pb-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            <div className="lg:col-span-7">
+              <div className="inline-flex items-center gap-3 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold tracking-wider mb-4">
+                <Sparkles className="w-4 h-4" />
+                Curated · In-depth · Practical
               </div>
-              <h1 className="text-hero font-bold text-white mb-5 leading-[1.08] tracking-tight">
-                Where{' '}
-                <span className="relative inline-block">
-                  <span className="bg-linear-to-r from-[#2563EB] via-[#6366f1] to-[#14B8A6] bg-clip-text text-transparent">
-                    innovation
-                  </span>
-                </span>{' '}
-                meets insight
+              <h1 className="text-4xl sm:text-5xl lg:text-5xl font-extrabold tracking-tight leading-tight text-text max-w-2xl">
+                Insightful reporting and practical engineering guides for the modern web
               </h1>
-              <p className="text-base sm:text-lg text-[#64748B] mb-8 max-w-lg leading-relaxed">
-                Premium coverage of AI, engineering, and the ideas shaping tomorrow — tutorials, analysis, and breaking tech news.
+              <p className="mt-4 text-base text-text-secondary max-w-xl leading-relaxed">
+                Deep investigations, tutorials, and perspectives on AI, developer tooling, and distributed systems — crafted for engineers and leaders who build the future.
               </p>
-              <div className="flex flex-col xs:flex-row flex-wrap gap-3 mb-8">
-                <Link to="/trending" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-linear-to-r from-[#2563EB] to-[#1D4ED8] text-white rounded-xl font-semibold shadow-lg shadow-[#2563EB]/25 hover:shadow-[#2563EB]/40 transition-all hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]">
-                  <Zap className="w-4 h-4" aria-hidden /> Explore Trending
-                </Link>
-                <Link to="/tutorials" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#0B1224]/40 backdrop-blur-md text-white rounded-xl font-semibold border border-white/10 hover:border-[#14B8A6]/40 hover:bg-[#0B1224]/60 transition-all">
-                  <Play className="w-4 h-4" aria-hidden /> Tutorials
-                </Link>
-                <Link to="/dashboard" className="inline-flex items-center justify-center gap-2 px-6 py-3 text-[#94A3B8] rounded-xl font-medium border border-white/5 hover:text-white hover:border-white/15 transition-all">
-                  <User className="w-4 h-4" aria-hidden /> Dashboard
-                </Link>
+              <div className="mt-6 flex flex-wrap gap-3 items-center">
+                <Link to="/trending" className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg font-semibold hover:bg-hover-blue transition">Explore Trending</Link>
+                <Link to="/tutorials" className="inline-flex items-center gap-2 px-4 py-2 bg-card text-text rounded-lg border border-border hover:border-primary transition">Browse Tutorials</Link>
+                <span className="ml-3 text-sm text-text-secondary hidden md:inline">· Updated weekly</span>
               </div>
-              {/* Stats */}
-              <div className="flex gap-8">
-                {[
-                  { label: 'Articles', value: '342+' },
-                  { label: 'Subscribers', value: '24K+' },
-                  { label: 'Views', value: '1.2M+' },
-                ].map(stat => (
-                  <div key={stat.label}>
-                    <div className="text-2xl font-bold text-white">{stat.value}</div>
-                    <div className="text-xs text-[#94A3B8]">{stat.label}</div>
-                  </div>
-                ))}
+              <div className="mt-8 grid grid-cols-3 gap-4 max-w-md">
+                <div>
+                  <div className="text-lg font-bold text-text">450+</div>
+                  <div className="text-xs text-text-secondary uppercase tracking-wider">Articles</div>
+                </div>
+                <div>
+                  <div className="text-lg font-bold text-text">24K+</div>
+                  <div className="text-xs text-text-secondary uppercase tracking-wider">Subscribers</div>
+                </div>
+                <div>
+                  <div className="text-lg font-bold text-text">1.2M+</div>
+                  <div className="text-xs text-text-secondary uppercase tracking-wider">Monthly readers</div>
+                </div>
               </div>
             </div>
 
-            {/* Right: Featured Article */}
-            {featured[0] && (
-              <div className="hidden lg:block">
-                <ArticleCard article={featured[0]} variant="featured" />
+            <div className="lg:col-span-5">
+              <div className="relative">
+                <div className="absolute -right-6 -top-6 w-[420px] h-[420px] rounded-3xl bg-gradient-to-tr from-primary/10 to-cyan-200/5 blur-3xl opacity-80 pointer-events-none" />
+                <div className="rounded-3xl overflow-hidden border border-border shadow-md">
+                  {loading ? (
+                    <Skeleton className="h-[420px] rounded-3xl" />
+                  ) : featured[0] ? (
+                    <div className="p-4 sm:p-6">
+                      <ArticleCard article={featured[0]} variant="featured" />
+                    </div>
+                  ) : (
+                    <div className="h-[360px] flex items-center justify-center text-text-secondary">No featured article</div>
+                  )}
+                </div>
               </div>
-            )}
+            </div>
           </div>
 
-          {/* Trending Keywords */}
-          <div className="mt-12 flex items-center gap-3 flex-wrap">
-            <span className="text-xs font-medium text-[#94A3B8] uppercase tracking-wider flex items-center gap-1.5">
-              <TrendingUp className="w-3.5 h-3.5" /> Trending
+          <div className="mt-12 flex items-center gap-2.5 flex-wrap">
+            <span className="text-[10px] font-bold text-text uppercase tracking-wider flex items-center gap-1.5">
+              <TrendingUp className="w-3.5 h-3.5 text-primary" /> Hot Topics:
             </span>
             {trendingKeywords.map(keyword => (
-              <Link key={keyword} to={`/search?q=${keyword}`} className="px-3 py-1.5 bg-[#0B1224]/5 hover:bg-[#0B1224]/10 border border-white/10 text-[#94A3B8] rounded-full text-xs transition-all hover:-translate-y-0.5">
+              <Link 
+                key={keyword} 
+                to={`/search?q=${keyword}`} 
+                className="px-3 py-1 bg-card hover:bg-primary/5 border border-border hover:border-primary/30 text-text-secondary hover:text-primary rounded-full text-[10px] font-semibold transition-all"
+              >
                 {keyword}
               </Link>
             ))}
@@ -101,133 +121,206 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Ad Banner */}
-      <div className="max-w-7xl mx-auto px-4 py-4">
-        <AdBanner position="header" />
-      </div>
-
-      {error && (
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="rounded-2xl border border-rose-500/20 bg-rose-500/10 p-4 text-sm text-rose-100">
-            Unable to load articles right now.
-          </div>
-        </div>
-      )}
-
-      {/* Featured Articles Grid */}
-      <section className="max-w-7xl mx-auto px-4 py-12">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h2 className="text-2xl md:text-3xl font-bold text-[#F8FAFC] dark:text-white">Featured Stories</h2>
-            <p className="text-[#94A3B8] dark:text-[#94A3B8] mt-1">Hand-picked articles by our editors</p>
-          </div>
-          <Link to="/trending" className="hidden md:flex items-center gap-1 text-[#2563EB] dark:text-[#94A3B8] font-medium text-sm hover:gap-2 transition-all">
-            View all <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {loading
-            ? [...Array(3)].map((_, index) => (
-                <Skeleton key={index} className="h-[320px]" />
-              ))
-            : featured.slice(0, 3).map(article => (
-                <ArticleCard key={article.id} article={article} />
-              ))}
-        </div>
-      </section>
-
-      {/* Categories Bar */}
-      <section className="max-w-7xl mx-auto px-4 py-8">
-        <h2 className="text-2xl font-bold text-[#F8FAFC] dark:text-white mb-6">Explore by Category</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-          {loading
-            ? [...Array(5)].map((_, index) => <Skeleton key={index} className="h-28 rounded-xl" />)
-            : categories.slice(0, 10).map(cat => (
-                <Link key={cat.id} to={`/category/${cat.slug}`} className="group p-4 bg-[#0B1224] dark:bg-[#0B1224]/50 rounded-xl border border-[#1E293B]/50 dark:border-[#1E293B]/50 hover:shadow-lg hover:shadow-gray-200/50 dark:hover:shadow-gray-900/50 transition-all hover:-translate-y-1">
-                  <span className="text-2xl mb-2 block">{cat.icon}</span>
-                  <h3 className="font-semibold text-sm text-[#F8FAFC] dark:text-white group-hover:text-[#2563EB] dark:group-hover:text-[#94A3B8] transition-colors">{cat.name}</h3>
-                  <span className="text-xs text-[#94A3B8]">{cat.count} articles</span>
-                </Link>
-              ))}
-        </div>
-      </section>
-
-      {/* Main Content Area */}
-      <section className="max-w-7xl mx-auto px-4 py-12">
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Main Column */}
-          <div className="lg:col-span-2">
-            {/* Category Filters */}
-            <div className="flex items-center gap-2 mb-6 overflow-x-auto pb-2 scrollbar-hide">
-              {['All', ...categories.slice(0, 5).map(cat => cat.name)].map(cat => (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
-                    activeCategory === cat
-                      ? 'bg-[#2563EB] text-white shadow-lg shadow-[#2563EB]/20 dark:shadow-[#1D4ED8]/30'
-                      : 'bg-[#0B1224] dark:bg-[#0B1224] text-gray-600 dark:text-[#94A3B8] hover:bg-[#0B1224]/80 dark:hover:bg-[#0B1224]'
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-
-            <h2 className="text-2xl font-bold text-[#F8FAFC] dark:text-white mb-6">Latest Articles</h2>
+      {/* MAIN CONTENT WORKSPACE */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+        <div className="grid lg:grid-cols-12 gap-8 items-start">
+          
+          {/* LEFT 8-COLS: Main Editorial Stream */}
+          <div className="lg:col-span-8 space-y-12">
             
-            <div className="space-y-0">
-              {loading ? (
-                [...Array(4)].map((_, index) => (
-                  <div key={index} className="flex flex-col gap-4 py-4 border-b border-[#1E293B] dark:border-[#1E293B] last:border-0">
-                    <Skeleton className="h-24 w-full rounded-[1.25rem]" />
-                  </div>
-                ))
-              ) : (
-                (filteredArticles.length > 0 ? filteredArticles : latest).map((article, index) => (
-                  <div key={article.id}>
-                    <ArticleCard article={article} variant="horizontal" />
-                    {index === 2 && <div className="py-4"><AdBanner position="in-article" /></div>}
-                  </div>
-                ))
-              )}
+            {/* SECTION 1: Featured Stories */}
+            <section className="space-y-6">
+              <div className="flex items-center justify-between border-b border-border pb-3">
+                <div>
+                  <h2 className="text-lg font-bold text-text">Featured Stories</h2>
+                  <p className="text-xs text-text-secondary">Curated deep-dives from our editors</p>
+                </div>
+                <Link to="/trending" className="flex items-center gap-1 text-primary text-xs font-bold hover:gap-1.5 transition-all">
+                  View all <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+              
+              <MotionContainer className="grid md:grid-cols-2 gap-6">
+                {loading ? (
+                  [...Array(2)].map((_, i) => <Skeleton key={i} className="h-80 rounded-3xl" />)
+                ) : (
+                  featured.slice(1, 3).map(article => (
+                    <MotionItem key={article.id} className="">
+                      <ArticleCard article={article} />
+                    </MotionItem>
+                  ))
+                )}
+              </MotionContainer>
+            </section>
+
+            {/* Ad Banner */}
+            <div className="py-2">
+              <AdBanner position="header" />
             </div>
 
-            <Link to="/trending" className="mt-8 block text-center py-3 bg-[#0B1224] rounded-xl text-sm font-medium text-[#94A3B8] hover:bg-[#080d1a]/80 ring-1 ring-white/5 hover:ring-[#2563EB]/30 transition-all">
-              Load More Articles →
-            </Link>
+            {/* SECTION 3: Latest Tutorials */}
+            <section className="space-y-6">
+              <div className="flex items-center justify-between border-b border-border pb-3">
+                <div>
+                  <h2 className="text-lg font-bold text-text">Latest Tutorials</h2>
+                  <p className="text-xs text-text-secondary">Learn step-by-step with expert engineering guides</p>
+                </div>
+                <Link to="/tutorials" className="flex items-center gap-1 text-primary text-xs font-bold hover:gap-1.5 transition-all">
+                  Browse guides <ChevronRight className="w-4 h-4" />
+                </Link>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-6">
+                {loading ? (
+                  [...Array(4)].map((_, i) => <Skeleton key={i} className="h-32 rounded-2xl" />)
+                ) : (
+                  tutorials.slice(0, 4).map(article => (
+                    <ArticleCard key={article.id} article={article} variant="horizontal" />
+                  ))
+                )}
+              </div>
+            </section>
+
+            {/* SECTION 4: Videos Section */}
+            <section className="space-y-6">
+              <div className="flex items-center justify-between border-b border-border pb-3">
+                <div>
+                  <h2 className="text-lg font-bold text-text">🎥 Featured Broadcasts</h2>
+                  <p className="text-xs text-text-secondary">Video tutorials, talks, and tech analyses</p>
+                </div>
+                <Link to="/videos" className="flex items-center gap-1 text-primary text-xs font-bold hover:gap-1.5 transition-all">
+                  Watch all videos <ChevronRight className="w-4 h-4" />
+                </Link>
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-6">
+                {loading ? (
+                  [...Array(2)].map((_, i) => <Skeleton key={i} className="h-[220px] rounded-3xl" />)
+                ) : videos.length === 0 ? (
+                  <div className="col-span-2 text-center py-6 text-xs text-text-secondary">No videos available yet</div>
+                ) : (
+                  videos.slice(0, 2).map(article => (
+                    <Link 
+                      key={article.id} 
+                      to={`/article/${article.slug}`} 
+                      className="group bg-card border border-border rounded-3xl overflow-hidden shadow-xs hover:shadow-md transition-all hover:-translate-y-1 block"
+                    >
+                      <div className="relative aspect-video bg-bg overflow-hidden border-b border-border/50">
+                        {article.image_url ? (
+                          <LazyImage
+                            src={article.image_url}
+                            alt={article.title}
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-tr from-blue-600 to-cyan-500" />
+                        )}
+                        <div className="absolute inset-0 bg-black/25 flex items-center justify-center group-hover:bg-black/35 transition-colors">
+                          <div className="w-12 h-12 bg-white/95 rounded-full flex items-center justify-center shadow-md transform group-hover:scale-110 transition-transform duration-300">
+                            <Play className="w-5 h-5 text-primary fill-primary ml-0.5" />
+                          </div>
+                        </div>
+                        <span className="absolute bottom-3 right-3 px-2 py-0.5 bg-black/85 text-white text-[10px] rounded font-semibold font-mono">
+                          {getArticleReadingTime(article)}:00
+                        </span>
+                      </div>
+                      <div className="p-5">
+                        <h4 className="font-bold text-sm text-text group-hover:text-primary transition-colors line-clamp-1 leading-snug mb-1">
+                          {article.title}
+                        </h4>
+                        <div className="flex items-center gap-2 text-[10px] text-text-secondary font-medium">
+                          <span>{article.author || 'Admin'}</span>
+                          <span>·</span>
+                          <span className="flex items-center gap-0.5"><Eye className="w-3 h-3" />{getArticleViews(article)} views</span>
+                        </div>
+                      </div>
+                    </Link>
+                  ))
+                )}
+              </div>
+            </section>
+
+            {/* SECTION 5: Dynamic Filtering Stream */}
+            <section className="space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-3">
+                <div>
+                  <h2 className="text-lg font-bold text-text">Latest Feed</h2>
+                  <p className="text-xs text-text-secondary font-medium">Filtered publication list</p>
+                </div>
+                <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-hide max-w-full">
+                  {['All', ...categories.slice(0, 4).map(c => c.name)].map(cat => (
+                    <button
+                      key={cat}
+                      onClick={() => setActiveCategory(cat)}
+                      className={`px-3 py-1 rounded-full text-[11px] font-bold transition-all whitespace-nowrap border cursor-pointer ${
+                        activeCategory === cat
+                          ? 'bg-primary text-white border-primary shadow-xs'
+                          : 'bg-card text-text-secondary border-border hover:bg-bg hover:text-text'
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                {loading ? (
+                  [...Array(3)].map((_, i) => <Skeleton key={i} className="h-32 rounded-3xl" />)
+                ) : filteredArticles.length === 0 ? (
+                  <div className="text-center py-12 text-xs text-text-secondary">No articles found in this filter</div>
+                ) : (
+                  <MotionContainer className="space-y-2">
+                    {filteredArticles.map(article => (
+                      <MotionItem key={article.id}>
+                        <ArticleCard article={article} variant="horizontal" />
+                      </MotionItem>
+                    ))}
+                  </MotionContainer>
+                )}
+              </div>
+            </section>
+
           </div>
 
-          {/* Sidebar */}
-          <aside className="space-y-6">
-            {/* Trending Widget */}
-            <div className="bg-[#0B1224] dark:bg-[#0B1224]/50 rounded-2xl border border-[#1E293B]/50 dark:border-[#1E293B]/50 p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <TrendingUp className="w-5 h-5 text-orange-500" />
-                <h3 className="font-bold text-[#F8FAFC] dark:text-white">Trending Now</h3>
+          {/* RIGHT 4-COLS: Widgets and Sidebars */}
+          <aside className="lg:col-span-4 space-y-8 lg:sticky lg:top-20">
+            
+            {/* SECTION 7: Popular This Week (Side Rank List) */}
+            <div className="bg-card border border-border rounded-3xl p-6 shadow-xs">
+              <div className="flex items-center gap-2 mb-4 border-b border-border pb-2.5">
+                <Star className="w-4 h-4 text-primary fill-primary" />
+                <h3 className="font-bold text-sm text-text">Popular This Week</h3>
               </div>
-              <div className="space-y-0">
+              <div className="space-y-4">
                 {loading ? (
-                  [...Array(5)].map((_, i) => (
-                    <div key={i} className="flex gap-3 py-3 border-b border-[#1E293B] dark:border-[#1E293B] last:border-0">
-                      <Skeleton className="h-8 w-8 rounded-2xl" />
-                      <div className="flex-1 space-y-2">
-                        <Skeleton className="h-4 w-5/6" />
-                        <Skeleton className="h-3 w-1/3" />
+                  [...Array(4)].map((_, i) => (
+                    <div key={i} className="flex gap-3 animate-pulse">
+                      <div className="w-8 h-8 rounded-full bg-bg" />
+                      <div className="flex-1 space-y-1.5 py-0.5">
+                        <div className="h-3 bg-bg rounded w-5/6" />
+                        <div className="h-2 bg-bg rounded w-1/3" />
                       </div>
                     </div>
                   ))
+                ) : trending.length === 0 ? (
+                  <div className="text-xs text-text-secondary py-2">No trending stories found</div>
                 ) : (
-                  trending.slice(0, 5).map((article, i) => (
-                    <div key={article.id} className="flex gap-3 py-3 border-b border-[#1E293B] dark:border-[#1E293B] last:border-0">
-                      <span className="text-2xl font-bold text-gray-200 dark:text-gray-700 shrink-0 w-8">
-                        {String(i + 1).padStart(2, '0')}
+                  trending.slice(0, 5).map((article, index) => (
+                    <div key={article.id} className="flex gap-3 items-start group">
+                      <span className="text-xl font-extrabold text-primary/20 shrink-0 w-6 leading-none">
+                        {String(index + 1).padStart(2, '0')}
                       </span>
-                      <div>
-                        <Link to={`/article/${article.slug}`} className="text-sm font-medium text-[#F8FAFC] dark:text-white hover:text-[#2563EB] dark:hover:text-[#94A3B8] transition-colors line-clamp-2">
+                      <div className="min-w-0">
+                        <Link 
+                          to={`/article/${article.slug}`} 
+                          className="text-xs font-bold text-text group-hover:text-primary transition-colors line-clamp-2 leading-snug"
+                        >
                           {article.title}
                         </Link>
-                        <span className="text-xs text-[#94A3B8] mt-0.5 block">{getArticleReadingTime(article)} min read</span>
+                        <span className="text-[10px] text-text-secondary mt-1 block">
+                          {formatDate(getArticleDate(article))} · {getArticleReadingTime(article)} min read
+                        </span>
                       </div>
                     </div>
                   ))
@@ -235,69 +328,84 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Ad */}
-            <AdBanner position="sidebar" />
-
-            {/* Tutorials Widget */}
-            <div className="bg-[#0B1224] dark:bg-[#0B1224]/50 rounded-2xl border border-[#1E293B]/50 dark:border-[#1E293B]/50 p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-bold text-[#F8FAFC] dark:text-white">📚 Tutorials</h3>
-                <Link to="/tutorials" className="text-xs text-[#2563EB] dark:text-[#94A3B8] font-medium">View all →</Link>
+            {/* SECTION 6: Categories Grid Widget */}
+            <div className="bg-card border border-border rounded-3xl p-6 shadow-xs">
+              <div className="flex items-center justify-between mb-4 border-b border-border pb-2.5">
+                <h3 className="font-bold text-sm text-text">Explore Topics</h3>
+                <Link to="/categories" className="text-[10px] text-primary font-bold hover:underline">View All</Link>
               </div>
-              {tutorials.slice(0, 4).map(article => (
-                <ArticleCard key={article.id} article={article} variant="compact" />
-              ))}
+              <div className="grid grid-cols-2 gap-2">
+                {loading ? (
+                  [...Array(4)].map((_, i) => <Skeleton key={i} className="h-14 rounded-xl" />)
+                ) : (
+                  categories.slice(0, 6).map(cat => (
+                    <Link 
+                      key={cat.id} 
+                      to={`/category/${cat.slug}`}
+                      className="p-3 bg-bg border border-border/80 hover:border-primary/30 rounded-2xl flex flex-col items-center text-center hover:bg-primary/5 transition-all duration-200"
+                    >
+                      <span className="text-lg mb-1">{cat.icon}</span>
+                      <span className="text-[10px] font-bold text-text truncate w-full">{cat.name}</span>
+                    </Link>
+                  ))
+                )}
+              </div>
             </div>
 
-            {/* Newsletter Mini */}
-            <div className="bg-linear-to-br from-[#2563EB] to-[#1D4ED8] rounded-2xl p-6 text-white">
-              <h3 className="font-bold text-lg mb-2">📬 Weekly Newsletter</h3>
-              <p className="text-sm text-[#94A3B8] mb-4">Get the best articles delivered to your inbox every week.</p>
-              <Link to="/" className="block text-center py-2.5 bg-[#0B1224] text-[#2563EB] rounded-xl text-sm font-semibold hover:bg-[#0B1224] transition-colors">
-                Subscribe Free
-              </Link>
-              <p className="text-xs text-[#94A3B8] mt-2 text-center">Join 24,680+ subscribers</p>
+            {/* Sidebar Ad Panel */}
+            <AdBanner position="sidebar" />
+
+            {/* SECTION 5: Newsletter Inline CTA Widget */}
+            <div className="bg-gradient-to-br from-primary/5 to-cyan-500/5 border border-primary/10 rounded-3xl p-6 shadow-xs relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-full pointer-events-none" />
+              <h3 className="font-bold text-sm text-text mb-1">📬 Weekly Newsletter</h3>
+              <p className="text-xs text-text-secondary mb-4 leading-relaxed">
+                Stay updated with the best hand-picked technology insights.
+              </p>
+              
+              {subscribed ? (
+                <div className="bg-primary/10 border border-primary/20 rounded-xl p-3 text-[11px] text-primary font-semibold text-center">
+                  ✅ Subscribed! Thanks for joining.
+                </div>
+              ) : (
+                <form onSubmit={handleSubscribe} className="space-y-2">
+                  <input
+                    type="email"
+                    value={newsletterEmail}
+                    onChange={e => setNewsletterEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    className="w-full px-3 py-2 rounded-xl bg-card border border-border text-[11px] text-text placeholder-text-secondary focus:outline-none focus:ring-1 focus:ring-primary transition-all"
+                    required
+                  />
+                  <Button type="submit" variant="primary" size="md" className="w-full">Subscribe Free</Button>
+                </form>
+              )}
+              <p className="text-[10px] text-text-secondary mt-2 text-center">
+                Join {subscriberCount.toLocaleString()}+ developers & engineers.
+              </p>
             </div>
 
             {/* Tags Cloud */}
-            <div className="bg-[#0B1224] dark:bg-[#0B1224]/50 rounded-2xl border border-[#1E293B]/50 dark:border-[#1E293B]/50 p-6">
-              <h3 className="font-bold text-[#F8FAFC] dark:text-white mb-4">🏷️ Popular Tags</h3>
-              <div className="flex flex-wrap gap-2">
-                {['React', 'AI', 'Python', 'JavaScript', 'Docker', 'AWS', 'TypeScript', 'Node.js', 'Kubernetes', 'GraphQL', 'Rust', 'Go', 'DevOps', 'Security'].map(tag => (
-                  <Link key={tag} to={`/search?q=${tag}`} className="px-3 py-1.5 bg-[#0B1224] dark:bg-[#0B1224] text-gray-600 dark:text-[#94A3B8] rounded-full text-xs font-medium hover:bg-[#0B1224] hover:text-[#2563EB] dark:hover:bg-[#0B1224]/30 dark:hover:text-[#94A3B8] transition-colors">
+            <div className="bg-card border border-border rounded-3xl p-6 shadow-xs">
+              <h3 className="font-bold text-sm text-text mb-3 border-b border-border pb-2.5">Popular Tags</h3>
+              <div className="flex flex-wrap gap-1.5">
+                {['React', 'AI', 'Python', 'JavaScript', 'Docker', 'AWS', 'TypeScript', 'Node.js', 'Rust', 'DevOps'].map(tag => (
+                  <Link 
+                    key={tag} 
+                    to={`/search?q=${tag}`} 
+                    className="px-2.5 py-1 bg-bg border border-border/80 text-text-secondary hover:text-primary hover:border-primary/30 rounded-full text-[10px] font-semibold transition-colors"
+                  >
                     {tag}
                   </Link>
                 ))}
               </div>
             </div>
+
           </aside>
-        </div>
-      </section>
 
-      {/* Featured Tutorials Section */}
-      <section className="bg-[#0B1224] dark:bg-[#0B1224]/50 py-12 border-y border-[#1E293B]/50 dark:border-[#1E293B]/50">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h2 className="text-2xl md:text-3xl font-bold text-[#F8FAFC] dark:text-white">Popular Tutorials</h2>
-              <p className="text-[#94A3B8] dark:text-[#94A3B8] mt-1">Learn with step-by-step guides</p>
-            </div>
-            <Link to="/tutorials" className="hidden md:flex items-center gap-1 text-[#2563EB] dark:text-[#94A3B8] font-medium text-sm hover:gap-2 transition-all">
-              All tutorials <ChevronRight className="w-4 h-4" />
-            </Link>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {tutorials.slice(0, 4).map(article => (
-              <ArticleCard key={article.id} article={article} />
-            ))}
-          </div>
         </div>
-      </section>
-
-      {/* Bottom Ad */}
-      <div className="max-w-7xl mx-auto px-4 py-6">
-        <AdBanner position="footer" />
       </div>
+
     </div>
   );
 }

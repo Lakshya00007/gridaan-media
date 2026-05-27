@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { AnimatePresence, motion } from 'framer-motion'
+ 
 import { Bell, Bookmark, Flame, Megaphone, Newspaper, Settings, X } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import { useNotifications } from '../../context/NotificationContext'
@@ -78,17 +78,12 @@ export default function NotificationBell() {
         )}
       </button>
 
-      <AnimatePresence>
         {open && (
-          <motion.div
+          <div
             ref={panelRef}
             role="dialog"
             aria-label="Notifications"
-            initial={{ opacity: 0, y: -8, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -8, scale: 0.98 }}
-            transition={{ duration: 0.2, ease: 'easeOut' }}
-            className="absolute right-0 z-[60] mt-2 w-[min(100vw-2rem,22rem)] overflow-hidden rounded-2xl border border-white/10 bg-[#0B1224]/95 shadow-2xl shadow-black/50 backdrop-blur-xl sm:w-96"
+            className="absolute right-0 z-[60] mt-2 w-[min(100vw-2rem,22rem)] overflow-hidden rounded-2xl border border-white/10 bg-[#0B1224]/95 shadow-2xl shadow-black/50 backdrop-blur-xl sm:w-96 transition transform duration-200 ease-out"
           >
             <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
               <h2 className="text-sm font-semibold text-white">Notifications</h2>
@@ -188,9 +183,8 @@ export default function NotificationBell() {
                 </button>
               </div>
             )}
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
     </div>
   )
 }

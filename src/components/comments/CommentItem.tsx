@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { formatDistanceToNow } from 'date-fns'
-import { motion } from 'framer-motion'
+ 
 import { MessageCircle, Trash2 } from 'lucide-react'
 import type { Comment } from '../../types/comment'
 
@@ -24,12 +24,7 @@ export default function CommentItem({
   const isOwn = currentUserId === comment.user_id
 
   return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      className={depth > 0 ? 'ml-4 sm:ml-8 border-l border-[#1E293B]/50 pl-4' : ''}
-    >
+    <div className={depth > 0 ? 'ml-4 sm:ml-8 border-l border-[#1E293B]/50 pl-4' : ''}>
       <div className="rounded-2xl border border-[#1E293B]/50 bg-[#0B1224]/70 p-4">
         <div className="flex gap-3">
           <div
@@ -100,6 +95,6 @@ export default function CommentItem({
       {showReply && (
         <p className="mt-2 text-xs text-[#64748B]">Reply using the form below.</p>
       )}
-    </motion.div>
+    </div>
   )
 }

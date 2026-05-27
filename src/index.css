@@ -3,17 +3,29 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --color-primary: #2563EB;
-  --color-accent: #14B8A6;
-  --color-muted: #64748B;
-  --color-bg: #080d1a;
-  --color-card: #0B1224;
-  --color-text: #F8FAFC;
+  --color-primary: #2563eb;
+  --color-accent: #3b82f6;
+  --color-muted: #64748b;
+  --color-bg: #f8fafc;
+  --color-card: #ffffff;
+  --color-text: #0f172a;
+  --color-text-secondary: #64748b;
+  --color-border: #e2e8f0;
+  --color-hover-blue: #1d4ed8;
+}
+
+.dark {
+  --color-bg: #0b0f19;
+  --color-card: #151b2c;
+  --color-text: #f8fafc;
+  --color-text-secondary: #94a3b8;
+  --color-border: #1e293b;
+  --color-hover-blue: #3b82f6;
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #64748B transparent;
+  scrollbar-color: var(--color-text-secondary) transparent;
 }
 
 *::-webkit-scrollbar {
@@ -26,7 +38,7 @@
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: #64748B;
+  background-color: var(--color-text-secondary);
   border-radius: 20px;
 }
 
@@ -42,20 +54,29 @@ body {
   background-color: var(--color-bg);
   color: var(--color-text);
   overflow-x: hidden;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .dark body {
-  background-color: #080d1a;
-  color: #e2e8f0;
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }
 
 /* Premium mesh noise overlay utility */
 .bg-mesh-hero {
-  background-color: #080d1a;
+  background-color: var(--color-bg);
   background-image:
-    radial-gradient(ellipse 80% 60% at 20% 20%, rgba(99, 102, 241, 0.18), transparent 50%),
-    radial-gradient(ellipse 60% 50% at 80% 30%, rgba(20, 184, 166, 0.12), transparent 45%),
-    radial-gradient(ellipse 50% 40% at 50% 100%, rgba(37, 99, 235, 0.1), transparent 50%);
+    radial-gradient(ellipse 80% 60% at 10% 10%, rgba(37, 99, 235, 0.08), transparent 50%),
+    radial-gradient(ellipse 60% 50% at 90% 20%, rgba(59, 130, 246, 0.05), transparent 45%),
+    radial-gradient(ellipse 50% 40% at 50% 80%, rgba(59, 130, 246, 0.04), transparent 50%);
+}
+
+.dark .bg-mesh-hero {
+  background-color: var(--color-bg);
+  background-image:
+    radial-gradient(ellipse 80% 60% at 10% 10%, rgba(37, 99, 235, 0.15), transparent 50%),
+    radial-gradient(ellipse 60% 50% at 90% 20%, rgba(59, 130, 246, 0.1), transparent 45%),
+    radial-gradient(ellipse 50% 40% at 50% 80%, rgba(59, 130, 246, 0.08), transparent 50%);
 }
 
 .bg-noise {

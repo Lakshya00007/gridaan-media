@@ -1,0 +1,15 @@
+{
+  "short_name": "Gridaan",
+  "name": "Gridaan Media Platform",
+  "icons": [
+    {
+      "src": "/images/gridaan-logo.svg",
+      "type": "image/svg+xml",
+      "sizes": "48x48 72x72 96x96 144x144 192x192 512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#f8fafc",
+  "theme_color": "#2563eb",
+  "display": "standalone"
+}

@@ -3,15 +3,17 @@ import { ThemeSupa } from '@supabase/auth-ui-shared'
 import { Navigate } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
 import { useAuthUser } from '../../hooks/useAuthUser'
+import { useUI } from '../../context/UIContext'
 
 export default function LoginPage() {
   const { user, loading } = useAuthUser()
-  const redirectTo = `${window.location.origin}/#/dashboard`
+  const { darkMode } = useUI()
+  const redirectTo = window.location.origin
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#080d1a] text-white">
-        <div className="rounded-2xl border border-slate-800 bg-slate-900/70 px-6 py-4">
+      <div className="min-h-screen flex items-center justify-center bg-bg text-text">
+        <div className="rounded-2xl border border-border bg-card px-6 py-4 shadow-sm animate-pulse">
           Preparing sign in...
         </div>
       </div>
@@ -23,14 +25,14 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#080d1a] px-4">
-      <div className="w-full max-w-md rounded-3xl border border-slate-800 bg-slate-900/80 p-8 shadow-2xl shadow-black/40">
+    <div className="min-h-screen flex items-center justify-center bg-bg px-4 transition-colors">
+      <div className="w-full max-w-md rounded-3xl border border-border bg-card p-8 shadow-sm">
         <div className="mb-6 text-center">
-          <h1 className="text-3xl font-bold text-white">
+          <h1 className="text-3xl font-bold text-text">
             Welcome to Gridaan
           </h1>
 
-          <p className="mt-2 text-sm text-slate-400">
+          <p className="mt-2 text-sm text-text-secondary">
             Continue with your admin account
           </p>
         </div>
@@ -39,9 +41,17 @@ export default function LoginPage() {
           supabaseClient={supabase}
           appearance={{
             theme: ThemeSupa,
+            variables: {
+              default: {
+                colors: {
+                  brand: '#2563eb',
+                  brandAccent: '#1d4ed8',
+                }
+              }
+            }
           }}
           providers={['google']}
-          theme="dark"
+          theme={darkMode ? 'dark' : 'default'}
           redirectTo={redirectTo}
         />
       </div>

@@ -1,43 +1,29 @@
 import { useEffect } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import type { Session } from '@supabase/supabase-js'
-import { supabase } from '../lib/supabase'
+import { useAuth } from '../context/AuthContext'
 import { authKeys } from '../hooks/useAuthUser'
 
-function syncAuthToCache(queryClient: ReturnType<typeof useQueryClient>, session: Session | null) {
-  queryClient.setQueryData(authKeys.user, session?.user ?? null)
-  queryClient.setQueryData(authKeys.session, session)
-
-  if (session?.user?.id) {
-    queryClient.invalidateQueries({ queryKey: authKeys.profile })
-  } else {
-    queryClient.removeQueries({ queryKey: authKeys.profile })
-  }
-
-  queryClient.invalidateQueries({ queryKey: ['bookmarks'] })
-}
-
+/**
+ * AuthQuerySync now reads auth state from AuthContext and mirrors it
+ * into the react-query cache. The single Supabase listener stays in
+ * AuthProvider to avoid duplicate subscriptions and race conditions.
+ */
 export default function AuthQuerySync() {
   const queryClient = useQueryClient()
+  const { session, user, profile } = useAuth()
 
   useEffect(() => {
-    let isMounted = true
+    queryClient.setQueryData(authKeys.user, user ?? null)
+    queryClient.setQueryData(authKeys.session, session ?? null)
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (isMounted) {
-        syncAuthToCache(queryClient, session)
-      }
-    })
-
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      syncAuthToCache(queryClient, session)
-    })
-
-    return () => {
-      isMounted = false
-      listener.subscription.unsubscribe()
+    if (profile) {
+      queryClient.setQueryData(authKeys.profileByUser(profile.id), profile)
+    } else {
+      queryClient.removeQueries({ queryKey: authKeys.profile })
     }
-  }, [queryClient])
+
+    queryClient.invalidateQueries({ queryKey: ['bookmarks'] })
+  }, [queryClient, session, user, profile])
 
   return null
 }

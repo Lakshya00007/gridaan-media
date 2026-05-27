@@ -1,6 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
-import type { Session, User } from '@supabase/supabase-js'
-import { getCurrentUser, getProfile, type Profile } from '../services/profiles'
+import { useAuth } from '../context/AuthContext'
 
 export const authKeys = {
   user: ['auth', 'user'] as const,
@@ -10,40 +8,12 @@ export const authKeys = {
 }
 
 export function useAuthUser() {
-  const userQuery = useQuery<User | null>({
-    queryKey: authKeys.user,
-    queryFn: getCurrentUser,
-    staleTime: 60 * 1000,
-    retry: false,
-  })
-
-  const sessionQuery = useQuery<Session | null>({
-    queryKey: authKeys.session,
-    queryFn: async () => null,
-    enabled: false,
-    staleTime: Infinity,
-    retry: false,
-  })
-
-  const user = userQuery.data ?? null
-
-  const profileQuery = useQuery<Profile | null>({
-    queryKey: authKeys.profileByUser(user?.id ?? ''),
-    queryFn: () => getProfile(user!.id),
-    enabled: Boolean(user?.id),
-    staleTime: 60 * 1000,
-    retry: false,
-  })
-
-  const profile = profileQuery.data ?? null
-  const session = sessionQuery.data ?? null
-  const loading = userQuery.isPending || (!!user?.id && profileQuery.isLoading)
-
+  const auth = useAuth()
   return {
-    user,
-    session,
-    profile,
-    loading,
-    isAdmin: profile?.role === 'admin',
+    user: auth.user,
+    session: auth.session,
+    profile: auth.profile,
+    loading: auth.loading,
+    isAdmin: auth.isAdmin,
   }
 }

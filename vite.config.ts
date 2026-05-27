@@ -27,6 +27,9 @@ export default defineConfig({
           if (id.includes('node_modules/@tanstack/react-query')) {
             return 'vendor-query';
           }
+          if (id.includes('node_modules/react-dom')) {
+            return 'vendor-query';
+          }
           if (id.includes('node_modules/react-quill') || id.includes('node_modules/quill')) {
             return 'vendor-editor';
           }

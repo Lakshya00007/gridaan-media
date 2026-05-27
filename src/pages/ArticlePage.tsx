@@ -44,15 +44,15 @@ export default function ArticlePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#080d1a] py-8 sm:py-12">
+      <div className="min-h-screen bg-bg py-8 sm:py-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 space-y-6">
-          <Skeleton className="h-10 w-2/3" />
-          <Skeleton className="h-6 w-1/2" />
-          <Skeleton className="h-8 w-40" />
-          <Skeleton className="h-48 sm:h-72 rounded-2xl" />
+          <Skeleton className="h-10 w-2/3 animate-pulse" />
+          <Skeleton className="h-6 w-1/2 animate-pulse" />
+          <Skeleton className="h-8 w-40 animate-pulse" />
+          <Skeleton className="h-48 sm:h-72 rounded-2xl animate-pulse" />
           <div className="space-y-4">
-            <Skeleton className="h-6 w-full" />
-            <Skeleton className="h-6 w-full" />
+            <Skeleton className="h-6 w-full animate-pulse" />
+            <Skeleton className="h-6 w-full animate-pulse" />
             <Skeleton className="h-6 w-5/6" />
           </div>
         </div>
@@ -62,10 +62,10 @@ export default function ArticlePage() {
 
   if (!article) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-20 text-center">
-        <h1 className="text-3xl font-bold text-[#F8FAFC] mb-4">Article Not Found</h1>
-        <p className="text-[#64748B] mb-6">The article you&apos;re looking for doesn&apos;t exist or has been removed.</p>
-        <Link to="/" className="inline-flex items-center gap-2 px-6 py-3 bg-[#2563EB] text-white rounded-xl font-medium hover:bg-[#1D4ED8] transition-colors">
+      <div className="max-w-4xl mx-auto px-4 py-20 text-center bg-bg text-text">
+        <h1 className="text-xl font-bold text-text mb-4">Article Not Found</h1>
+        <p className="text-xs text-text-secondary mb-6">The article you&apos;re looking for doesn&apos;t exist or has been removed.</p>
+        <Link to="/" className="inline-flex items-center gap-2 px-6 py-2.5 bg-primary text-white rounded-full text-xs font-bold hover:bg-[#1d4ed8] shadow-xs">
           Back to Home
         </Link>
       </div>
@@ -92,36 +92,39 @@ export default function ArticlePage() {
         </script>
       ))}
       <ReadingProgress />
-      <article className="min-h-screen bg-[#080d1a]">
+      <article className="min-h-screen bg-bg transition-colors duration-300">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-6">
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm text-[#64748B] flex-wrap">
-            <Link to="/" className="hover:text-[#14B8A6]">Home</Link>
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs font-semibold text-text-secondary flex-wrap">
+            <Link to="/" className="hover:text-primary">Home</Link>
             <ChevronRight className="w-3.5 h-3.5 shrink-0" aria-hidden />
-            <Link to={`/category/${slugifyCategory(article.category)}`} className="hover:text-[#14B8A6]">{article.category || 'General'}</Link>
+            <Link to={`/category/${slugifyCategory(article.category)}`} className="hover:text-primary">{article.category || 'General'}</Link>
             <ChevronRight className="w-3.5 h-3.5 shrink-0" aria-hidden />
-            <span className="text-[#94A3B8] truncate max-w-[min(100%,12rem)] sm:max-w-xs">{article.title}</span>
+            <span className="text-text-secondary truncate max-w-[min(100%,12rem)] sm:max-w-xs">{article.title}</span>
           </nav>
         </div>
 
         <header className="max-w-4xl mx-auto px-4 sm:px-6 pt-8 pb-6">
           <div className="flex items-center gap-3 mb-4 flex-wrap">
-            <span className="px-3 py-1 bg-[#0B1224] text-[#14B8A6] rounded-full text-xs font-medium ring-1 ring-[#14B8A6]/30">{article.category || 'General'}</span>
-            <span className="flex items-center gap-1 text-xs text-[#64748B]"><Calendar className="w-3 h-3" aria-hidden /> {formatDate(article.created_at)}</span>
-            <span className="text-xs text-[#64748B]">By <strong className="text-[#F8FAFC] ml-1">{article.author || 'Gridaan'}</strong></span>
+            <span className="px-2.5 py-0.5 bg-primary/10 border border-primary/20 text-primary rounded-full text-[10px] font-bold uppercase tracking-wider">{article.category || 'General'}</span>
+            <span className="flex items-center gap-1 text-[10px] text-text-secondary font-semibold"><Calendar className="w-3.5 h-3.5 text-text-secondary" aria-hidden /> {formatDate(article.created_at)}</span>
+            <span className="text-[10px] text-text-secondary font-semibold">By <strong className="text-text ml-0.5">{article.author || 'Gridaan'}</strong></span>
           </div>
 
-          <h1 className="text-[clamp(1.75rem,4vw,3rem)] font-bold text-[#F8FAFC] leading-tight mb-6">{article.title}</h1>
-          {article.excerpt && <p className="text-lg text-[#94A3B8] leading-relaxed mb-6">{article.excerpt}</p>}
+          <h1 className="text-[clamp(1.5rem,4vw,2.5rem)] font-extrabold text-text leading-tight mb-4">{article.title}</h1>
+          {article.excerpt && <p className="text-sm text-text-secondary leading-relaxed mb-6 font-medium">{article.excerpt}</p>}
 
           {article.image_url && (
-            <div className="rounded-2xl overflow-hidden mb-8 ring-1 ring-white/10">
-              <img src={article.image_url} alt={article.title} loading="eager" fetchPriority="high" className="w-full h-auto object-cover" width={1200} height={630} />
+            <div className="rounded-3xl overflow-hidden mb-8 border border-border shadow-xs">
+              <img src={article.image_url} alt={article.title} loading="eager" fetchPriority="high" className="w-full h-auto object-cover max-h-[480px]" width={1200} height={630} />
             </div>
           )}
         </header>
 
         <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-12">
-          <div className="prose prose-lg prose-invert max-w-none text-[#E2E8F0] prose-custom prose-headings:text-[#F8FAFC] prose-a:text-[#14B8A6]" dangerouslySetInnerHTML={{ __html: cleanContent }} />
+          <div 
+            className="prose prose-sm md:prose-base max-w-none text-text-secondary leading-relaxed prose-custom prose-headings:text-text prose-headings:font-bold prose-a:text-primary prose-strong:text-text prose-code:text-primary" 
+            dangerouslySetInnerHTML={{ __html: cleanContent }} 
+          />
 
           <div className="my-8">
             <AdBanner position="in-article" />

@@ -1,12 +1,12 @@
 export const colors = {
-  background: '#080d1a',
-  card: '#0B1224',
-  primary: '#2563EB',
-  accent: '#14B8A6',
-  muted: '#64748B',
-  text: '#F8FAFC',
-  textMuted: '#94A3B8',
-  border: '#1E293B',
+  background: 'var(--color-bg)',
+  card: 'var(--color-card)',
+  primary: 'var(--color-primary)',
+  accent: 'var(--color-accent)',
+  muted: 'var(--color-muted)',
+  text: 'var(--color-text)',
+  textMuted: 'var(--color-text-secondary)',
+  border: 'var(--color-border)',
 } as const
 
 export const siteUrl = 'https://gridaan.com'

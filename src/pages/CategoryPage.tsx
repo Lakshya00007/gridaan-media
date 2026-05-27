@@ -3,6 +3,7 @@ import { ChevronRight } from 'lucide-react';
 import ArticleCard from '../components/articles/ArticleCard';
 import AdBanner from '../components/ads/AdBanner';
 import Skeleton from '../components/ui/Skeleton';
+import SEO from '../components/seo/SEO';
 import { useArticles, useCategories } from '../hooks/useArticles';
 import { slugifyCategory } from '../utils/articleUtils';
 
@@ -20,8 +21,8 @@ export default function CategoryPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen">
-        <div className="bg-mesh-hero border-b border-[#1E293B]/40 text-white">
+      <div className="min-h-screen bg-bg">
+        <div className="bg-mesh-hero border-b border-border text-text">
           <div className="max-w-7xl mx-auto px-4 py-12">
             <Skeleton className="h-4 w-64 mb-6" />
             <Skeleton className="h-12 w-80" />
@@ -39,31 +40,36 @@ export default function CategoryPage() {
 
   if (!category) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-20 text-center">
-        <h1 className="text-3xl font-bold text-[#F8FAFC] dark:text-white mb-4">Category Not Found</h1>
-        {error && <p className="text-[#94A3B8] dark:text-[#94A3B8] mb-4">Unable to load this category right now.</p>}
-        <Link to="/categories" className="text-[#2563EB] hover:underline">Browse all categories</Link>
+      <div className="max-w-4xl mx-auto px-4 py-20 text-center bg-bg text-text">
+        <h1 className="text-2xl font-bold text-text mb-4">Category Not Found</h1>
+        {error && <p className="text-text-secondary mb-4">Unable to load this category right now.</p>}
+        <Link to="/categories" className="text-primary hover:underline">Browse all categories</Link>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-bg transition-colors duration-300">
+      <SEO 
+        title={`${category.name} Articles`}
+        description={category.description || `Browse technology articles in the ${category.name} category.`}
+      />
+
       {/* Header */}
-      <div className="bg-mesh-hero border-b border-[#1E293B]/40 text-white">
+      <div className="bg-mesh-hero border-b border-border/80 text-text">
         <div className="max-w-7xl mx-auto px-4 py-12">
-          <nav className="flex items-center gap-2 text-sm text-[#94A3B8] mb-4">
-            <Link to="/" className="hover:text-white">Home</Link>
+          <nav className="flex items-center gap-2 text-xs text-text-secondary mb-4 font-semibold">
+            <Link to="/" className="hover:text-primary">Home</Link>
             <ChevronRight className="w-3.5 h-3.5" />
-            <Link to="/categories" className="hover:text-white">Categories</Link>
+            <Link to="/categories" className="hover:text-primary">Categories</Link>
             <ChevronRight className="w-3.5 h-3.5" />
-            <span className="text-[#94A3B8]">{category.name}</span>
+            <span className="text-text-secondary">{category.name}</span>
           </nav>
           <div className="flex items-center gap-4">
             <span className="text-4xl">{category.icon}</span>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold">{category.name}</h1>
-              <p className="text-[#94A3B8] mt-1">{category.description} · {categoryArticles.length} articles</p>
+              <h1 className="text-2xl md:text-3xl font-extrabold">{category.name}</h1>
+              <p className="text-xs text-text-secondary mt-1">{category.description} · {categoryArticles.length} articles</p>
             </div>
           </div>
         </div>
@@ -80,8 +86,8 @@ export default function CategoryPage() {
 
         {categoryArticles.length === 0 && (
           <div className="text-center py-20">
-            <p className="text-[#94A3B8] dark:text-[#94A3B8] text-lg">No articles in this category yet.</p>
-            <Link to="/" className="text-[#2563EB] hover:underline mt-2 inline-block">Browse all articles</Link>
+            <p className="text-text-secondary text-sm">No articles in this category yet.</p>
+            <Link to="/" className="text-primary hover:underline mt-2 inline-block text-xs font-bold">Browse all articles</Link>
           </div>
         )}
       </div>

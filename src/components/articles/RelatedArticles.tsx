@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import { Clock } from 'lucide-react'
-import { motion } from 'framer-motion'
 import { useRelatedArticles } from '../../hooks/useRelatedArticles'
 import type { Article } from '../../types/article'
 import { getArticleReadingTime } from '../../utils/articleUtils'
@@ -24,13 +23,7 @@ export default function RelatedArticles({ article }: RelatedArticlesProps) {
         {loading
           ? [...Array(4)].map((_, i) => <Shimmer key={i} className="h-28" />)
           : articles.map((item, index) => (
-              <motion.article
-                key={item.id}
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.05 }}
-              >
+              <article key={item.id} className="transition-transform duration-300 ease-out transform hover:-translate-y-0.5">
                 <Link
                   to={`/article/${item.slug}`}
                   className="group flex gap-4 rounded-2xl border border-[#1E293B]/50 bg-[#0B1224]/60 p-4 transition hover:border-[#2563EB]/40 hover:bg-[#0B1224]/90"
@@ -58,7 +51,7 @@ export default function RelatedArticles({ article }: RelatedArticlesProps) {
                     </span>
                   </div>
                 </Link>
-              </motion.article>
+              </article>
             ))}
       </div>
     </section>
