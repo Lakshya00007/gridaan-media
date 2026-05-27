@@ -19,24 +19,24 @@ export default function PageHero({
   return (
     <section
       className={cn(
-        'relative overflow-hidden bg-mesh-hero border-b border-[#1E293B]/40',
+        'relative overflow-hidden bg-mesh-hero border-b border-border',
         compact ? 'py-10 sm:py-12' : 'py-12 sm:py-16 md:py-20',
         className
       )}
     >
-      <div className="absolute inset-0 bg-noise opacity-50 pointer-events-none" aria-hidden />
+      <div className="absolute inset-0 bg-noise opacity-30 pointer-events-none" aria-hidden />
       <div
-        className="absolute -top-24 left-1/4 h-64 w-64 rounded-full bg-indigo-500/15 blur-[100px] pointer-events-none"
+        className="absolute -top-24 left-1/4 h-64 w-64 rounded-full bg-primary/8 blur-[100px] pointer-events-none"
         aria-hidden
       />
       <div
-        className="absolute top-0 right-0 h-72 w-72 rounded-full bg-[#14B8A6]/10 blur-[120px] pointer-events-none"
+        className="absolute top-0 right-0 h-72 w-72 rounded-full bg-primary/5 blur-[120px] pointer-events-none"
         aria-hidden
       />
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-section font-bold text-[#F8FAFC] tracking-tight">{title}</h1>
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-text tracking-tight">{title}</h1>
         {description && (
-          <p className="mt-3 max-w-2xl text-base sm:text-lg text-[#64748B] leading-relaxed">
+          <p className="mt-3 max-w-2xl text-sm sm:text-base text-text-secondary leading-relaxed">
             {description}
           </p>
         )}

@@ -146,14 +146,70 @@ body {
 
 .prose-custom h2 {
   scroll-margin-top: 80px;
+  margin-top: 3rem;
+  margin-bottom: 1.2rem;
+  font-size: clamp(1.45rem, 2.2vw, 1.95rem);
+  line-height: 1.35;
 }
 
 .prose-custom h3 {
   scroll-margin-top: 80px;
+  margin-top: 2.1rem;
+  margin-bottom: 0.85rem;
+  font-size: clamp(1.2rem, 1.8vw, 1.45rem);
+  line-height: 1.4;
+}
+
+.prose-custom p {
+  margin-bottom: 1.75rem;
+  line-height: 1.85;
+}
+
+.prose-custom ul,
+.prose-custom ol {
+  margin-bottom: 1.5rem;
+}
+
+.prose-custom li {
+  margin-bottom: 0.5rem;
+}
+
+.prose-custom blockquote {
+  border-left: 3px solid #d8e4ff;
+  background: #f8fbff;
+  color: #3a3a3a;
+  border-radius: 0.75rem;
+  padding: 1rem 1.25rem;
+  margin: 2.4rem 0;
+  font-style: normal;
+  font-size: 1.02em;
+}
+
+.prose-custom pre {
+  background-color: #f5f5f2;
+  border: 1px solid #e6e6e6;
+  border-radius: 0.9rem;
+  margin: 2.2rem 0;
+  padding: 1rem 1.1rem;
+  overflow-x: auto;
+}
+
+.prose-custom code {
+  background-color: #f2f2ef;
+  padding: 0.2em 0.4em;
+  border-radius: 0.35rem;
+  color: #1f3c8f;
+  font-size: 0.92em;
+}
+
+.prose-custom pre code {
+  background-color: transparent;
+  padding: 0;
 }
 
 img {
-  background-color: #0B1224;
+  background-color: var(--color-bg);
+  border-radius: 0.5rem;
 }
 
 ::selection {

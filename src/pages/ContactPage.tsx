@@ -45,10 +45,10 @@ export default function ContactPage() {
               </div>
             ))}
 
-            <div className="p-5 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-3xl text-white shadow-xs">
-              <h3 className="font-bold text-xs mb-2">📢 Advertising</h3>
-              <p className="text-xs text-blue-100 mb-3 leading-relaxed">Interested in advertising with Gridaan? We offer banner ads, sponsored posts, and native advertising.</p>
-              <p className="text-[10px] font-bold tracking-wider text-blue-200">ads@gridaan.com</p>
+            <div className="p-5 bg-card border border-primary/20 rounded-3xl shadow-xs">
+              <h3 className="font-bold text-xs text-text mb-2">📢 Advertising</h3>
+              <p className="text-xs text-text-secondary mb-3 leading-relaxed">Interested in advertising with Gridaan? We offer banner ads, sponsored posts, and native advertising.</p>
+              <p className="text-[10px] font-bold tracking-wider text-primary">ads@gridaan.com</p>
             </div>
           </div>
 

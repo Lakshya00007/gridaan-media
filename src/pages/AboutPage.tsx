@@ -94,12 +94,12 @@ export default function AboutPage() {
         </div>
 
         {/* CTA */}
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-3xl p-8 md:p-12 text-center text-white shadow-xs">
-          <h2 className="text-xl md:text-2xl font-bold mb-3">Want to write for us?</h2>
-          <p className="text-blue-100 text-xs mb-6 max-w-xl mx-auto leading-relaxed">
+        <div className="bg-card border border-primary/30 rounded-3xl p-8 md:p-12 text-center shadow-md">
+          <h2 className="text-xl md:text-2xl font-bold mb-3 text-text">Want to write for us?</h2>
+          <p className="text-text-secondary text-xs mb-6 max-w-xl mx-auto leading-relaxed">
             We're always looking for talented writers and experts to join our team. Share your knowledge with our growing community of tech leaders.
           </p>
-          <Link to="/contact" className="inline-flex items-center gap-1.5 px-6 py-2.5 bg-white text-primary hover:bg-blue-50 rounded-full text-xs font-bold transition-all hover:-translate-y-0.5 cursor-pointer">
+          <Link to="/contact" className="inline-flex items-center gap-1.5 px-6 py-2.5 bg-primary text-white hover:bg-[#1d4ed8] rounded-full text-xs font-bold transition-all hover:-translate-y-0.5 cursor-pointer">
             Get in Touch <ArrowRight className="w-4 h-4" />
           </Link>
         </div>

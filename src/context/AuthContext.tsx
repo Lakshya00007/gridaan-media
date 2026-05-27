@@ -62,7 +62,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     initSession()
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, currentSession) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, currentSession) => {
       if (!isMounted) return
       setLoading(true)
 

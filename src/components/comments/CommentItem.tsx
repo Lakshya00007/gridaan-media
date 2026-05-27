@@ -24,30 +24,30 @@ export default function CommentItem({
   const isOwn = currentUserId === comment.user_id
 
   return (
-    <div className={depth > 0 ? 'ml-4 sm:ml-8 border-l border-[#1E293B]/50 pl-4' : ''}>
-      <div className="rounded-2xl border border-[#1E293B]/50 bg-[#0B1224]/70 p-4">
+    <div className={depth > 0 ? 'ml-4 border-l border-[#e8e8e8] pl-4 sm:ml-8' : ''}>
+      <div className="rounded-2xl border border-[#e6e6e6] bg-white p-4">
         <div className="flex gap-3">
           <div
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-[#2563EB] to-[#14B8A6] text-sm font-bold text-white"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#eef4ff] text-sm font-semibold text-[#1d4ed8]"
             aria-hidden
           >
             {initial}
           </div>
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-sm font-semibold text-[#F8FAFC]">
+              <span className="text-sm font-semibold text-[#1c1c1c]">
                 {comment.author_name}
               </span>
               <time
                 dateTime={comment.created_at}
-                className="text-xs text-[#64748B]"
+                className="text-xs text-[#8a8a8a]"
               >
                 {formatDistanceToNow(new Date(comment.created_at), {
                   addSuffix: true,
                 })}
               </time>
             </div>
-            <p className="mt-2 text-sm leading-relaxed text-[#94A3B8] whitespace-pre-wrap">
+            <p className="mt-2 whitespace-pre-wrap text-sm leading-relaxed text-[#5e5e5e]">
               {comment.content}
             </p>
             <div className="mt-3 flex items-center gap-3">
@@ -58,7 +58,7 @@ export default function CommentItem({
                     onReply(comment.id)
                     setShowReply(true)
                   }}
-                  className="inline-flex items-center gap-1 text-xs font-medium text-[#14B8A6] hover:text-[#5eead4]"
+                  className="inline-flex items-center gap-1 text-xs font-medium text-[#2563eb] hover:text-[#1d4ed8]"
                 >
                   <MessageCircle className="h-3.5 w-3.5" />
                   Reply
@@ -93,7 +93,7 @@ export default function CommentItem({
       ))}
 
       {showReply && (
-        <p className="mt-2 text-xs text-[#64748B]">Reply using the form below.</p>
+        <p className="mt-2 text-xs text-[#8a8a8a]">Reply using the form below.</p>
       )}
     </div>
   )

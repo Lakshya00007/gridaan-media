@@ -44,9 +44,9 @@ export default function CommentsSection({
 
   return (
     <section className="mt-16" aria-labelledby="comments-heading">
-      <h2 id="comments-heading" className="text-2xl font-bold text-[#F8FAFC] mb-6">
+      <h2 id="comments-heading" className="mb-6 text-2xl font-semibold text-[#1c1c1c]">
         Discussion
-        <span className="ml-2 text-base font-normal text-[#64748B]">
+        <span className="ml-2 text-base font-normal text-[#6b6b6b]">
           ({comments.length})
         </span>
       </h2>
@@ -74,7 +74,7 @@ export default function CommentsSection({
             onChange={(e) => setContent(e.target.value)}
             rows={3}
             placeholder="Share your thoughts…"
-            className="w-full resize-y rounded-2xl border border-[#1E293B]/50 bg-[#0B1224]/80 px-4 py-3 text-sm text-[#F8FAFC] placeholder-[#64748B] focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20"
+            className="w-full resize-y rounded-2xl border border-[#e6e6e6] bg-white px-4 py-3 text-sm text-[#1c1c1c] placeholder-[#8a8a8a] focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20"
           />
           <button
             type="submit"
@@ -86,8 +86,8 @@ export default function CommentsSection({
           </button>
         </form>
       ) : (
-        <div className="mb-8 rounded-2xl border border-[#1E293B]/50 bg-[#0B1224]/50 p-6 text-center">
-          <p className="text-sm text-[#94A3B8]">
+        <div className="mb-8 rounded-2xl border border-[#e6e6e6] bg-[#fafaf9] p-6 text-center">
+          <p className="text-sm text-[#6b6b6b]">
             <Link to="/login" className="font-medium text-[#14B8A6] hover:underline">
               Sign in
             </Link>{' '}
@@ -97,7 +97,7 @@ export default function CommentsSection({
       )}
 
       {error && (
-        <p className="mb-4 rounded-xl border border-amber-500/20 bg-amber-500/10 px-4 py-3 text-sm text-amber-100">
+        <p className="mb-4 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
           Comments are unavailable. Run the Supabase comments migration if this is a new deploy.
         </p>
       )}
@@ -106,7 +106,7 @@ export default function CommentsSection({
         {loading ? (
           [...Array(3)].map((_, i) => <Shimmer key={i} className="h-24" />)
         ) : comments.length === 0 ? (
-          <p className="text-sm text-[#64748B]">No comments yet. Start the conversation.</p>
+          <p className="text-sm text-[#6b6b6b]">No comments yet. Start the conversation.</p>
         ) : (
           comments.map((comment) => (
             <CommentItem

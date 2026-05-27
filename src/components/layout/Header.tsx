@@ -1,403 +1,220 @@
-import { useState, type FormEvent, useRef, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Search, Menu, X, Moon, Sun, Bookmark, User, ChevronDown, LogOut, FileText, Mail, Info } from 'lucide-react';
- 
-import NotificationBell from '../notifications/NotificationBell';
-import { useUI } from '../../context/UIContext';
-import { useAuthUser } from '../../hooks/useAuthUser';
-import { signOut } from '../../lib/auth';
-import GridaanLogo from './GridaanLogo';
-import { useCategories } from '../../hooks/useArticles';
+import { useState, type FormEvent, useRef, useEffect } from 'react'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { Search, Menu, X, ChevronDown, LogOut, FileText, Bookmark } from 'lucide-react'
+import NotificationBell from '../notifications/NotificationBell'
+import { useUI } from '../../context/UIContext'
+import { useAuthUser } from '../../hooks/useAuthUser'
+import { signOut } from '../../lib/auth'
+import GridaanLogo from './GridaanLogo'
+import { useCategories } from '../../hooks/useArticles'
+
+const navItems = [
+  { to: '/', label: 'Home' },
+  { to: '/categories', label: 'Categories' },
+  { to: '/trending', label: 'Trending' },
+  { to: '/tutorials', label: 'Tutorials' },
+  { to: '/videos', label: 'Videos' },
+]
 
 export default function Header() {
-  const { darkMode, toggleDarkMode, searchQuery, setSearchQuery, mobileMenuOpen, setMobileMenuOpen } = useUI();
-  const [scrolled, setScrolled] = useState(false);
-  const { user, profile, isAdmin } = useAuthUser();
-  const [categoriesOpen, setCategoriesOpen] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
-  
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { data: categories = [] } = useCategories();
-  
-  const categoriesRef = useRef<HTMLDivElement>(null);
-  const profileRef = useRef<HTMLDivElement>(null);
+  const { searchQuery, setSearchQuery, mobileMenuOpen, setMobileMenuOpen } = useUI()
+  const { user, isAdmin } = useAuthUser()
+  const [profileOpen, setProfileOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
+  const [categoriesOpen, setCategoriesOpen] = useState(false)
 
-  // Close dropdowns on route change
+  const navigate = useNavigate()
+  const location = useLocation()
+  const { data: categories = [] } = useCategories()
+  const profileRef = useRef<HTMLDivElement>(null)
+  const categoriesRef = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
-    setCategoriesOpen(false);
-    setProfileOpen(false);
-    setMobileMenuOpen(false);
-  }, [location.pathname]);
+    setProfileOpen(false)
+    setCategoriesOpen(false)
+    setMobileMenuOpen(false)
+  }, [location.pathname, setMobileMenuOpen])
 
-  // Navbar scroll effect
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
-  // Click outside to close dropdowns
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (categoriesRef.current && !categoriesRef.current.contains(event.target as Node)) {
-        setCategoriesOpen(false);
-      }
-      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
-        setProfileOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+      const node = event.target as Node
+      if (profileRef.current && !profileRef.current.contains(node)) setProfileOpen(false)
+      if (categoriesRef.current && !categoriesRef.current.contains(node)) setCategoriesOpen(false)
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   const handleSearch = (e: FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
-      setSearchOpen(false);
-    }
-  };
+    e.preventDefault()
+    if (!searchQuery.trim()) return
+    navigate(`/search?q=${encodeURIComponent(searchQuery)}`)
+    setSearchOpen(false)
+  }
 
   const handleLogout = async () => {
-    await signOut();
-    navigate('/');
-  };
+    await signOut()
+    navigate('/')
+  }
 
   return (
-    <header className={`sticky top-0 z-50 bg-card/70 backdrop-blur-md border-b transition-all duration-300 ${scrolled ? 'shadow-sm border-border/90' : 'border-border/60'}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between h-16 gap-4">
-          
-          {/* LEFT: Logo & Links */}
-          <div className="flex items-center gap-6 shrink-0">
-            <Link to="/" className="flex items-center gap-2 group">
-              <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-primary/10 group-hover:bg-primary/20 transition-all">
-                <GridaanLogo className="w-7 h-7 text-primary" />
-              </div>
-              <span className="text-lg font-bold text-text tracking-tight group-hover:text-primary transition-colors">
-                Gridaan
-              </span>
-            </Link>
+    <header className="sticky top-0 z-50 border-b border-[#e6e6e6] bg-white/90 backdrop-blur-md">
+      <div className="mx-auto flex h-16 max-w-[1200px] items-center gap-4 px-4 sm:px-6">
+        <div className="flex items-center gap-3">
+          <Link to="/" className="flex items-center gap-2">
+            <GridaanLogo className="h-8 w-8" />
+            <span className="hidden text-lg font-semibold tracking-tight text-[#1c1c1c] sm:inline">Gridaan</span>
+          </Link>
+          <form onSubmit={handleSearch} className="relative hidden lg:block">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#6b6b6b]" />
+            <input
+              type="search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search stories"
+              className="h-10 w-72 rounded-full border border-[#e6e6e6] bg-[#f8f8f7] pl-9 pr-4 text-sm text-[#242424] placeholder:text-[#8b8b8b] focus:border-[#2563eb] focus:outline-none"
+            />
+          </form>
+        </div>
 
-            {/* Desktop Navigation Links */}
-            <nav className="hidden lg:flex items-center gap-1">
-              <Link 
-                to="/" 
-                className={`px-3 py-2 text-xs font-semibold rounded-lg transition-all ${
-                  location.pathname === '/' 
-                    ? 'text-primary bg-primary/5' 
-                    : 'text-text-secondary hover:text-text hover:bg-bg'
-                }`}
-              >
-                Home
-              </Link>
-              
-              {/* Categories Dropdown */}
-              <div className="relative" ref={categoriesRef}>
-                <button 
-                  onClick={() => setCategoriesOpen(!categoriesOpen)}
-                  className={`flex items-center gap-1 px-3 py-2 text-xs font-semibold rounded-lg transition-all ${
-                    categoriesOpen 
-                      ? 'text-primary bg-primary/5' 
-                      : 'text-text-secondary hover:text-text hover:bg-bg'
-                  }`}
-                >
-                  Categories <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${categoriesOpen ? 'rotate-180' : ''}`} />
-                </button>
-
-                  {categoriesOpen && (
-                    <div className="absolute top-full left-0 mt-1 w-64 bg-card rounded-2xl shadow-xl border border-border py-2 z-50 transition transform duration-150 ease-out">
-                      <div className="grid grid-cols-1 gap-0.5 p-1">
-                        {categories.slice(0, 8).map(cat => (
-                          <Link 
-                            key={cat.id} 
-                            to={`/category/${cat.slug}`} 
-                            className="flex items-center gap-3 px-3 py-2 hover:bg-bg rounded-xl transition-all"
-                          >
-                            <span className="text-base">{cat.icon}</span>
-                            <div>
-                              <div className="text-xs font-semibold text-text">{cat.name}</div>
-                              <div className="text-[10px] text-text-secondary">{cat.count} articles</div>
-                            </div>
-                          </Link>
-                        ))}
-                        {categories.length === 0 && (
-                          <div className="px-4 py-3 text-xs text-text-secondary">No categories yet</div>
-                        )}
-                        <div className="border-t border-border mt-1 pt-1">
-                          <Link 
-                            to="/categories" 
-                            className="block px-3 py-2 text-xs text-center text-primary font-bold hover:bg-primary/5 rounded-xl transition-all"
-                          >
-                            View all categories →
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-              </div>
-
-              <Link 
-                to="/trending" 
-                className={`px-3 py-2 text-xs font-semibold rounded-lg transition-all ${
-                  location.pathname === '/trending' 
-                    ? 'text-primary bg-primary/5' 
-                    : 'text-text-secondary hover:text-text hover:bg-bg'
-                }`}
-              >
-                Trending
-              </Link>
-              <Link 
-                to="/tutorials" 
-                className={`px-3 py-2 text-xs font-semibold rounded-lg transition-all ${
-                  location.pathname === '/tutorials' 
-                    ? 'text-primary bg-primary/5' 
-                    : 'text-text-secondary hover:text-text hover:bg-bg'
-                }`}
-              >
-                Tutorials
-              </Link>
-              <Link 
-                to="/videos" 
-                className={`px-3 py-2 text-xs font-semibold rounded-lg transition-all ${
-                  location.pathname === '/videos' 
-                    ? 'text-primary bg-primary/5' 
-                    : 'text-text-secondary hover:text-text hover:bg-bg'
-                }`}
-              >
-                Videos
-              </Link>
-            </nav>
-          </div>
-
-          {/* CENTER: Search Bar */}
-          <div className="flex-1 max-w-2xl hidden md:block">
-            <form onSubmit={handleSearch} className="relative">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-text-secondary" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                placeholder="Search articles, tutorials, videos..."
-                className="w-full pl-10 pr-4 py-3 bg-card border border-border rounded-full text-sm text-text placeholder-text-secondary focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-shadow shadow-sm hover:shadow-md"
-              />
-            </form>
-          </div>
-
-          {/* RIGHT: Actions */}
-          <div className="flex items-center gap-1.5">
-            {/* Search Toggle (Mobile) */}
-            <button 
-              onClick={() => setSearchOpen(!searchOpen)} 
-              className="md:hidden p-2 text-text-secondary hover:text-text rounded-xl hover:bg-bg transition-all"
-              aria-label="Search"
-            >
-              <Search className="w-5 h-5" />
-            </button>
-
-            {/* Bookmarks */}
-            <Link 
-              to="/bookmarks" 
-              className={`p-2 text-text-secondary hover:text-text rounded-xl hover:bg-bg transition-all hidden sm:flex ${
-                location.pathname === '/bookmarks' ? 'text-primary bg-primary/5' : ''
+        <nav className="hidden flex-1 items-center justify-center gap-1 md:flex">
+          {navItems.map((item) => (
+            <Link
+              key={item.to}
+              to={item.to}
+              className={`rounded-full px-3 py-2 text-sm transition ${
+                location.pathname === item.to
+                  ? 'bg-[#f1f5ff] text-[#1d4ed8]'
+                  : 'text-[#4b4b4b] hover:bg-[#f5f5f2] hover:text-[#1c1c1c]'
               }`}
-              title="Bookmarks"
             >
-              <Bookmark className="w-4.5 h-4.5" />
+              {item.label}
             </Link>
+          ))}
+        </nav>
 
-            {/* Notifications */}
-            <div className="hidden sm:block">
-              <NotificationBell />
-            </div>
+        <div className="ml-auto flex items-center gap-2">
+          <button
+            onClick={() => setSearchOpen((v) => !v)}
+            className="rounded-full p-2 text-[#4b4b4b] hover:bg-[#f5f5f2] lg:hidden"
+            aria-label="Open search"
+          >
+            <Search className="h-5 w-5" />
+          </button>
 
-            {/* Theme Toggle */}
-            <button 
-              onClick={toggleDarkMode} 
-              className="p-2 text-text-secondary hover:text-text rounded-xl hover:bg-bg transition-all"
-              aria-label="Toggle theme"
-            >
-              {darkMode ? <Sun className="w-4.5 h-4.5" /> : <Moon className="w-4.5 h-4.5" />}
-            </button>
+          <Link
+            to={user ? (isAdmin ? '/dashboard' : '/bookmarks') : '/login'}
+            className="hidden rounded-full border border-[#e6e6e6] bg-white px-4 py-2 text-sm font-medium text-[#242424] transition hover:bg-[#f8f8f7] sm:inline-flex"
+          >
+            Write
+          </Link>
 
-            {/* User Profile / Admin Link / Login */}
-            {user ? (
-              <div className="relative" ref={profileRef}>
-                <button 
-                  onClick={() => setProfileOpen(!profileOpen)}
-                  className="flex items-center gap-1.5 p-1 rounded-full border border-border bg-bg hover:border-primary/50 transition-all"
-                >
-                  <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold shadow-sm">
-                    {user.email?.charAt(0).toUpperCase() || 'U'}
-                  </div>
-                  <ChevronDown className="w-3.5 h-3.5 text-text-secondary pr-1" />
-                </button>
-
-                {profileOpen && (
-                  <div className="absolute top-full right-0 mt-1.5 w-56 bg-card rounded-2xl shadow-xl border border-border py-1.5 z-50 transition transform duration-150 ease-out">
-                      <div className="px-4 py-2 border-b border-border">
-                        <div className="text-[10px] text-text-secondary font-bold uppercase tracking-wider">Signed in as</div>
-                        <div className="text-xs font-bold text-text truncate mt-0.5">{user.email}</div>
-                      </div>
-                      <div className="p-1 space-y-0.5">
-                        {isAdmin && (
-                          <Link 
-                            to="/dashboard" 
-                            className="flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-text hover:bg-bg rounded-xl transition-all"
-                          >
-                            <FileText className="w-4 h-4 text-text-secondary" />
-                            Admin Dashboard
-                          </Link>
-                        )}
-                        <Link 
-                          to="/bookmarks" 
-                          className="flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-text hover:bg-bg rounded-xl transition-all"
-                        >
-                          <Bookmark className="w-4 h-4 text-text-secondary" />
-                          My Bookmarks
-                        </Link>
-                        <Link 
-                          to="/about" 
-                          className="flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-text hover:bg-bg rounded-xl transition-all"
-                        >
-                          <Info className="w-4 h-4 text-text-secondary" />
-                          About Us
-                        </Link>
-                        <Link 
-                          to="/contact" 
-                          className="flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-text hover:bg-bg rounded-xl transition-all"
-                        >
-                          <Mail className="w-4 h-4 text-text-secondary" />
-                          Contact Support
-                        </Link>
-                        <button 
-                          onClick={handleLogout}
-                          className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-rose-500 hover:bg-rose-500/5 rounded-xl transition-all text-left"
-                        >
-                          <LogOut className="w-4 h-4" />
-                          Sign Out
-                        </button>
-                      </div>
-                    </div>
-                  )}
-              </div>
-            ) : (
-              <Link 
-                to="/login" 
-                className="hidden sm:inline-flex items-center justify-center px-4 py-2 text-xs font-bold text-white bg-primary hover:bg-[#1d4ed8] rounded-full shadow-xs hover:shadow-md transition-all duration-200"
-              >
-                Sign In
-              </Link>
-            )}
-
-            {/* Mobile Menu Button */}
-            <button 
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)} 
-              className="lg:hidden p-2 text-text-secondary hover:text-text rounded-xl hover:bg-bg transition-all"
-              aria-label="Toggle menu"
-            >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
+          <div className="hidden sm:block">
+            <NotificationBell />
           </div>
+
+          {user ? (
+            <div className="relative" ref={profileRef}>
+              <button
+                onClick={() => setProfileOpen((v) => !v)}
+                className="flex items-center gap-1 rounded-full border border-[#e6e6e6] bg-white p-1 pl-2"
+                aria-haspopup="menu"
+                aria-expanded={profileOpen}
+              >
+                <span className="text-xs font-medium text-[#4b4b4b] hidden sm:inline">{user.email?.split('@')[0]}</span>
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#2563eb] text-xs font-bold text-white">
+                  {user.email?.charAt(0).toUpperCase() || 'U'}
+                </span>
+                <ChevronDown className="mr-1 h-4 w-4 text-[#6b6b6b]" />
+              </button>
+
+              {profileOpen && (
+                <div className="absolute right-0 mt-2 w-56 rounded-2xl border border-[#e6e6e6] bg-white p-1 shadow-lg">
+                  {isAdmin && (
+                    <Link to="/dashboard" className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-[#242424] hover:bg-[#f5f5f2]">
+                      <FileText className="h-4 w-4 text-[#6b6b6b]" />
+                      Dashboard
+                    </Link>
+                  )}
+                  <Link to="/bookmarks" className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-[#242424] hover:bg-[#f5f5f2]">
+                    <Bookmark className="h-4 w-4 text-[#6b6b6b]" />
+                    Bookmarks
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm text-rose-600 hover:bg-rose-50"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Sign out
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link to="/login" className="hidden rounded-full bg-[#1c1c1c] px-4 py-2 text-sm font-medium text-white hover:bg-[#2c2c2c] sm:inline-flex">
+              Sign in
+            </Link>
+          )}
+
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="rounded-full p-2 text-[#4b4b4b] hover:bg-[#f5f5f2] md:hidden"
+            aria-label="Toggle navigation menu"
+          >
+            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
         </div>
       </div>
 
-      {/* Mobile Search Overlay */}
       {searchOpen && (
-        <div className="md:hidden border-t border-border bg-card px-4 py-3 transition transform duration-150 ease-out">
+        <div className="border-t border-[#e6e6e6] bg-white px-4 py-3 lg:hidden">
           <form onSubmit={handleSearch} className="relative">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-text-secondary" />
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#6b6b6b]" />
             <input
-              type="text"
+              type="search"
               value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              placeholder="Search articles, tutorials, videos..."
-              className="w-full pl-10 pr-4 py-2 bg-bg border border-border rounded-xl text-xs text-text placeholder-text-secondary focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all"
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search stories"
+              className="h-10 w-full rounded-full border border-[#e6e6e6] bg-[#f8f8f7] pl-9 pr-4 text-sm text-[#242424] placeholder:text-[#8b8b8b] focus:border-[#2563eb] focus:outline-none"
               autoFocus
             />
           </form>
         </div>
       )}
 
-      {/* Mobile Side Drawer Menu */}
       {mobileMenuOpen && (
-        <>
-          {/* Backdrop */}
-          <div className="fixed inset-0 top-16 bg-black/50 z-40 lg:hidden" onClick={() => setMobileMenuOpen(false)} />
-          {/* Drawer */}
-          <div className="fixed top-16 right-0 bottom-0 w-80 bg-card border-l border-border z-40 lg:hidden p-6 overflow-y-auto transition-transform duration-250 ease-out">
-            <div className="space-y-6">
-                <div>
-                  <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">Navigation</h3>
-                  <nav className="flex flex-col gap-2">
-                    {[
-                      { to: '/', label: 'Home' },
-                      { to: '/categories', label: 'Explore Categories' },
-                      { to: '/trending', label: 'Trending Stories' },
-                      { to: '/tutorials', label: 'Tutorials' },
-                      { to: '/videos', label: 'Videos' },
-                      { to: '/bookmarks', label: 'Saved Bookmarks' },
-                      { to: '/about', label: 'About Gridaan' },
-                      { to: '/contact', label: 'Contact Us' },
-                    ].map(item => (
-                      <Link
-                        key={item.to}
-                        to={item.to}
-                        className={`px-4 py-3 text-xs font-semibold rounded-xl hover:bg-bg transition-colors ${
-                          location.pathname === item.to ? 'text-primary bg-primary/5' : 'text-text'
-                        }`}
-                      >
-                        {item.label}
-                      </Link>
-                    ))}
-                  </nav>
-                </div>
-
-                <div className="border-t border-border pt-6">
-                  {user ? (
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-3 px-2">
-                        <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white text-sm font-bold shadow-sm">
-                          {user.email?.charAt(0).toUpperCase()}
-                        </div>
-                        <div className="min-w-0">
-                          <div className="text-xs font-bold text-text truncate">{user.email}</div>
-                          <div className="text-[10px] text-text-secondary">Verified Member</div>
-                        </div>
-                      </div>
-                      <div className="flex flex-col gap-2">
-                        {isAdmin && (
-                          <Link 
-                            to="/dashboard" 
-                            className="flex items-center justify-center w-full px-4 py-2.5 text-xs font-bold text-text bg-bg border border-border rounded-xl hover:bg-border transition-all"
-                          >
-                            Admin Dashboard
-                          </Link>
-                        )}
-                        <button 
-                          onClick={handleLogout}
-                          className="flex items-center justify-center w-full px-4 py-2.5 text-xs font-bold text-white bg-rose-600 hover:bg-rose-500 rounded-xl transition-all"
-                        >
-                          Sign Out
-                        </button>
-                      </div>
-                    </div>
-                  ) : (
-                    <Link 
-                      to="/login" 
-                      className="flex items-center justify-center w-full px-4 py-3 text-xs font-bold text-white bg-primary hover:bg-[#1d4ed8] rounded-xl shadow-xs transition-all"
-                    >
-                      Sign In to Gridaan
-                    </Link>
-                  )}
-                </div>
+        <div className="border-t border-[#e6e6e6] bg-white px-4 py-4 md:hidden">
+          <nav className="space-y-1">
+            {navItems.map((item) => (
+              <Link
+                key={item.to}
+                to={item.to}
+                className="block rounded-xl px-3 py-2 text-sm text-[#242424] hover:bg-[#f5f5f2]"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+          <div className="mt-4 border-t border-[#e6e6e6] pt-4" ref={categoriesRef}>
+            <button
+              onClick={() => setCategoriesOpen((v) => !v)}
+              className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-sm text-[#242424] hover:bg-[#f5f5f2]"
+            >
+              Browse categories
+              <ChevronDown className={`h-4 w-4 text-[#6b6b6b] transition ${categoriesOpen ? 'rotate-180' : ''}`} />
+            </button>
+            {categoriesOpen && (
+              <div className="mt-2 grid grid-cols-2 gap-2 px-2">
+                {categories.slice(0, 8).map((cat) => (
+                  <Link key={cat.id} to={`/category/${cat.slug}`} className="rounded-lg border border-[#e6e6e6] px-2 py-2 text-xs text-[#4b4b4b]">
+                    {cat.name}
+                  </Link>
+                ))}
               </div>
-            </div>
-          </>
-        )}
+            )}
+          </div>
+        </div>
+      )}
     </header>
-  );
+  )
 }

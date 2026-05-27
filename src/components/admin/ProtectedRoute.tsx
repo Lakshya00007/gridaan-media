@@ -9,7 +9,7 @@ interface ProtectedRouteProps {
 export default function ProtectedRoute({
   children,
 }: ProtectedRouteProps) {
-  const { user, profile, loading, isAdmin } = useAuthUser()
+  const { user, loading, isAdmin } = useAuthUser()
   const location = useLocation()
 
   // Wait until profile fetch completes
