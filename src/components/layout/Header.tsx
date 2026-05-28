@@ -1,6 +1,6 @@
 import { useState, type FormEvent, useRef, useEffect } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
-import { Search, Menu, X, ChevronDown, LogOut, FileText, Bookmark } from 'lucide-react'
+import { Search, Menu, X, ChevronDown, LogOut, FileText, Bookmark, Settings, User, BarChart2 } from 'lucide-react'
 import NotificationBell from '../notifications/NotificationBell'
 import { useUI } from '../../context/UIContext'
 import { useAuthUser } from '../../hooks/useAuthUser'
@@ -129,7 +129,22 @@ export default function Header() {
               </button>
 
               {profileOpen && (
-                <div className="absolute right-0 mt-2 w-56 rounded-2xl border border-[#e6e6e6] bg-white p-1 shadow-lg">
+                <div className="absolute right-0 mt-2 w-64 overflow-hidden rounded-2xl border border-[#e6e6e6] bg-white shadow-lg">
+                  <div className="border-b border-[#efefef] px-4 py-3">
+                    <p className="text-xs font-medium text-[#6b6b6b]">Signed in as</p>
+                    <p className="mt-0.5 truncate text-sm font-medium text-[#1c1c1c]">{user.email}</p>
+                  </div>
+                  <div className="p-1">
+                    <Link
+                      to="#"
+                      onClick={(e) => e.preventDefault()}
+                      className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-[#242424] hover:bg-[#f5f5f2]"
+                      aria-disabled
+                      title="Coming soon"
+                    >
+                      <User className="h-4 w-4 text-[#6b6b6b]" />
+                      Profile
+                    </Link>
                   {isAdmin && (
                     <Link to="/dashboard" className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-[#242424] hover:bg-[#f5f5f2]">
                       <FileText className="h-4 w-4 text-[#6b6b6b]" />
@@ -140,6 +155,26 @@ export default function Header() {
                     <Bookmark className="h-4 w-4 text-[#6b6b6b]" />
                     Bookmarks
                   </Link>
+                  <Link
+                    to="#"
+                    onClick={(e) => e.preventDefault()}
+                    className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-[#242424] hover:bg-[#f5f5f2]"
+                    aria-disabled
+                    title="Coming soon"
+                  >
+                    <BarChart2 className="h-4 w-4 text-[#6b6b6b]" />
+                    Stats
+                  </Link>
+                  <Link
+                    to="#"
+                    onClick={(e) => e.preventDefault()}
+                    className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-[#242424] hover:bg-[#f5f5f2]"
+                    aria-disabled
+                    title="Coming soon"
+                  >
+                    <Settings className="h-4 w-4 text-[#6b6b6b]" />
+                    Settings
+                  </Link>
                   <button
                     onClick={handleLogout}
                     className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm text-rose-600 hover:bg-rose-50"
@@ -147,6 +182,7 @@ export default function Header() {
                     <LogOut className="h-4 w-4" />
                     Sign out
                   </button>
+                  </div>
                 </div>
               )}
             </div>
@@ -183,13 +219,13 @@ export default function Header() {
       )}
 
       {mobileMenuOpen && (
-        <div className="border-t border-[#e6e6e6] bg-white px-4 py-4 md:hidden">
+        <div className="border-t border-[#e6e6e6] bg-white px-4 py-4 md:hidden animate-in fade-in slide-in-from-top-2 duration-200">
           <nav className="space-y-1">
             {navItems.map((item) => (
               <Link
                 key={item.to}
                 to={item.to}
-                className="block rounded-xl px-3 py-2 text-sm text-[#242424] hover:bg-[#f5f5f2]"
+                className="block rounded-xl px-3 py-2.5 text-sm text-[#242424] hover:bg-[#f5f5f2]"
               >
                 {item.label}
               </Link>
