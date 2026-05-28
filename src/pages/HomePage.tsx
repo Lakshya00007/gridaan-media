@@ -17,7 +17,7 @@ export default function HomePage() {
     const list = activeCategory === 'All'
       ? articles
       : articles.filter((a) => a.category === activeCategory)
-    return list.slice(0, 14)
+    return list.slice(0, 20)
   }, [activeCategory, articles])
   const editorPicks = useMemo(() => articles.slice(0, 6), [articles])
   const tutorialStories = useMemo(() => articles.filter((a) => a.type === 'tutorial').slice(0, 4), [articles])
@@ -30,6 +30,7 @@ export default function HomePage() {
       slug: article.slug,
     }))
   }, [articles])
+  const latestStories = useMemo(() => articles.slice(0, 5), [articles])
   const trendingList: Article[] = loading ? [] : trendingStories
   const tutorialsList: Article[] = loading ? [] : tutorialStories.slice(0, 3)
   const videosList: Article[] = loading ? [] : videoStories.slice(0, 3)
@@ -42,54 +43,60 @@ export default function HomePage() {
       />
 
       <section className="border-b border-[#e5e7eb] bg-[#fafaf9]">
-        <div className="mx-auto grid max-w-[1260px] grid-cols-1 gap-10 px-4 py-12 sm:px-6 md:py-16 lg:grid-cols-[minmax(0,1fr)_440px] lg:gap-12">
+        <div className="mx-auto grid max-w-[1260px] grid-cols-1 gap-8 px-4 py-10 sm:px-6 md:py-14 lg:grid-cols-[minmax(0,1fr)_440px] lg:gap-12">
           <div className="max-w-2xl">
             <p className="mb-4 text-xs font-semibold tracking-[0.18em] text-[#737373] uppercase">Gridaan Magazine</p>
-            <h1 className="font-serif text-4xl leading-tight text-[#171717] sm:text-5xl md:text-6xl">
+            <h1 className="font-serif text-4xl leading-[1.05] text-[#171717] sm:text-5xl md:text-6xl">
               Human stories, ideas & innovation.
             </h1>
-            <p className="mt-5 max-w-xl text-base leading-relaxed text-[#525252] sm:text-lg">
+            <p className="mt-5 max-w-xl text-base leading-[1.75] text-[#4a4a4a] sm:text-lg">
               A place to read, write, and explore the future of technology, startups, AI, culture, and the internet.
             </p>
-            <div className="mt-8 flex flex-wrap items-center gap-3">
+            <div className="mt-7 flex flex-wrap items-center gap-3">
               <Link
                 to="/trending"
-                className="inline-flex items-center gap-2 rounded-full bg-[#171717] px-5 py-2.5 text-sm font-medium text-white transition hover:bg-[#2a2a2a]"
+                className="inline-flex items-center gap-2 rounded-full bg-[#171717] px-5 py-2.5 text-sm font-medium text-white transition duration-200 hover:bg-[#2a2a2a]"
               >
                 Start reading <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 to="/login"
-                className="inline-flex items-center gap-2 rounded-full border border-[#d4d4d4] bg-white px-5 py-2.5 text-sm font-medium text-[#262626] transition hover:bg-[#f5f5f2]"
+                className="inline-flex items-center gap-2 rounded-full border border-[#d4d4d4] bg-white px-5 py-2.5 text-sm font-medium text-[#262626] transition duration-200 hover:bg-[#f5f5f2]"
               >
                 Start writing
               </Link>
             </div>
           </div>
 
-          <div className="rounded-3xl border border-[#ececec] bg-white p-6 sm:p-8">
-            <div className="space-y-5">
-              <div className="h-2 w-20 rounded-full bg-[#e4e9f5]" />
-              <div className="h-2 w-40 rounded-full bg-[#ececec]" />
-              <div className="grid grid-cols-2 gap-3">
-                <div className="rounded-2xl bg-[#f5f7fb] p-4">
-                  <p className="text-[11px] uppercase tracking-wide text-[#737373]">Editorial</p>
-                  <p className="mt-2 font-serif text-lg text-[#171717]">Ideas that travel.</p>
-                </div>
-                <div className="rounded-2xl bg-[#f8f8f7] p-4">
-                  <p className="text-[11px] uppercase tracking-wide text-[#737373]">Technology</p>
-                  <p className="mt-2 font-serif text-lg text-[#171717]">Built for readers.</p>
-                </div>
-              </div>
-              <div className="rounded-2xl border border-[#ededed] bg-white px-4 py-3 text-sm text-[#525252]">
-                Thoughtful writing for modern builders, creators, and curious minds.
-              </div>
+          <div className="relative overflow-hidden rounded-3xl border border-[#e8e8e8] bg-white p-6 sm:p-8">
+            <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-[#e9efff] blur-2xl" />
+            <div className="pointer-events-none absolute -bottom-14 left-8 h-36 w-36 rounded-full bg-[#f2f5ff] blur-2xl" />
+            <div className="relative">
+              <svg viewBox="0 0 460 320" className="w-full" aria-hidden>
+                <rect x="0" y="0" width="460" height="320" rx="26" fill="#fafaf9" />
+                <path d="M38 244C118 182 180 190 248 150C297 122 342 75 420 86" stroke="#2563eb" strokeWidth="3" fill="none" />
+                <path d="M38 265C111 225 169 235 238 203C308 171 359 134 420 142" stroke="#9ab6ff" strokeWidth="2.2" fill="none" />
+                <circle cx="108" cy="108" r="44" fill="#eef4ff" />
+                <circle cx="337" cy="88" r="36" fill="#f2f2ef" />
+                <rect x="92" y="198" width="196" height="62" rx="14" fill="#ffffff" stroke="#e5e7eb" />
+                <rect x="108" y="214" width="96" height="8" rx="4" fill="#d7e3ff" />
+                <rect x="108" y="229" width="152" height="8" rx="4" fill="#ececec" />
+                <rect x="302" y="172" width="106" height="88" rx="16" fill="#ffffff" stroke="#e5e7eb" />
+                <rect x="318" y="194" width="74" height="7" rx="3.5" fill="#dbe6ff" />
+                <rect x="318" y="208" width="54" height="7" rx="3.5" fill="#ececec" />
+                <rect x="318" y="222" width="64" height="7" rx="3.5" fill="#ececec" />
+                <circle cx="146" cy="108" r="4.5" fill="#2563eb" />
+                <circle cx="337" cy="88" r="4.5" fill="#2563eb" />
+              </svg>
+              <p className="mt-4 text-sm leading-relaxed text-[#525252]">
+                Stories, analysis, and perspectives crafted for people building the modern internet.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      <div className="mx-auto grid max-w-[1260px] grid-cols-1 gap-8 px-4 py-8 sm:px-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+      <div className="mx-auto grid max-w-[1260px] grid-cols-1 gap-8 px-4 py-7 sm:px-6 lg:grid-cols-[minmax(0,1fr)_320px]">
         <main className="min-w-0">
           <section>
             <div className="mb-5 flex items-end justify-between gap-3">
@@ -102,7 +109,7 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <div className="divide-y divide-[#e9e9e9] border-y border-[#ececec]">
+            <div className="divide-y divide-[#ebebeb] border-y border-[#ededed]">
               {loading
                 ? [...Array(5)].map((_, index) => (
                     <div key={index} className="py-6">
@@ -113,7 +120,7 @@ export default function HomePage() {
             </div>
           </section>
 
-          <section className="mt-12">
+          <section className="mt-10">
             <h3 className="font-serif text-2xl text-[#171717]">Editor picks</h3>
             <div className="mt-5 grid gap-6 sm:grid-cols-2">
               {loading
@@ -130,7 +137,7 @@ export default function HomePage() {
             </div>
           </section>
 
-          <section className="mt-12">
+          <section className="mt-10">
             <div className="mb-4 flex flex-wrap items-center gap-2">
               {['All', ...categories.slice(0, 5).map((cat) => cat.name)].map((name) => (
                 <button
@@ -149,7 +156,7 @@ export default function HomePage() {
               </div>
             )}
 
-            <div className="divide-y divide-[#e9e9e9] border-y border-[#ececec]">
+            <div className="divide-y divide-[#ebebeb] border-y border-[#ededed]">
               {loading
                 ? [...Array(6)].map((_, idx) => (
                     <div key={idx} className="py-6">
@@ -160,7 +167,7 @@ export default function HomePage() {
             </div>
           </section>
 
-          <section className="mt-12 grid gap-10 border-t border-[#ececec] pt-10 sm:grid-cols-2">
+          <section className="mt-10 grid gap-10 border-t border-[#ececec] pt-9 sm:grid-cols-2">
             <div>
               <h3 className="mb-4 flex items-center gap-2 font-serif text-2xl text-[#171717]">
                 <Sparkles className="h-5 w-5 text-[#2563eb]" />
@@ -201,7 +208,7 @@ export default function HomePage() {
           </section>
         </main>
 
-        <aside className="space-y-10 lg:pt-14">
+        <aside className="space-y-8 lg:pt-12">
           <section>
             <h3 className="text-xs font-semibold uppercase tracking-[0.16em] text-[#737373]">Trending topics</h3>
             <div className="mt-3 flex flex-wrap gap-2">
@@ -238,6 +245,26 @@ export default function HomePage() {
                   </Link>
                 </div>
               ))}
+            </div>
+          </section>
+
+          <section>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.16em] text-[#737373]">Latest stories</h3>
+            <div className="mt-3 space-y-3">
+              {loading
+                ? [...Array(4)].map((_, idx) => <Skeleton key={idx} className="h-14 rounded-lg" />)
+                : latestStories.map((story) => (
+                    <Link key={story.id} to={`/article/${story.slug}`} className="group block border-b border-[#efefef] pb-2.5">
+                      <p className="line-clamp-2 text-sm text-[#262626] transition-colors group-hover:text-[#1d4ed8]">
+                        {story.title}
+                      </p>
+                      <p className="mt-1 text-[11px] text-[#7a7a7a]">
+                        {getArticleDate(story)
+                          ? new Date(getArticleDate(story) as string).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                          : 'Recently'}
+                      </p>
+                    </Link>
+                  ))}
             </div>
           </section>
 
@@ -280,9 +307,9 @@ function EditorialRow({ article }: { article: Article }) {
     : 'Recently'
 
   return (
-    <article className="group grid grid-cols-1 gap-4 py-6 sm:grid-cols-[minmax(0,1fr)_170px] sm:gap-6">
+    <article className="group grid grid-cols-1 gap-4 py-5 sm:grid-cols-[minmax(0,1fr)_180px] sm:gap-6">
       <div className="min-w-0">
-        <div className="mb-2 flex items-center gap-2 text-[11px] text-[#737373]">
+        <div className="mb-1.5 flex items-center gap-2 text-[11px] text-[#737373]">
           <span className="font-medium text-[#404040]">{author}</span>
           <span>·</span>
           <Link to={`/category/${slugifyCategory(category)}`} className="hover:text-[#1d4ed8]">
@@ -290,14 +317,14 @@ function EditorialRow({ article }: { article: Article }) {
           </Link>
         </div>
         <Link to={`/article/${article.slug}`}>
-          <h3 className="font-serif text-2xl leading-tight text-[#171717] transition-colors group-hover:text-[#1d4ed8] sm:text-[1.75rem]">
+          <h3 className="font-serif text-[1.7rem] leading-[1.2] text-[#171717] transition-colors duration-200 group-hover:text-[#1d4ed8] sm:text-[1.9rem]">
             {article.title}
           </h3>
         </Link>
-        <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-[#525252] sm:text-[15px]">
+        <p className="mt-1.5 line-clamp-2 text-sm leading-[1.6] text-[#4f4f4f] sm:text-[15px]">
           {article.excerpt}
         </p>
-        <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-[#737373]">
+        <div className="mt-2.5 flex flex-wrap items-center gap-1.5 text-[11px] text-[#737373]">
           <span>{readableDate}</span>
           <span>·</span>
           <span className="inline-flex items-center gap-1"><Clock3 className="h-3.5 w-3.5" />{readTime} min read</span>
@@ -306,13 +333,13 @@ function EditorialRow({ article }: { article: Article }) {
         </div>
       </div>
 
-      <Link to={`/article/${article.slug}`} className="order-first block aspect-4/3 overflow-hidden rounded-xl bg-[#f1f1ee] sm:order-0">
+      <Link to={`/article/${article.slug}`} className="order-first block aspect-[6/4.3] overflow-hidden rounded-xl bg-[#f1f1ee] sm:order-0">
         {imageUrl ? (
           <img
             src={imageUrl}
             alt={article.title}
             loading="lazy"
-            className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+            className="h-full w-full object-cover saturate-[0.88] contrast-[0.96] brightness-[0.99] transition duration-500 group-hover:scale-[1.03] group-hover:saturate-[0.94]"
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center text-[#bdbdbd]">Story</div>
