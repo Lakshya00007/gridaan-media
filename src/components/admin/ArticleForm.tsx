@@ -104,102 +104,102 @@ export default function ArticleForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 rounded-3xl border border-slate-700 bg-[#080d1a]/90 p-6 shadow-xl shadow-slate-950/40">
+    <form onSubmit={handleSubmit} className="space-y-6 rounded-2xl border border-border bg-white p-6 shadow-sm">
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div>
-          <h2 className="text-2xl font-semibold text-white">{isEditing ? 'Edit Article' : 'Create Article'}</h2>
-          <p className="mt-1 text-sm text-slate-400">Save rich content directly to Supabase and manage your CMS from one panel.</p>
+          <h2 className="text-2xl font-semibold text-text">{isEditing ? 'Edit Article' : 'Create Article'}</h2>
+          <p className="mt-1 text-sm text-text-secondary">Save rich content directly to Supabase and manage your CMS from one panel.</p>
         </div>
         <div className="flex flex-wrap gap-3">
           <button
             type="button"
             onClick={onCancel}
-            className="rounded-2xl border border-slate-700 bg-[#0B1224] px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-slate-500 hover:text-white"
+            className="rounded-xl border border-border bg-[#fafaf9] px-4 py-2 text-sm font-medium text-text transition hover:bg-[#f5f5f2] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/25 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
           >
             Clear
           </button>
           <button
             type="submit"
             disabled={!canSave || saving}
-            className="rounded-2xl bg-[#2563EB] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#2563EB] disabled:cursor-not-allowed disabled:opacity-60"
+            className="rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#1D4ED8] disabled:cursor-not-allowed disabled:opacity-60 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/25 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
           >
             {saving ? 'Saving…' : isEditing ? 'Update Article' : 'Publish Article'}
           </button>
         </div>
       </div>
 
-      {error && <p className="rounded-2xl bg-red-500/10 px-4 py-3 text-sm text-red-200">{error}</p>}
+      {error && <p className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800">{error}</p>}
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <label className="block text-sm font-medium text-slate-200">
+        <label className="block text-sm font-medium text-text">
           Title
           <input
             value={title}
             onChange={(event) => handleTitleChange(event.target.value)}
             placeholder="Write a strong title"
-            className="mt-2 w-full rounded-3xl border border-slate-700 bg-[#0B1224] px-4 py-3 text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+            className="mt-2 w-full rounded-xl border border-border bg-white px-4 py-3 text-text outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
           />
         </label>
 
-        <label className="block text-sm font-medium text-slate-200">
+        <label className="block text-sm font-medium text-text">
           Slug
           <input
             value={slug}
             onChange={(event) => setSlug(generateSlug(event.target.value))}
             placeholder="auto-generated slug"
-            className="mt-2 w-full rounded-3xl border border-slate-700 bg-[#0B1224] px-4 py-3 text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+            className="mt-2 w-full rounded-xl border border-border bg-white px-4 py-3 text-text outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
           />
         </label>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <label className="block text-sm font-medium text-slate-200">
+        <label className="block text-sm font-medium text-text">
           Category
           <select
             value={category}
             onChange={(event) => setCategory(event.target.value)}
-            className="mt-2 w-full rounded-3xl border border-slate-700 bg-[#0B1224] px-4 py-3 text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+            className="mt-2 w-full rounded-xl border border-border bg-white px-4 py-3 text-text outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
           >
             {categories.map((option) => (
-              <option key={option} value={option} className="bg-[#080d1a] text-slate-900">{option}</option>
+              <option key={option} value={option}>{option}</option>
             ))}
           </select>
         </label>
 
-        <label className="block text-sm font-medium text-slate-200">
+        <label className="block text-sm font-medium text-text">
           Status
           <select
             value={status}
             onChange={(event) => setStatus(event.target.value as Article['status'])}
-            className="mt-2 w-full rounded-3xl border border-slate-700 bg-[#0B1224] px-4 py-3 text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+            className="mt-2 w-full rounded-xl border border-border bg-white px-4 py-3 text-text outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
           >
-            <option value="published" className="bg-[#080d1a]">Published</option>
-            <option value="draft" className="bg-[#080d1a]">Draft</option>
-            <option value="scheduled" className="bg-[#080d1a]">Scheduled</option>
+            <option value="published">Published</option>
+            <option value="draft">Draft</option>
+            <option value="scheduled">Scheduled</option>
           </select>
         </label>
 
-        <label className="block text-sm font-medium text-slate-200 lg:col-span-2">
+        <label className="block text-sm font-medium text-text lg:col-span-2">
           Excerpt
           <textarea
             value={excerpt}
             onChange={(event) => setExcerpt(event.target.value)}
             rows={4}
             placeholder="Write a summary for listing previews"
-            className="mt-2 w-full rounded-3xl border border-slate-700 bg-[#0B1224] px-4 py-3 text-white outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+            className="mt-2 w-full rounded-xl border border-border bg-white px-4 py-3 text-text outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
           />
         </label>
       </div>
 
       <div className="space-y-4">
-        <label className="block text-sm font-medium text-slate-200">Content</label>
-        <div className="rounded-3xl border border-slate-700 bg-[#0B1224] p-2">
-          <Suspense fallback={<div className="h-[360px] rounded-3xl bg-[#0B1224]/80 animate-pulse" />}>
+        <label className="block text-sm font-medium text-text">Content</label>
+        <div className="rounded-2xl border border-border bg-white p-2">
+          <Suspense fallback={<div className="h-[360px] rounded-2xl bg-[#fafaf9] animate-pulse" />}>
             <ReactQuill
               theme="snow"
               value={content}
               onChange={setContent}
-              className="rounded-3xl bg-[#0B1224] text-slate-900"
+              className="rounded-2xl bg-white text-text"
               modules={{
                 toolbar: [
                   ['bold', 'italic', 'underline', 'strike'],

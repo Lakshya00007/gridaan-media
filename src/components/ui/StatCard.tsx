@@ -19,21 +19,21 @@ export default function StatCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-white/10 bg-[#0B1224]/90 p-4 shadow-lg shadow-black/20 backdrop-blur-sm transition hover:border-[#2563EB]/30',
+        'rounded-2xl border border-border bg-white p-4 shadow-sm transition hover:border-primary/30',
         className
       )}
     >
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-xs font-medium uppercase tracking-wider text-[#64748B]">
+          <p className="text-xs font-medium uppercase tracking-wider text-text-secondary">
             {label}
           </p>
-          <p className="mt-2 text-2xl font-bold text-white tabular-nums">{value}</p>
+          <p className="mt-2 text-2xl font-bold text-text tabular-nums">{value}</p>
           {trend && (
-            <p className="mt-1 text-xs text-[#14B8A6]">{trend}</p>
+            <p className="mt-1 text-xs text-primary">{trend}</p>
           )}
         </div>
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#2563EB]/15 text-[#2563EB]">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
           <Icon className="h-5 w-5" aria-hidden />
         </div>
       </div>

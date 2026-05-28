@@ -1,28 +1,28 @@
-import { useParams, Link } from 'react-router-dom';
-import { ChevronRight } from 'lucide-react';
-import ArticleCard from '../components/articles/ArticleCard';
-import AdBanner from '../components/ads/AdBanner';
-import Skeleton from '../components/ui/Skeleton';
-import SEO from '../components/seo/SEO';
-import { useArticles, useCategories } from '../hooks/useArticles';
-import { slugifyCategory } from '../utils/articleUtils';
+import { useParams, Link } from 'react-router-dom'
+import { ChevronRight } from 'lucide-react'
+import ArticleCard from '../components/articles/ArticleCard'
+import AdBanner from '../components/ads/AdBanner'
+import Skeleton from '../components/ui/Skeleton'
+import SEO from '../components/seo/SEO'
+import { useArticles, useCategories } from '../hooks/useArticles'
+import { slugifyCategory } from '../utils/articleUtils'
 
 export default function CategoryPage() {
-  const { slug } = useParams();
-  const { data: articles = [], isLoading: articlesLoading, error: articlesError } = useArticles();
-  const { data: categories = [], isLoading: categoriesLoading, error: categoriesError } = useCategories();
-  const loading = articlesLoading || categoriesLoading;
-  const error = articlesError || categoriesError;
-  const category = categories.find(c => c.slug === slug);
+  const { slug } = useParams()
+  const { data: articles = [], isLoading: articlesLoading, error: articlesError } = useArticles()
+  const { data: categories = [], isLoading: categoriesLoading, error: categoriesError } = useCategories()
+  const loading = articlesLoading || categoriesLoading
+  const error = articlesError || categoriesError
+  const category = categories.find((c) => c.slug === slug)
   
-  const categoryArticles = articles.filter(a => {
-    return slugifyCategory(a.category) === slug;
-  });
+  const categoryArticles = articles.filter((a) => {
+    return slugifyCategory(a.category) === slug
+  })
 
   if (loading) {
     return (
       <div className="min-h-screen bg-bg">
-        <div className="bg-mesh-hero border-b border-border text-text">
+        <div className="bg-white border-b border-border text-text">
           <div className="max-w-7xl mx-auto px-4 py-12">
             <Skeleton className="h-4 w-64 mb-6" />
             <Skeleton className="h-12 w-80" />
@@ -35,7 +35,7 @@ export default function CategoryPage() {
           </div>
         </div>
       </div>
-    );
+    )
   }
 
   if (!category) {
@@ -45,7 +45,7 @@ export default function CategoryPage() {
         {error && <p className="text-text-secondary mb-4">Unable to load this category right now.</p>}
         <Link to="/categories" className="text-primary hover:underline">Browse all categories</Link>
       </div>
-    );
+    )
   }
 
   return (
@@ -56,13 +56,13 @@ export default function CategoryPage() {
       />
 
       {/* Header */}
-      <div className="bg-mesh-hero border-b border-border/80 text-text">
+      <div className="bg-white border-b border-border text-text">
         <div className="max-w-7xl mx-auto px-4 py-12">
-          <nav className="flex items-center gap-2 text-xs text-text-secondary mb-4 font-semibold">
+          <nav className="flex items-center gap-2 text-xs text-text-secondary mb-4 font-semibold overflow-x-auto whitespace-nowrap pb-1">
             <Link to="/" className="hover:text-primary">Home</Link>
-            <ChevronRight className="w-3.5 h-3.5" />
+            <ChevronRight className="w-3.5 h-3.5 shrink-0" aria-hidden />
             <Link to="/categories" className="hover:text-primary">Categories</Link>
-            <ChevronRight className="w-3.5 h-3.5" />
+            <ChevronRight className="w-3.5 h-3.5 shrink-0" aria-hidden />
             <span className="text-text-secondary">{category.name}</span>
           </nav>
           <div className="flex items-center gap-4">
@@ -79,7 +79,7 @@ export default function CategoryPage() {
         <AdBanner position="header" className="mb-8" />
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {categoryArticles.map(article => (
+          {categoryArticles.map((article) => (
             <ArticleCard key={article.id} article={article} />
           ))}
         </div>
@@ -92,5 +92,5 @@ export default function CategoryPage() {
         )}
       </div>
     </div>
-  );
+  )
 }

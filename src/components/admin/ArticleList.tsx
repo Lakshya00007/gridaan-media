@@ -25,10 +25,10 @@ function StatusBadge({ status }: { status?: string }) {
   const s = status ?? 'published'
   const styles =
     s === 'draft'
-      ? 'bg-amber-500/15 text-amber-300 ring-amber-500/30'
+      ? 'bg-amber-100 text-amber-800 ring-amber-200'
       : s === 'scheduled'
-        ? 'bg-violet-500/15 text-violet-300 ring-violet-500/30'
-        : 'bg-emerald-500/15 text-emerald-300 ring-emerald-500/30'
+        ? 'bg-indigo-100 text-indigo-800 ring-indigo-200'
+        : 'bg-emerald-100 text-emerald-800 ring-emerald-200'
 
   return (
     <span
@@ -78,7 +78,7 @@ export default function ArticleList({
   return (
     <div className="space-y-4">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex rounded-xl border border-white/10 bg-[#080d1a]/60 p-1">
+        <div className="flex rounded-xl border border-border bg-[#fafaf9] p-1">
           {(['all', 'published', 'draft'] as Tab[]).map((t) => (
             <button
               key={t}
@@ -86,8 +86,8 @@ export default function ArticleList({
               onClick={() => setTab(t)}
               className={`rounded-lg px-3 py-1.5 text-xs font-semibold capitalize transition ${
                 tab === t
-                  ? 'bg-[#2563EB] text-white'
-                  : 'text-[#94A3B8] hover:text-white'
+                  ? 'bg-primary text-white'
+                  : 'text-text-secondary hover:text-text'
               }`}
             >
               {t}
@@ -95,20 +95,20 @@ export default function ArticleList({
           ))}
         </div>
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#64748B]" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-secondary" aria-hidden />
           <input
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search articles…"
             aria-label="Search articles"
-            className="w-full rounded-xl border border-white/10 bg-[#080d1a]/80 py-2 pl-9 pr-3 text-sm text-white placeholder-[#64748B] focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20 sm:w-56"
+            className="w-full rounded-xl border border-border bg-white py-2 pl-9 pr-3 text-sm text-text placeholder-text-secondary focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 sm:w-56"
           />
         </div>
       </div>
 
       {filtered.length === 0 ? (
-        <div className="rounded-2xl border border-white/10 bg-[#0B1224]/80 p-6 text-[#64748B] text-sm">
+        <div className="rounded-2xl border border-border bg-white p-6 text-text-secondary text-sm shadow-sm">
           No articles match your filters.
         </div>
       ) : (
@@ -116,7 +116,7 @@ export default function ArticleList({
           {filtered.map((article) => (
             <div
               key={article.id}
-              className="rounded-2xl border border-white/10 bg-[#0B1224]/80 p-4 shadow-lg shadow-black/10 transition hover:border-[#2563EB]/25"
+              className="rounded-2xl border border-border bg-white p-4 shadow-sm transition hover:border-primary/30"
             >
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
                 {article.image_url ? (
@@ -127,30 +127,30 @@ export default function ArticleList({
                     className="h-20 w-full rounded-xl object-cover sm:h-20 sm:w-28"
                   />
                 ) : (
-                  <div className="h-20 w-full rounded-xl bg-linear-to-br from-[#2563EB]/20 to-[#14B8A6]/20 sm:w-28" />
+                  <div className="h-20 w-full rounded-xl bg-[#f5f5f2] border border-border sm:w-28" />
                 )}
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
-                    <h3 className="text-base font-semibold text-white line-clamp-1">
+                    <h3 className="text-base font-semibold text-text line-clamp-1">
                       {article.title}
                     </h3>
                     <StatusBadge status={article.status} />
                   </div>
-                  <p className="text-sm text-[#64748B]">{article.category || 'General'}</p>
-                  <p className="text-xs text-[#64748B]">{formatDate(article.created_at)}</p>
+                  <p className="text-sm text-text-secondary">{article.category || 'General'}</p>
+                  <p className="text-xs text-text-secondary">{formatDate(article.created_at)}</p>
                 </div>
                 <div className="flex shrink-0 gap-2">
                   <button
                     type="button"
                     onClick={() => onEdit(article)}
-                    className="rounded-xl bg-[#2563EB] px-4 py-2 text-sm font-semibold text-white hover:bg-[#1D4ED8]"
+                    className="rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-[#1D4ED8] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
                   >
                     Edit
                   </button>
                   <button
                     type="button"
                     onClick={() => onDelete(article.id)}
-                    className="rounded-xl bg-rose-600/90 px-4 py-2 text-sm font-semibold text-white hover:bg-rose-500"
+                    className="rounded-xl bg-rose-600 px-4 py-2 text-sm font-semibold text-white hover:bg-rose-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
                   >
                     Delete
                   </button>

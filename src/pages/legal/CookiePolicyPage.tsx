@@ -41,29 +41,29 @@ export default function CookiePolicyPage() {
           title: '3. Types of Cookies We Use',
           content: (
             <>
-              <div className="overflow-x-auto rounded-xl border border-[#1E293B]/50">
+              <div className="overflow-x-auto rounded-xl border border-border bg-white">
                 <table className="w-full text-left text-sm min-w-[280px]">
                   <thead>
-                    <tr className="border-b border-[#1E293B]/50 bg-[#080d1a]/60">
-                      <th className="px-4 py-3 font-semibold text-[#F8FAFC]">Category</th>
-                      <th className="px-4 py-3 font-semibold text-[#F8FAFC]">Purpose</th>
+                    <tr className="border-b border-border bg-[#fafaf9]">
+                      <th className="px-4 py-3 font-semibold text-text">Category</th>
+                      <th className="px-4 py-3 font-semibold text-text">Purpose</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#1E293B]/40">
+                  <tbody className="divide-y divide-border text-text-secondary">
                     <tr>
-                      <td className="px-4 py-3 text-[#F8FAFC]">Essential</td>
+                      <td className="px-4 py-3 text-text">Essential</td>
                       <td className="px-4 py-3">Login sessions, security, load balancing</td>
                     </tr>
                     <tr>
-                      <td className="px-4 py-3 text-[#F8FAFC]">Functional</td>
+                      <td className="px-4 py-3 text-text">Functional</td>
                       <td className="px-4 py-3">Preferences, bookmarks, UI state</td>
                     </tr>
                     <tr>
-                      <td className="px-4 py-3 text-[#F8FAFC]">Analytics</td>
+                      <td className="px-4 py-3 text-text">Analytics</td>
                       <td className="px-4 py-3">Google Analytics (GA4) usage statistics</td>
                     </tr>
                     <tr>
-                      <td className="px-4 py-3 text-[#F8FAFC]">Advertising</td>
+                      <td className="px-4 py-3 text-text">Advertising</td>
                       <td className="px-4 py-3">Ad delivery, frequency caps, relevance</td>
                     </tr>
                   </tbody>
@@ -77,14 +77,14 @@ export default function CookiePolicyPage() {
           title: '4. Google Analytics (GA4)',
           content: (
             <p>
-              We use Google Analytics 4 with measurement ID <strong className="text-[#F8FAFC]">G-2KHF0F8DMM</strong>.
-              Google may set cookies such as <code className="text-[#14B8A6]">_ga</code> and{' '}
-              <code className="text-[#14B8A6]">_ga_*</code> to distinguish users and sessions. Data
+              We use Google Analytics 4 with measurement ID <strong className="text-text">G-2KHF0F8DMM</strong>.
+              Google may set cookies such as <code className="text-primary">_ga</code> and{' '}
+              <code className="text-primary">_ga_*</code> to distinguish users and sessions. Data
               processed may include pages visited, approximate geography, device information, and
               referral source. Review{' '}
               <a
                 href="https://policies.google.com/privacy"
-                className="text-[#14B8A6] hover:underline"
+                className="text-primary hover:underline"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -104,7 +104,7 @@ export default function CookiePolicyPage() {
               partners process data under their own policies. You can manage ad personalization via{' '}
               <a
                 href="https://adssettings.google.com"
-                className="text-[#14B8A6] hover:underline"
+                className="text-primary hover:underline"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -171,11 +171,11 @@ export default function CookiePolicyPage() {
           content: (
             <p>
               For how we handle personal data, see our{' '}
-              <Link to="/privacy-policy" className="text-[#14B8A6] hover:underline">
+              <Link to="/privacy-policy" className="text-primary hover:underline">
                 Privacy Policy
               </Link>
               . Questions:{' '}
-              <a href={`mailto:${LEGAL_CONTACT.privacy}`} className="text-[#14B8A6] hover:underline">
+              <a href={`mailto:${LEGAL_CONTACT.privacy}`} className="text-primary hover:underline">
                 {LEGAL_CONTACT.privacy}
               </a>
               .

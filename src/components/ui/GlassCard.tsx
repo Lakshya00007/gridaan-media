@@ -15,7 +15,7 @@ export default function GlassCard({
   return (
     <Tag
       className={cn(
-        'rounded-2xl border border-white/10 bg-[#0B1224]/80 shadow-xl shadow-black/20 backdrop-blur-xl',
+        'rounded-2xl border border-border bg-white shadow-sm',
         className
       )}
     >

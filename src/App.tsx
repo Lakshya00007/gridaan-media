@@ -40,8 +40,8 @@ function ScrollToTop() {
 function AppLayout() {
   const location = useLocation();
   const routeFallback = (
-    <div className="min-h-screen flex items-center justify-center bg-[#080d1a]">
-      <div className="rounded-3xl bg-slate-100 dark:bg-[#0B1224] p-6 text-base font-medium text-slate-900 dark:text-slate-100 animate-pulse">
+    <div className="min-h-screen flex items-center justify-center bg-bg">
+      <div className="rounded-2xl border border-border bg-card p-6 text-base font-medium text-text shadow-sm animate-pulse">
         Loading page…
       </div>
     </div>
@@ -104,11 +104,14 @@ function NotFound() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-20 text-center">
       <div className="text-8xl mb-6">🔍</div>
-      <h1 className="text-4xl font-bold text-[#F8FAFC] dark:text-white mb-4">404 - Page Not Found</h1>
-      <p className="text-[#94A3B8] dark:text-[#94A3B8] mb-8 text-lg">
+      <h1 className="text-4xl font-semibold text-text mb-4">404 - Page Not Found</h1>
+      <p className="text-text-secondary mb-8 text-lg">
         The page you're looking for doesn't exist or has been moved.
       </p>
-      <Link to="/" className="inline-flex items-center gap-2 px-6 py-3 bg-[#2563EB] text-white rounded-xl font-medium hover:bg-[#1D4ED8] transition-colors">
+      <Link
+        to="/"
+        className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-medium hover:bg-[#1D4ED8] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+      >
         Back to Home
       </Link>
     </div>
