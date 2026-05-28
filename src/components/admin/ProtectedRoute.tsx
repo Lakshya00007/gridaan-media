@@ -36,7 +36,6 @@ export default function ProtectedRoute({
 
   // Logged in but not admin
   if (!isAdmin) {
-    console.warn('[ProtectedRoute] User is not an admin:', user.email)
     return <Navigate to="/" replace />
   }
 

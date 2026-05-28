@@ -112,9 +112,9 @@ export default function AdminDashboard() {
 
   if (loading || !user || !profile || !isAdmin) {
     return (
-      <div className="min-h-screen bg-[#080d1a] text-slate-100 flex items-center justify-center">
-        <div className="rounded-3xl border border-white/10 bg-[#0B1224]/90 px-8 py-6 text-center shadow-2xl">
-          <p className="text-lg font-medium">Verifying admin session…</p>
+      <div className="min-h-screen bg-[#f8f8f7] text-[#1c1c1c] flex items-center justify-center">
+        <div className="rounded-3xl border border-[#e6e6e6] bg-white px-8 py-6 text-center shadow-sm">
+          <p className="text-base font-medium">Verifying admin session…</p>
         </div>
       </div>
     )
@@ -123,18 +123,17 @@ export default function AdminDashboard() {
   const currentUser = user.email ?? 'Admin'
 
   return (
-    <div className="min-h-screen bg-[#080d1a] text-slate-100">
-      <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(37,99,235,0.12),transparent)]" aria-hidden />
+    <div className="min-h-screen bg-[#f8f8f7] text-[#1c1c1c]">
       <Toaster position="bottom-right" />
       <div className="relative mx-auto max-w-[1600px] px-4 py-6 sm:px-6 lg:py-8 lg:px-8">
-        <header className="mb-8 flex flex-col gap-4 rounded-2xl border border-white/10 bg-[#0B1224]/80 p-6 shadow-xl backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between">
+        <header className="mb-8 flex flex-col gap-4 rounded-2xl border border-[#e6e6e6] bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#14B8A6]">Editorial CMS</p>
-            <h1 className="mt-2 text-2xl font-bold text-white sm:text-3xl">Gridaan Dashboard</h1>
-            <p className="mt-1 text-sm text-[#64748B]">Publish, analyze, and manage your AI-tech publication.</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#2563eb]">Editorial CMS</p>
+            <h1 className="mt-2 text-2xl font-bold text-[#1c1c1c] sm:text-3xl">Gridaan Dashboard</h1>
+            <p className="mt-1 text-sm text-[#6b6b6b]">Publish, analyze, and manage your publication.</p>
           </div>
           <div className="flex flex-wrap items-center gap-3">
-            <span className="rounded-xl border border-white/10 bg-[#080d1a]/80 px-4 py-2 text-sm text-[#94A3B8]">
+            <span className="rounded-xl border border-[#e6e6e6] bg-[#fafaf9] px-4 py-2 text-sm text-[#4b4b4b]">
               {currentUser}
             </span>
             <button
@@ -148,7 +147,7 @@ export default function AdminDashboard() {
         </header>
 
         {(error || articlesError) && (
-          <div className="mb-6 rounded-2xl border border-rose-500/20 bg-rose-500/10 p-4 text-sm text-rose-100">
+          <div className="mb-6 rounded-2xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-800">
             {error || 'Unable to fetch articles. Please refresh.'}
           </div>
         )}
@@ -157,7 +156,7 @@ export default function AdminDashboard() {
 
         <div className="mt-8 grid gap-6 xl:grid-cols-[1fr_280px] 2xl:grid-cols-[1fr_300px]">
           <div className="min-w-0 space-y-6">
-            <div className="rounded-2xl border border-white/10 bg-[#0B1224]/80 p-4 sm:p-6 backdrop-blur-sm">
+            <div className="rounded-2xl border border-[#e6e6e6] bg-white p-4 sm:p-6 shadow-sm">
               <ArticleForm
                 article={selectedArticle ?? undefined}
                 author={currentUser}
@@ -178,8 +177,8 @@ export default function AdminDashboard() {
           </aside>
         </div>
 
-        <div className="mt-8 rounded-2xl border border-white/10 bg-[#0B1224]/80 p-4 sm:p-6 backdrop-blur-sm">
-          <h2 className="mb-4 text-lg font-semibold text-white">Article library</h2>
+        <div className="mt-8 rounded-2xl border border-[#e6e6e6] bg-white p-4 sm:p-6 shadow-sm">
+          <h2 className="mb-4 text-lg font-semibold text-[#1c1c1c]">Article library</h2>
           <ArticleList
             articles={articles}
             loading={loadingArticles}
